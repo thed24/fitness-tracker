@@ -27,5 +27,6 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'import/extensions': 'off',
     'react/jsx-one-expression-per-line': 'off',
+    'no-unused-vars': 'off',
   },
 };

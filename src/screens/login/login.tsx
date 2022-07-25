@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavigationProps } from '..';
-import { AuthForm } from '../../common';
-import { State, useStore } from '../../store/store';
-import * as SC from '../screens.style';
+import { AuthForm, Screen } from '../../common';
+import { useStore } from '../../store/store';
 
 // eslint-disable-next-line no-unused-vars
 export function LoginScreen({ navigation }: NavigationProps) {
@@ -10,7 +9,7 @@ export function LoginScreen({ navigation }: NavigationProps) {
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
-  const { login } = useStore();
+  const { login, user } = useStore();
 
   const changeEmail = (value: string) => {
     setEmail(value);
@@ -25,16 +24,15 @@ export function LoginScreen({ navigation }: NavigationProps) {
     setTimeout(() => {
       setLoading(false);
       login(email, password);
-      navigation.navigate('Profile');
     }, 2000);
   };
 
-  if (loading) {
-    return <SC.Container>Loading...</SC.Container>;
+  if (user) {
+    navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
   }
 
   return (
-    <SC.Container>
+    <Screen loading={loading}>
       <AuthForm
         // eslint-disable-next-line global-require
         logoImageSource={require('../../../assets/logo.png')}
@@ -46,6 +44,6 @@ export function LoginScreen({ navigation }: NavigationProps) {
         onEmailChange={changeEmail}
         onPasswordChange={changePassword}
       />
-    </SC.Container>
+    </Screen>
   );
 }

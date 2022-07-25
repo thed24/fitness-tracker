@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavigationProps } from '..';
-import { AuthForm } from '../../common';
+import { AuthForm, Screen } from '../../common';
 import { useStore } from '../../store/store';
-import * as SC from '../screens.style';
 
 // eslint-disable-next-line no-unused-vars
 export function RegisterScreen({ navigation }: NavigationProps) {
@@ -30,18 +29,14 @@ export function RegisterScreen({ navigation }: NavigationProps) {
     setTimeout(() => {
       setLoading(false);
       register({
-        id: '0', email, password, name,
+        id: '0', email, password, name, workouts: [],
       });
-      navigation.navigate('Profile');
+      navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
     }, 2000);
   };
 
-  if (loading) {
-    return <SC.Container>Loading...</SC.Container>;
-  }
-
   return (
-    <SC.Container>
+    <Screen loading={loading}>
       <AuthForm
         mainText="Register"
         // eslint-disable-next-line global-require
@@ -54,6 +49,6 @@ export function RegisterScreen({ navigation }: NavigationProps) {
         onEmailChange={changeEmail}
         onPasswordChange={changePassword}
       />
-    </SC.Container>
+    </Screen>
   );
 }

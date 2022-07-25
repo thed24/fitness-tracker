@@ -2,7 +2,9 @@ import { NativeBaseProvider } from 'native-base';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, LoginScreen, ProfileScreen, RegisterScreen } from './src/screens';
+import {
+  HomeScreen, LoginScreen, ProfileScreen, RegisterScreen,
+} from './src/screens';
 
 const Stack = createNativeStackNavigator();
 
