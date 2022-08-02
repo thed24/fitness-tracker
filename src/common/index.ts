@@ -1,5 +1,14 @@
 export {
-  User, CompletedWorkout, Workout, ScheduledWorkout,
+  User,
+  CompletedWorkout,
+  Workout,
+  ScheduledWorkout,
+  Exercise,
+  CardioExercise,
+  StrengthExercise,
+  CardioData,
+  StrengthData,
 } from './types';
-export { AuthForm } from './components/authForm/authForm';
+
 export { Screen } from './components/screen/screen';
+export { ErrorAlert } from './components/errorAlert/errorAlert';

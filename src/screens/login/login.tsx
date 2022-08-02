@@ -1,25 +1,36 @@
-import React from 'react';
+import { Formik } from 'formik';
+import {
+  Button, Heading, Input, VStack,
+} from 'native-base';
+import React, { useEffect } from 'react';
+import { GestureResponderEvent, TextInput, View } from 'react-native';
 import { NavigationProps } from '..';
-import { AuthForm, Screen } from '../../common';
-import { useStore } from '../../store/store';
+import { ErrorAlert, Screen } from 'common';
+import { useStore } from 'store';
+
+interface LoginValues {
+  email: string;
+  password: string;
+}
 
 // eslint-disable-next-line no-unused-vars
 export function LoginScreen({ navigation }: NavigationProps) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
-  const { login, user } = useStore();
+  const {
+    login, clearErrors, user, errors,
+  } = useStore();
 
-  const changeEmail = (value: string) => {
-    setEmail(value);
-  };
+  useEffect(
+    () => {
+      if (user) {
+        navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
+      }
+    },
+    [user],
+  );
 
-  const changePassword = (value: string) => {
-    setPassword(value);
-  };
-
-  const onSubmit = () => {
+  const onSubmit = ({ email, password }: LoginValues) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -27,23 +38,41 @@ export function LoginScreen({ navigation }: NavigationProps) {
     }, 2000);
   };
 
-  if (user) {
-    navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
-  }
+  const onLoginPress = (callback: (e?: any) => void) => (event: GestureResponderEvent) => {
+    event.preventDefault();
+    callback();
+  };
 
   return (
     <Screen loading={loading}>
-      <AuthForm
-        // eslint-disable-next-line global-require
-        logoImageSource={require('../../../assets/logo.png')}
-        disableSignup
-        disableDivider
-        mainText="Login"
-        onLoginPress={onSubmit}
-        onSignupPress={() => {}}
-        onEmailChange={changeEmail}
-        onPasswordChange={changePassword}
-      />
+      {errors.length > 0 && (<ErrorAlert errors={errors} clearErrors={clearErrors} />)}
+      <Heading marginTop="10">
+        Login
+      </Heading>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={onSubmit}
+      >
+        {({
+          handleChange, handleBlur, handleSubmit, values,
+        }) => (
+          <VStack space={4} alignItems="center" marginTop="10">
+            <Input
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              value={values.email}
+              placeholder="Email"
+            />
+            <Input
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              value={values.password}
+              placeholder="Password"
+            />
+            <Button w="100%" onPress={onLoginPress(handleSubmit)}> Login </Button>
+          </VStack>
+        )}
+      </Formik>
     </Screen>
   );
 }

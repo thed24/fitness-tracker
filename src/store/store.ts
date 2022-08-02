@@ -1,11 +1,13 @@
 import create from 'zustand';
-import { User } from '../common';
+import { User } from 'common';
 
 export interface State {
   user: User | null;
+  errors: string[];
   login(email: string, password: string): void;
   register(user: User): void;
   logout(): void;
+  clearErrors(): void;
 }
 
 const Users = [] as User[];
@@ -59,11 +61,14 @@ const testUser: User = {
 
 export const useStore = create<State>((set) => ({
   user: testUser,
+  errors: [],
   login(email: string, password: string) {
     const foundUser = Users.find((user) => user.email === email && user.password === password);
 
     if (foundUser) {
       set((state) => ({ ...state, user: foundUser }));
+    } else {
+      set((state) => ({ ...state, errors: ['Invalid email or password'] }));
     }
   },
   register(user: User) {
@@ -72,5 +77,8 @@ export const useStore = create<State>((set) => ({
   },
   logout() {
     set((state) => ({ ...state, user: null }));
+  },
+  clearErrors() {
+    set((state) => ({ ...state, errors: [] }));
   },
 }));

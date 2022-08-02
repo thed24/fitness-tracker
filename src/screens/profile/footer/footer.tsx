@@ -18,24 +18,17 @@ export function Footer({ selected, setSelected }: Props) {
   };
 
   return (
-    <Box flex={1} bg="white" width="100%" position="absolute" bottom="-1" alignSelf="center">
-      <Center flex={1} />
-      <HStack bg={theme.colors.primary[800]} height="30%" shadow={9}>
-        <Pressable opacity={selected === 'history' ? 1 : 0.5} py="2" flex={1} onPress={onPress('history')}>
-          <Center>
-            <Text color="white" fontSize="16">
-              History
-            </Text>
-          </Center>
-        </Pressable>
-        <Pressable opacity={selected === 'schedule' ? 1 : 0.6} py="2" flex={1} onPress={onPress('schedule')}>
-          <Center>
-            <Text color="white" fontSize="16">
-              Schedule
-            </Text>
-          </Center>
-        </Pressable>
-      </HStack>
-    </Box>
+    <HStack bg={theme.colors.primary[600]} height="7%" width="100%" position="absolute" bottom="0px" shadow={9}>
+      <Pressable opacity={selected === 'history' ? 1 : 0.5} py="2" flex={1} onPress={onPress('history')}>
+        <Text color="white" margin="auto" fontSize="16">
+          History
+        </Text>
+      </Pressable>
+      <Pressable py="2" flex={1} onPress={onPress('schedule')}>
+        <Text color="white" margin="auto" fontSize="16" opacity={selected === 'schedule' ? 1 : 0.6}>
+          Schedule
+        </Text>
+      </Pressable>
+    </HStack>
   );
 }

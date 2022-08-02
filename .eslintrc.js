@@ -5,10 +5,16 @@ module.exports = {
   },
   extends: ['plugin:react/recommended', 'airbnb'],
   settings: {
+    'import/parsers': {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         moduleDirectory: ['node_modules', 'src/'],
+      },
+      typescript: {
+        alwaysTryTypes: true,
       },
     },
   },
@@ -20,7 +26,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'imported'],
   rules: {
     'import/prefer-default-export': 'off',
     'linebreak-style': 'off',
@@ -28,5 +34,6 @@ module.exports = {
     'import/extensions': 'off',
     'react/jsx-one-expression-per-line': 'off',
     'no-unused-vars': 'off',
+    'import/no-unresolved': 'error',
   },
 };

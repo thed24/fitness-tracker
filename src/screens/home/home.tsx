@@ -3,8 +3,8 @@ import {
   Text, Heading, Button, Divider,
 } from 'native-base';
 import { NavigationProps } from '..';
-import { useStore } from '../../store/store';
-import { Screen } from '../../common';
+import { useStore } from 'store';
+import { Screen } from 'common';
 
 export function HomeScreen({ navigation }: NavigationProps) {
   const { user } = useStore();
@@ -15,7 +15,7 @@ export function HomeScreen({ navigation }: NavigationProps) {
 
   return (
     <Screen>
-      <Heading>Welcome to Fitness Tracker!</Heading>
+      <Heading marginTop="10">Welcome to Fitness Tracker!</Heading>
       <Text> Please register below to get started </Text>
       <Divider my="5" w="4/6" thickness="2" />
       <Button margin="15px" paddingLeft="70px" paddingRight="70px" onPress={() => navigation.navigate('Login')}> Login </Button>

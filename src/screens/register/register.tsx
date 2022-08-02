@@ -1,54 +1,84 @@
-import React from 'react';
+import { Formik } from 'formik';
+import {
+  Button, Heading, Input, VStack,
+} from 'native-base';
+import React, { useEffect } from 'react';
+import { GestureResponderEvent } from 'react-native';
 import { NavigationProps } from '..';
-import { AuthForm, Screen } from '../../common';
-import { useStore } from '../../store/store';
+import { Screen } from 'common';
+import { useStore } from 'store';
+
+interface RegisterValues {
+  email: string;
+  password: string;
+  name: string;
+}
 
 // eslint-disable-next-line no-unused-vars
 export function RegisterScreen({ navigation }: NavigationProps) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [name, setName] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
-  const { register } = useStore();
+  const { register, user } = useStore();
 
-  const changeEmail = (value: string) => {
-    setEmail(value);
-  };
+  useEffect(
+    () => {
+      if (user) {
+        navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
+      }
+    },
+    [user],
+  );
 
-  const changePassword = (value: string) => {
-    setPassword(value);
-  };
-
-  const changeName = (value: string) => {
-    setName(value);
-  };
-
-  const onSubmit = () => {
+  const onSubmit = ({ email, password, name }: RegisterValues) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       register({
         id: '0', email, password, name, workouts: [],
       });
-      navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
     }, 2000);
+  };
+
+  const onRegisterPress = (callback: (e?: any) => void) => (event: GestureResponderEvent) => {
+    event.preventDefault();
+    callback();
   };
 
   return (
     <Screen loading={loading}>
-      <AuthForm
-        mainText="Register"
-        // eslint-disable-next-line global-require
-        logoImageSource={require('../../../assets/logo.png')}
-        disableDivider
-        disableSignup
-        onLoginPress={onSubmit}
-        onSignupPress={() => {}}
-        onNameChange={changeName}
-        onEmailChange={changeEmail}
-        onPasswordChange={changePassword}
-      />
+      <Heading marginTop="10">
+        Register
+      </Heading>
+      <Formik
+        initialValues={{ email: '', password: '', name: '' }}
+        onSubmit={onSubmit}
+      >
+        {({
+          handleChange, handleBlur, handleSubmit, values,
+        }) => (
+          <VStack space={4} alignItems="center" marginTop="10">
+            <Input
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              value={values.email}
+              placeholder="Email"
+            />
+            <Input
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              value={values.password}
+              placeholder="Password"
+            />
+            <Input
+              onChangeText={handleChange('name')}
+              onBlur={handleBlur('name')}
+              value={values.name}
+              placeholder="Name"
+            />
+            <Button w="100%" onPress={onRegisterPress(handleSubmit)}> Register </Button>
+          </VStack>
+        )}
+      </Formik>
     </Screen>
   );
 }

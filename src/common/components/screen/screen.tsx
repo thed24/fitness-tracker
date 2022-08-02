@@ -9,19 +9,22 @@ interface Props {
 }
 
 export function Screen({ children, loading = false }: Props) {
-  const spinner = (
-    <HStack space={2} justifyContent="center">
-      <Spinner accessibilityLabel="Loading page" />
-      <Heading color="primary.500" fontSize="md">
-        Loading
-      </Heading>
-    </HStack>
-  );
+  if (loading) {
+    return (
+      <SC.Container>
+        <HStack marginTop="10" space={2} justifyContent="center">
+          <Spinner accessibilityLabel="Loading page" />
+          <Heading color="primary.500" fontSize="md">
+            Loading
+          </Heading>
+        </HStack>
+      </SC.Container>
+    );
+  }
 
   return (
     <SC.Container>
-      {loading && spinner}
-      {!loading && children}
+      {children}
     </SC.Container>
   );
 }

@@ -1,4 +1,17 @@
 {
-  "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "common": [
+        "./src/common"
+      ],
+      "store": [
+        "./src/store"
+      ],
+      "src": [
+        "./src"
+      ]
+    },
+  },
+  "extends": "expo/tsconfig.base",
 }
