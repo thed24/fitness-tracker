@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Text, Heading, Button, HStack,
 } from 'native-base';
-import { Screen } from 'common';
+import { Screen } from '../../components';
 import { useStore } from 'store';
 import { NavigationProps } from '..';
 import { Footer, SelectedProfileTab } from './footer/footer';
@@ -12,10 +12,10 @@ import { Schedule } from './schedule/schedule';
 // eslint-disable-next-line no-unused-vars
 export function ProfileScreen({ navigation }: NavigationProps) {
   const [selected, setSelected] = React.useState<SelectedProfileTab>('history');
-  const { user, logout } = useStore();
+  const { user, scheduledWorkouts, pastWorkouts, setUser } = useStore();
 
   const onLogout = () => {
-    logout();
+    setUser(null);
     navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
   };
 
@@ -26,7 +26,7 @@ export function ProfileScreen({ navigation }: NavigationProps) {
 
       {selected === 'history' && (
         <>
-          <History workouts={user?.workouts ?? []} />
+          <History pastWorkouts={pastWorkouts()} />
           <HStack position="absolute" bottom="20" marginTop="30px" space="5">
             <Button onPress={onLogout}> Logout </Button>
           </HStack>
@@ -35,7 +35,7 @@ export function ProfileScreen({ navigation }: NavigationProps) {
 
       {selected === 'schedule' && (
         <>
-          <Schedule workouts={user?.workouts ?? []} />
+          <Schedule scheduledWorkouts={scheduledWorkouts()} />
           <HStack position="absolute" bottom="20" marginTop="30px" space="5">
             <Button onPress={onLogout}> Logout </Button>
             <Button onPress={() => {}}> Schedule New Workout </Button>

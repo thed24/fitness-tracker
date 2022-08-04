@@ -4,7 +4,7 @@ import {
 } from 'native-base';
 import { NavigationProps } from '..';
 import { useStore } from 'store';
-import { Screen } from 'common';
+import { Screen } from '../../components';
 
 export function HomeScreen({ navigation }: NavigationProps) {
   const { user } = useStore();

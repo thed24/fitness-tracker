@@ -3,10 +3,11 @@ import {
   Button, Heading, Input, VStack,
 } from 'native-base';
 import React, { useEffect } from 'react';
-import { GestureResponderEvent, TextInput, View } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 import { NavigationProps } from '..';
-import { ErrorAlert, Screen } from 'common';
+import { ErrorAlert, Screen } from 'components';
 import { useStore } from 'store';
+import { useLogin } from '../../api/auth/useLogin';
 
 interface LoginValues {
   email: string;
@@ -15,27 +16,24 @@ interface LoginValues {
 
 // eslint-disable-next-line no-unused-vars
 export function LoginScreen({ navigation }: NavigationProps) {
-  const [loading, setLoading] = React.useState(false);
-
-  const {
-    login, clearErrors, user, errors,
-  } = useStore();
+  const { data, error, isLoading, mutate } = useLogin();
+  const [errors, setErrors] = React.useState<string[]>([]);
+  const { setUser } = useStore();
 
   useEffect(
     () => {
-      if (user) {
+      if (data) {
+        setUser(data.user);
         navigation.reset({ index: 0, routes: [{ name: 'Profile' }] });
+      } else if (error) {
+        setErrors([error.message]);
       }
     },
-    [user],
+    [data, error],
   );
 
   const onSubmit = ({ email, password }: LoginValues) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      login(email, password);
-    }, 2000);
+    mutate({ email, password });
   };
 
   const onLoginPress = (callback: (e?: any) => void) => (event: GestureResponderEvent) => {
@@ -43,9 +41,13 @@ export function LoginScreen({ navigation }: NavigationProps) {
     callback();
   };
 
+  const onClearErrors = () => {
+    setErrors([]);
+  }
+
   return (
-    <Screen loading={loading}>
-      {errors.length > 0 && (<ErrorAlert errors={errors} clearErrors={clearErrors} />)}
+    <Screen loading={isLoading}>
+      {errors.length > 0 && (<ErrorAlert errors={errors} clearErrors={onClearErrors} />)}
       <Heading marginTop="10">
         Login
       </Heading>

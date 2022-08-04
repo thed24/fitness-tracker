@@ -4,18 +4,13 @@ import {
 } from 'native-base';
 import React, { useMemo } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
-import { ScheduledWorkout, Workout } from 'common';
+import { ScheduledWorkout, Workout } from 'types';
 
 interface Props {
-  workouts: Workout[];
+  scheduledWorkouts: ScheduledWorkout[];
 }
 
-export function Schedule({ workouts }: Props) {
-  const scheduledWorkouts: ScheduledWorkout[] = useMemo(
-    () => workouts.filter((workout) => !workout.past) as ScheduledWorkout[],
-    [workouts],
-  );
-
+export function Schedule({ scheduledWorkouts }: Props) {
   const content = scheduledWorkouts.length > 0 ? (
     <Carousel
       width={300}

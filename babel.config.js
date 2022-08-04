@@ -3,13 +3,15 @@ module.exports = function(api) {
 
   const moduleResolverOptions = {
     alias: {
-      common: "./src/common",
+      components: "./src/components",
       store: "./src/store",
+      types: "./src/types",
+      api: "./src/api",
     },
   };
 
   return {
     presets: ['babel-preset-expo'],
-    plugins: ['babel-plugin-styled-components', ['module-resolver', moduleResolverOptions]],
+    plugins: ['babel-plugin-styled-components', 'module:react-native-dotenv', ['module-resolver', moduleResolverOptions]],
   };
 };

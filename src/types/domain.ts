@@ -59,7 +59,9 @@ export type Workout = ScheduledWorkout | CompletedWorkout;
 
 export interface User {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
     email: string;
     password: string;
     workouts: Workout[];
