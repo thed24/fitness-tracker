@@ -3,10 +3,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from "react";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Dashboard } from './dashboard/dashboard';
-import { History } from './history/history';
-import { LogoutButton } from './logoutButton/logoutButton';
-import { Schedule } from './schedule/schedule';
+import { Dashboard } from './screens/dashboard/dashboard';
+import { History } from './screens/history/history';
+import { LogoutButton } from './components/logoutButton/logoutButton';
+import { Schedule } from './screens/schedule/schedule';
 
 export type SelectedProfileTab = "schedule" | "history";
 

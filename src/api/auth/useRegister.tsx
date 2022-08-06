@@ -7,13 +7,19 @@ import { apiErrorHandler } from "../errors";
 type RegisterRequest = {
   email: string;
   password: string;
+  confirmPassword: string;
   firstName: string;
   lastName: string;
   username: string;
-  confirmPassword: string;
-  name: string;
-  description: string;
-  iconUrl: string;
+  buddyName: string;
+  buddyDescription: string;
+  buddyIconId: number;
+  height: number;
+  weight: number;
+  age: number;
+  benchPressMax: number | null;
+  squatMax: number | null;
+  deadliftMax: number | null;
 };
 
 type RegisterResponse = {

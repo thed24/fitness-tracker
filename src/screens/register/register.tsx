@@ -6,9 +6,10 @@ import { useStore } from "store";
 import { Formik, FormikProps } from "formik";
 import { NavigationProps } from "types";
 import { useRegister } from "../../api/auth/useRegister";
-import { Navigation } from "./navigation/navigation";
-import { RegisterForm } from "./details/registerForm";
-import { BuddyForm } from "./buddy/buddyForm";
+import { Navigation } from "./components/navigation/navigation";
+import { RegisterForm } from "./forms/details/registerForm";
+import { BuddyForm } from "./forms/buddy/buddyForm";
+import { StatsForm } from "./forms/stats/statsForm";
 
 export interface RegisterValues {
   email: string;
@@ -17,9 +18,15 @@ export interface RegisterValues {
   firstName: string;
   lastName: string;
   username: string;
-  name: string;
-  description: string;
-  iconUrl: string;
+  buddyName: string;
+  buddyDescription: string;
+  buddyIconId: number;
+  height: number;
+  weight: number;
+  age: number;
+  benchPressMax: number | null;
+  squatMax: number | null;
+  deadliftMax: number | null;
 }
 
 export interface RegisterProps {
@@ -41,28 +48,8 @@ export function RegisterScreen({ navigation }: NavigationProps) {
     }
   }, [data, error]);
 
-  const onSubmit = ({
-    email,
-    password,
-    firstName,
-    lastName,
-    username,
-    confirmPassword,
-    name,
-    description,
-    iconUrl,
-  }: RegisterValues) => {
-    mutate({
-      email,
-      password,
-      firstName,
-      lastName,
-      username,
-      confirmPassword,
-      name,
-      description,
-      iconUrl,
-    });
+  const onSubmit = (registrationDetails: RegisterValues) => {
+    mutate({ ...registrationDetails });
   };
 
   const onClearErrors = () => {
@@ -79,6 +66,13 @@ export function RegisterScreen({ navigation }: NavigationProps) {
           </Box>
         );
       case 1:
+        return (
+          <Box textAlign="center">
+            <Text>Enter your physical stats below</Text>
+            <StatsForm form={props.form} />
+          </Box>
+        );
+      case 2:
         return (
           <Box textAlign="center">
             <Text>Enter the details of your workout buddy below</Text>
@@ -105,10 +99,16 @@ export function RegisterScreen({ navigation }: NavigationProps) {
           email: "test@gmail.com",
           password: "123456",
           confirmPassword: "123456",
-          name: "Test Buddy",
-          description: "This is a test buddy",
-          iconUrl: "123",
-        }}
+          buddyName: "Jim",
+          buddyDescription: "Your favorite pal",
+          buddyIconId: 1,
+          height: 180,
+          weight: 80,
+          age: 20,
+          benchPressMax: null,
+          squatMax: null,
+          deadliftMax: null,
+        } as RegisterValues}
         onSubmit={onSubmit}
       >
         {(form) => (
@@ -116,7 +116,7 @@ export function RegisterScreen({ navigation }: NavigationProps) {
             {getStep({ form })}
             <Navigation
               minSteps={0}
-              maxSteps={1}
+              maxSteps={2}
               currentIndex={index}
               setIndex={setIndex}
               onSubmit={form.handleSubmit}

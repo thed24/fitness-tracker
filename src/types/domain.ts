@@ -144,7 +144,7 @@ export interface Buddy {
   name: string;
   description: string;
   iconUrl: string;
-  buddyData: BuddyData;
+  data: BuddyData;
 }
 
 export interface User {

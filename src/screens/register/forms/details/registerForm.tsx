@@ -1,10 +1,11 @@
-import { Input, VStack } from "native-base";
+import { Input } from "native-base";
 import React from "react";
-import { RegisterProps } from "../register";
+import { RegisterProps } from "../../register";
+import * as SC from "../../register.styles";
 
 export function RegisterForm({ form }: RegisterProps) {
   return (
-    <VStack space={4} alignItems="center" marginTop="10">
+    <SC.Container>
         <Input
         onChangeText={form.handleChange("username")}
         onBlur={form.handleBlur("username")}
@@ -42,6 +43,6 @@ export function RegisterForm({ form }: RegisterProps) {
         value={form.values.confirmPassword}
         placeholder="Confirm Password"
         />
-    </VStack>
+    </SC.Container>
   );
 }

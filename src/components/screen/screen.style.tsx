@@ -5,4 +5,5 @@ export const Container = styled(Box)`
   flex: 1;
   background-color: #eaeaea;
   align-items: center;
+  text-align: center;
 `;
