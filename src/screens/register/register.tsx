@@ -10,6 +10,7 @@ import { Navigation } from "./components/navigation/navigation";
 import { RegisterForm } from "./forms/details/registerForm";
 import { BuddyForm } from "./forms/buddy/buddyForm";
 import { StatsForm } from "./forms/stats/statsForm";
+import { RegisterSchema } from "./registerSchema";
 
 export interface RegisterValues {
   email: string;
@@ -35,7 +36,7 @@ export interface RegisterProps {
 
 export function RegisterScreen({ navigation }: NavigationProps) {
   const { data, error, isLoading, mutate } = useRegister();
-  const { setUser, user } = useStore();
+  const { setUser } = useStore();
   const [errors, setErrors] = React.useState<string[]>([]);
   const [index, setIndex] = React.useState(0);
 
@@ -60,24 +61,24 @@ export function RegisterScreen({ navigation }: NavigationProps) {
     switch (index) {
       case 0:
         return (
-          <Box textAlign="center">
+          <>
             <Text>Enter your personal details below</Text>
             <RegisterForm form={props.form} />
-          </Box>
+          </>
         );
       case 1:
         return (
-          <Box textAlign="center">
+          <>
             <Text>Enter your physical stats below</Text>
             <StatsForm form={props.form} />
-          </Box>
+          </>
         );
       case 2:
         return (
-          <Box textAlign="center">
+          <>
             <Text>Enter the details of your workout buddy below</Text>
             <BuddyForm form={props.form} />
-          </Box>
+          </>
         );
       default:
         return <Text>Well, this is awkward</Text>;
@@ -92,6 +93,8 @@ export function RegisterScreen({ navigation }: NavigationProps) {
 
       <Heading marginTop="10">Register</Heading>
       <Formik
+        validationSchema={RegisterSchema}
+        validateOnChange
         initialValues={{
           firstName: "Dom",
           lastName: "Test",
@@ -115,6 +118,7 @@ export function RegisterScreen({ navigation }: NavigationProps) {
           <>
             {getStep({ form })}
             <Navigation
+              disabled={Object.keys(form.errors).length > 0}
               minSteps={0}
               maxSteps={2}
               currentIndex={index}

@@ -1,4 +1,5 @@
-import { Button, HStack } from "native-base";
+import { Button, VStack } from "native-base";
+import { ColorType } from "native-base/lib/typescript/components/types";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
 
@@ -6,6 +7,7 @@ interface Props {
   minSteps: number;
   maxSteps: number;
   currentIndex: number;
+  disabled: boolean;
   setIndex: (index: number) => void;
   onSubmit: (event: any) => void;
 }
@@ -13,6 +15,7 @@ interface Props {
 export function Navigation({
   minSteps = 0,
   maxSteps = 1,
+  disabled,
   currentIndex,
   setIndex,
   onSubmit,
@@ -27,25 +30,48 @@ export function Navigation({
     setIndex(currentIndex - 1);
   };
 
+  const color: ColorType = disabled ? "gray.300" : "primary.600";
+
   return (
-    <HStack space={4} alignItems="center" marginTop="10">
+    <VStack space={4} alignItems="center" marginTop="10" w="75%">
       {currentIndex > minSteps && (
-        <Button onPress={onClickPrevious}>
+        <Button
+          marginLeft="auto"
+          marginRight="auto"
+          disabled={disabled}
+          w="90%"
+          bg={color}
+          onPress={onClickPrevious}
+        >
           Back
         </Button>
       )}
 
       {currentIndex < maxSteps && (
-        <Button onPress={onClickNext}>
+        <Button
+          marginLeft="auto"
+          marginRight="auto"
+          disabled={disabled}
+          w="90%"
+          bg={color}
+          onPress={onClickNext}
+        >
           Next
         </Button>
       )}
 
       {currentIndex === maxSteps && (
-        <Button onPress={onSubmit}>
+        <Button
+          marginLeft="auto"
+          marginRight="auto"
+          disabled={disabled}
+          w="90%"
+          bg={color}
+          onPress={onSubmit}
+        >
           Submit
         </Button>
       )}
-    </HStack>
+    </VStack>
   );
 }
