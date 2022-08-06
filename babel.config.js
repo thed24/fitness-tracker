@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
 
   const moduleResolverOptions = {
@@ -11,7 +11,11 @@ module.exports = function(api) {
   };
 
   return {
-    presets: ['babel-preset-expo'],
-    plugins: ['babel-plugin-styled-components', 'module:react-native-dotenv', ['module-resolver', moduleResolverOptions]],
+    presets: ["babel-preset-expo"],
+    plugins: [
+      "babel-plugin-styled-components",
+      "module:react-native-dotenv",
+      ["module-resolver", moduleResolverOptions],
+    ],
   };
 };

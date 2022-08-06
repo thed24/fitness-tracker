@@ -1,11 +1,11 @@
 /* eslint-disable react/require-default-props */
-import { Heading, HStack, Spinner } from 'native-base';
-import React, { ReactNode } from 'react';
-import * as SC from './screen.style';
+import { Heading, HStack, Spinner } from "native-base";
+import React, { ReactNode } from "react";
+import * as SC from "./screen.style";
 
 interface Props {
-    children: ReactNode | ReactNode[];
-    loading?: boolean;
+  children: ReactNode | ReactNode[];
+  loading?: boolean;
 }
 
 export function Screen({ children, loading = false }: Props) {
@@ -22,9 +22,5 @@ export function Screen({ children, loading = false }: Props) {
     );
   }
 
-  return (
-    <SC.Container>
-      {children}
-    </SC.Container>
-  );
+  return <SC.Container>{children}</SC.Container>;
 }

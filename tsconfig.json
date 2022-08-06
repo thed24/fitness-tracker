@@ -2,27 +2,14 @@
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@types/react-query"
-    ],
+    "typeRoots": ["./node_modules/@types", "./node_modules/@types/react-query"],
     "paths": {
-      "components": [
-        "./src/components"
-      ],
-      "store": [
-        "./src/store"
-      ],
-      "api": [
-        "./src/api"
-      ],
-      "types": [
-        "./src/types"
-      ],
-      "src": [
-        "./src"
-      ]
-    },
+      "components": ["./src/components"],
+      "store": ["./src/store"],
+      "api": ["./src/api"],
+      "types": ["./src/types"],
+      "src": ["./src"]
+    }
   },
-  "extends": "expo/tsconfig.base",
+  "extends": "expo/tsconfig.base"
 }

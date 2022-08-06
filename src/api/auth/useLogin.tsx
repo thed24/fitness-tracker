@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useMutation, UseMutationResult } from "react-query";
 import { User } from "types";
 import { client } from "../client";
@@ -19,7 +20,10 @@ export function useLogin(): UseMutationResult<
   unknown
 > {
   return useMutation(async (data) => {
-    try { return (await client.post("/users/login", data)).data } 
-    catch (error) { apiErrorHandler(error); }
+    try {
+      return (await client.post("/users/login", data)).data;
+    } catch (error) {
+      apiErrorHandler(error);
+    }
   });
 }

@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
-import { Box } from 'native-base';
+import styled from "styled-components/native";
+import { Box } from "native-base";
 
 export const Container = styled(Box)`
-    flex: 1;
-    background-color: #fff;
-    align-items: center;
+  flex: 1;
+  background-color: #eaeaea;
+  align-items: center;
 `;

@@ -1,6 +1,6 @@
-import { zustandStorage } from "./utils";
 import create, { StateCreator, StoreApi, UseBoundStore } from "zustand";
 import { persist } from "zustand/middleware";
+import { zustandStorage } from "./utils";
 import { createUserSlice, UserSlice } from "./user/slice";
 
 export type State = UserSlice;
@@ -15,23 +15,24 @@ function createStore<TState extends Record<string | number | symbol, any>>(
   const store = create(
     persist(createState, {
       name: storeName,
-      getStorage: () => zustandStorage,
+      getStorage: () => zustandStorage
     })
   );
+  store.destroy();
   return [
     store,
     {
       setState: store.setState,
       getState: store.getState,
       subscribe: store.subscribe,
-      destroy: store.destroy,
-    },
+      destroy: store.destroy
+    }
   ];
 }
 
 export const [useStore] = createStore<State>(
-  (set, get, write, persist) => ({
-    ...createUserSlice(set, get, write, persist),
+  (set, get, write, persister) => ({
+    ...createUserSlice(set, get, write, persister)
   }),
   "useStore"
 );

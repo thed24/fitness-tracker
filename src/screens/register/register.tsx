@@ -1,26 +1,36 @@
-import { Formik } from "formik";
-import { Button, Heading, Input, VStack } from "native-base";
+/* eslint-disable react/prop-types */
+import { Box, Heading, Text } from "native-base";
 import React, { useEffect } from "react";
-import { GestureResponderEvent } from "react-native";
-import { NavigationProps } from "..";
 import { ErrorAlert, Screen } from "components";
 import { useStore } from "store";
+import { Formik, FormikProps } from "formik";
+import { NavigationProps } from "types";
 import { useRegister } from "../../api/auth/useRegister";
+import { Navigation } from "./navigation/navigation";
+import { RegisterForm } from "./details/registerForm";
+import { BuddyForm } from "./buddy/buddyForm";
 
-interface RegisterValues {
+export interface RegisterValues {
   email: string;
   password: string;
   confirmPassword: string;
   firstName: string;
   lastName: string;
   username: string;
+  name: string;
+  description: string;
+  iconUrl: string;
 }
 
-// eslint-disable-next-line no-unused-vars
+export interface RegisterProps {
+  form: FormikProps<RegisterValues>;
+}
+
 export function RegisterScreen({ navigation }: NavigationProps) {
   const { data, error, isLoading, mutate } = useRegister();
-  const [errors, setErrors] = React.useState<string[]>([]);
   const { setUser, user } = useStore();
+  const [errors, setErrors] = React.useState<string[]>([]);
+  const [index, setIndex] = React.useState(0);
 
   useEffect(() => {
     if (data) {
@@ -38,18 +48,46 @@ export function RegisterScreen({ navigation }: NavigationProps) {
     lastName,
     username,
     confirmPassword,
+    name,
+    description,
+    iconUrl,
   }: RegisterValues) => {
-    mutate({ email, password, firstName, lastName, username, confirmPassword });
+    mutate({
+      email,
+      password,
+      firstName,
+      lastName,
+      username,
+      confirmPassword,
+      name,
+      description,
+      iconUrl,
+    });
   };
-
-  const onRegisterPress =
-    (callback: (e?: any) => void) => (event: GestureResponderEvent) => {
-      event.preventDefault();
-      callback();
-    };
 
   const onClearErrors = () => {
     setErrors([]);
+  };
+
+  const getStep = (props: RegisterProps) => {
+    switch (index) {
+      case 0:
+        return (
+          <Box textAlign="center">
+            <Text>Enter your personal details below</Text>
+            <RegisterForm form={props.form} />
+          </Box>
+        );
+      case 1:
+        return (
+          <Box textAlign="center">
+            <Text>Enter the details of your workout buddy below</Text>
+            <BuddyForm form={props.form} />
+          </Box>
+        );
+      default:
+        return <Text>Well, this is awkward</Text>;
+    }
   };
 
   return (
@@ -57,61 +95,33 @@ export function RegisterScreen({ navigation }: NavigationProps) {
       {errors.length > 0 && (
         <ErrorAlert errors={errors} clearErrors={onClearErrors} />
       )}
+
       <Heading marginTop="10">Register</Heading>
       <Formik
         initialValues={{
-          email: "",
-          password: "",
-          firstName: "",
-          lastName: "",
-          username: "",
-          confirmPassword: "",
+          firstName: "Dom",
+          lastName: "Test",
+          username: "Test",
+          email: "test@gmail.com",
+          password: "123456",
+          confirmPassword: "123456",
+          name: "Test Buddy",
+          description: "This is a test buddy",
+          iconUrl: "123",
         }}
         onSubmit={onSubmit}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <VStack space={4} alignItems="center" marginTop="10">
-            <Input
-              onChangeText={handleChange("username")}
-              onBlur={handleBlur("username")}
-              value={values.username}
-              placeholder="Username"
+        {(form) => (
+          <>
+            {getStep({ form })}
+            <Navigation
+              minSteps={0}
+              maxSteps={1}
+              currentIndex={index}
+              setIndex={setIndex}
+              onSubmit={form.handleSubmit}
             />
-            <Input
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              value={values.email}
-              placeholder="Email"
-            />
-            <Input
-              onChangeText={handleChange("firstName")}
-              onBlur={handleBlur("firstName")}
-              value={values.firstName}
-              placeholder="First Name"
-            />
-            <Input
-              onChangeText={handleChange("lastName")}
-              onBlur={handleBlur("lastName")}
-              value={values.lastName}
-              placeholder="Last Name"
-            />
-
-            <Input
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              placeholder="Password"
-            />
-            <Input
-              onChangeText={handleChange("confirmPassword")}
-              onBlur={handleBlur("confirmPassword")}
-              value={values.confirmPassword}
-              placeholder="Confirm Password"
-            />
-            <Button w="100%" onPress={onRegisterPress(handleSubmit)}>
-              Register
-            </Button>
-          </VStack>
+          </>
         )}
       </Formik>
     </Screen>
