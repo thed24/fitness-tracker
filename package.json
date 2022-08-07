@@ -27,6 +27,7 @@
     "react-native-web": "0.17.7",
     "react-navigation-fluid-transitions": "^0.3.2",
     "react-query": "3",
+    "react-native-calendars": "yairopro/react-native-calendars#01216e24454aeaa3502e18bfe0e302f56fdd681c",
     "styled-components": "^5.3.5",
     "yup": "^0.32.11",
     "zustand": "^4.0.0-rc.4"

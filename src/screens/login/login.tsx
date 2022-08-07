@@ -1,10 +1,10 @@
 import { Formik } from "formik";
-import { Button, Heading } from "native-base";
 import React, { useEffect } from "react";
 import { GestureResponderEvent } from "react-native";
-import { ErrorAlert, FormInput, Screen } from "components";
+import { ErrorAlert, FormInput, Screen, Button } from "components";
 import { useStore } from "store";
 import { NavigationProps } from "types";
+import { VStack } from "native-base";
 import { useLogin } from "../../api/auth/useLogin";
 import { LoginSchema } from "./loginSchema";
 import * as SC from "./login.styles";
@@ -22,9 +22,9 @@ export function LoginScreen({ navigation }: NavigationProps) {
 
   useEffect(() => {
     if (data) {
-      setUser(data.user);
+      setUser(data);
       navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
-    } else if (error) {
+    } else if (error instanceof Error) {
       setApiErrors([error.message]);
     }
   }, [data, error]);
@@ -48,7 +48,6 @@ export function LoginScreen({ navigation }: NavigationProps) {
       {apiErrors.length > 0 && (
         <ErrorAlert errors={apiErrors} clearErrors={onClearErrors} />
       )}
-      <Heading marginTop="10">Login</Heading>
       <Formik
         validationSchema={LoginSchema}
         validateOnChange
@@ -56,26 +55,39 @@ export function LoginScreen({ navigation }: NavigationProps) {
         onSubmit={onSubmit}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-          <SC.Container>
-            <FormInput
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              value={values.email}
-              error={errors.email}
-              name="Email"
-            />
-            <FormInput
-              type="password"
-              error={errors.password}
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              name="Password"
-            />
-            <Button w="90%" onPress={onLoginPress(handleSubmit)}>
-              Login
-            </Button>
-          </SC.Container>
+          <>
+            <SC.Container>
+              <FormInput
+                required
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+                error={errors.email}
+                name="Email"
+              />
+              <FormInput
+                required
+                type="password"
+                error={errors.password}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+                name="Password"
+              />
+            </SC.Container>
+            <VStack
+              position="absolute"
+              bottom={5}
+              space={4}
+              alignItems="center"
+              marginTop="10"
+              w="75%"
+            >
+              <Button size="xl" onPress={onLoginPress(handleSubmit)}>
+                Login
+              </Button>
+            </VStack>
+          </>
         )}
       </Formik>
     </Screen>

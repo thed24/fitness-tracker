@@ -5,7 +5,11 @@ import { useStore } from "store";
 import { Screen } from "components";
 
 export function History() {
-  const { pastWorkouts } = useStore();
+  const { user } = useStore();
+
+  const pastWorkouts = user
+    ? user.workouts.filter((userFromState) => userFromState.past)
+    : [];
 
   const content =
     pastWorkouts.length > 0 ? (
@@ -19,10 +23,10 @@ export function History() {
           parallaxScrollingOffset: 35,
           parallaxAdjacentItemScale: 0.8,
         }}
-        data={pastWorkouts()}
+        data={pastWorkouts}
         renderItem={({ item }) => (
           <Card shadow="8" height="5/6">
-            <Heading> Workout on {item.time.toLocaleDateString()} </Heading>
+            <Heading> Workout on {new Date(item.time).toLocaleDateString()} </Heading>
             <Heading size="md" margin="2">
               Exercises
             </Heading>

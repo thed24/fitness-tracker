@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Heading, Text } from "native-base";
+import { Text } from "native-base";
 import React, { useEffect } from "react";
 import { ErrorAlert, Screen } from "components";
 import { useStore } from "store";
@@ -42,9 +42,9 @@ export function RegisterScreen({ navigation }: NavigationProps) {
 
   useEffect(() => {
     if (data) {
-      setUser(data.user);
+      setUser(data);
       navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
-    } else if (error) {
+    } else if (error instanceof Error) {
       setErrors([error.message]);
     }
   }, [data, error]);
@@ -61,24 +61,15 @@ export function RegisterScreen({ navigation }: NavigationProps) {
     switch (index) {
       case 0:
         return (
-          <>
-            <Text>Enter your personal details below</Text>
-            <RegisterForm form={props.form} />
-          </>
+          <RegisterForm form={props.form} />
         );
       case 1:
         return (
-          <>
-            <Text>Enter your physical stats below</Text>
-            <StatsForm form={props.form} />
-          </>
+          <StatsForm form={props.form} />
         );
       case 2:
         return (
-          <>
-            <Text>Enter the details of your workout buddy below</Text>
-            <BuddyForm form={props.form} />
-          </>
+          <BuddyForm form={props.form} />
         );
       default:
         return <Text>Well, this is awkward</Text>;
@@ -90,8 +81,6 @@ export function RegisterScreen({ navigation }: NavigationProps) {
       {errors.length > 0 && (
         <ErrorAlert errors={errors} clearErrors={onClearErrors} />
       )}
-
-      <Heading marginTop="10">Register</Heading>
       <Formik
         validationSchema={RegisterSchema}
         validateOnChange

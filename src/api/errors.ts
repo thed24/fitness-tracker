@@ -1,8 +1,5 @@
 import axios from "axios";
-
-export interface ApiError {
-  errors: string[];
-}
+import { ApiError } from "types";
 
 export function apiErrorHandler(err: unknown) {
   if (axios.isAxiosError(err)) {

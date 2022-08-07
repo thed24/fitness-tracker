@@ -3,7 +3,8 @@ import { VStack } from "native-base";
 
 export const Container = styled(VStack)`
     align-items: center;
-    margin-top: 10;
+    padding: 20px;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
 `;

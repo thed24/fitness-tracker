@@ -1,15 +1,28 @@
-type ExerciseType = "strength" | "cardio";
+export type ExerciseType = "strength" | "cardio";
+
+type MuscleGroup =
+  | "Abs"
+  | "Biceps"
+  | "Chest"
+  | "Forearms"
+  | "Glutes"
+  | "Traps"
+  | "Shoulders"
+  | "Lats"
+  | "Legs"
+  | "Back"
+  | "Triceps";
 
 interface BaseExercise {
   id: string;
   name: string;
   description: string;
   type: ExerciseType;
+  primaryMuscleGroup: string;
 }
 
 export interface StrengthExercise extends BaseExercise {
   type: "strength";
-  muscles: string[];
 }
 
 export interface CardioExercise extends BaseExercise {
@@ -41,7 +54,7 @@ export type Activity = Exercise & Data;
 
 interface BaseWorkout {
   id: string;
-  time: Date;
+  time: string;
   activities: Activity[];
   past: boolean;
   completed: boolean;
@@ -56,19 +69,6 @@ export interface CompletedWorkout extends BaseWorkout {
 }
 
 export type Workout = ScheduledWorkout | CompletedWorkout;
-
-type MuscleGroup =
-  | "Abs"
-  | "Biceps"
-  | "Chest"
-  | "Forearms"
-  | "Glutes"
-  | "Traps"
-  | "Shoulders"
-  | "Lats"
-  | "Legs"
-  | "Back"
-  | "Triceps";
 
 interface BuddyAnatomyBase {
   muscleGroup: MuscleGroup;

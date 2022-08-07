@@ -1,4 +1,4 @@
-import { Input } from "native-base";
+import { FormInput } from "components";
 import React from "react";
 import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";
@@ -6,23 +6,29 @@ import * as SC from "../../register.styles";
 export function BuddyForm({ form }: RegisterProps) {
   return (
     <SC.Container>
-      <Input
+      <FormInput
         onChangeText={form.handleChange("buddyName")}
         onBlur={form.handleBlur("buddyName")}
         value={form.values.buddyName}
-        placeholder="Name"
+        required
+        error={form.errors.buddyName}
+        name="Name"
       />
-      <Input
+      <FormInput
         onChangeText={form.handleChange("buddyDescription")}
         onBlur={form.handleBlur("buddyDescription")}
         value={form.values.buddyDescription}
-        placeholder="Description"
+        required
+        error={form.errors.buddyDescription}
+        name="Description"
       />
-      <Input
+      <FormInput
         onChangeText={form.handleChange("buddyIconId")}
         onBlur={form.handleBlur("buddyIconId")}
         value={form.values.buddyIconId.toString()}
-        placeholder="Icon Id"
+        required
+        error={form.errors.buddyIconId}
+        name="Icon Id"
       />
     </SC.Container>
   );

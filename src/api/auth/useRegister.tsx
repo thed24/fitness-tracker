@@ -1,42 +1,29 @@
-/* eslint-disable consistent-return */
-import { useMutation, UseMutationResult } from "react-query";
-import { User } from "types";
+import { useMutation } from "react-query";
 import { client } from "../client";
 import { apiErrorHandler } from "../errors";
+import { ApiUser, ApiUserToUser } from "../types";
 
 type RegisterRequest = {
   email: string;
   password: string;
-  confirmPassword: string;
   firstName: string;
   lastName: string;
   username: string;
-  buddyName: string;
-  buddyDescription: string;
-  buddyIconId: number;
-  height: number;
-  weight: number;
-  age: number;
-  benchPressMax: number | null;
-  squatMax: number | null;
-  deadliftMax: number | null;
+  confirmPassword: string;
 };
 
-type RegisterResponse = {
-  user: User;
+type RegisterRawResponse = {
+  user: ApiUser;
 };
 
-export function useRegister(): UseMutationResult<
-  RegisterResponse,
-  Error,
-  RegisterRequest,
-  unknown
-> {
-  return useMutation(async (data) => {
+export function useRegister() {
+  return useMutation(async (data: RegisterRequest) => {
     try {
-      return (await client.post("/users/register", data)).data;
+      const rawResponse = (await client.post<RegisterRawResponse>("/users/register", data)).data;
+      return ApiUserToUser(rawResponse.user);
     } catch (error) {
       apiErrorHandler(error);
     }
+    return undefined;
   });
 }

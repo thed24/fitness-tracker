@@ -1,5 +1,5 @@
-import { Button, VStack } from "native-base";
-import { ColorType } from "native-base/lib/typescript/components/types";
+import { Button } from "components";
+import { VStack } from "native-base";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
 
@@ -30,17 +30,12 @@ export function Navigation({
     setIndex(currentIndex - 1);
   };
 
-  const color: ColorType = disabled ? "gray.300" : "primary.600";
-
   return (
-    <VStack space={4} alignItems="center" marginTop="10" w="75%">
+    <VStack position="absolute" bottom={5} space={4} alignItems="center" marginTop="10" w="75%">
       {currentIndex > minSteps && (
         <Button
-          marginLeft="auto"
-          marginRight="auto"
           disabled={disabled}
-          w="90%"
-          bg={color}
+          size="xl"
           onPress={onClickPrevious}
         >
           Back
@@ -49,11 +44,8 @@ export function Navigation({
 
       {currentIndex < maxSteps && (
         <Button
-          marginLeft="auto"
-          marginRight="auto"
           disabled={disabled}
-          w="90%"
-          bg={color}
+          size="xl"
           onPress={onClickNext}
         >
           Next
@@ -62,11 +54,8 @@ export function Navigation({
 
       {currentIndex === maxSteps && (
         <Button
-          marginLeft="auto"
-          marginRight="auto"
           disabled={disabled}
-          w="90%"
-          bg={color}
+          size="xl"
           onPress={onSubmit}
         >
           Submit

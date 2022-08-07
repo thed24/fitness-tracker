@@ -1,12 +1,10 @@
-import { CompletedWorkout, ScheduledWorkout, User } from "types";
+import { User } from "types";
 import { StateCreator } from "zustand";
 import { State } from "../store";
 
 export interface UserSlice {
   user: User | null;
   setUser: (user: User | null) => void;
-  scheduledWorkouts: () => ScheduledWorkout[];
-  pastWorkouts: () => CompletedWorkout[];
 }
 
 export const createUserSlice: StateCreator<
@@ -17,21 +15,5 @@ export const createUserSlice: StateCreator<
 > = (set, get) =>
   ({
     user: null,
-    setUser: (user: User | null) => set(() => ({ user })),
-    scheduledWorkouts: () => {
-      const { user } = get();
-      return (
-        user
-          ? user.workouts.filter((userFromState) => userFromState.completed)
-          : []
-      ) as ScheduledWorkout[];
-    },
-    pastWorkouts: () => {
-      const { user } = get();
-      return (
-        user
-          ? user.workouts.filter((userFromState) => !userFromState.completed)
-          : []
-      ) as CompletedWorkout[];
-    }
+    setUser: (user: User | null) => set(() => ({ user }))
   } as UserSlice);
