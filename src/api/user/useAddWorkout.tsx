@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { ScheduledWorkout } from "types";
 import { useStore } from "store";
 import { AxiosResponse } from "axios";

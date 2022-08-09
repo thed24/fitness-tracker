@@ -9,25 +9,29 @@ export function Dashboard({ navigation }: NavigationProps) {
 
   if (user === null) {
     navigation.reset({ index: 0, routes: [{ name: "Login" }] });
-    return (
-      <Text> Hold on, we&apos;re moving you </Text>
-    )
+    return <Text> Hold on, we&apos;re moving you </Text>;
   }
 
   const createStats = (name: string, state: number) => (
-    <Box marginTop="2" display="inline-block" key={name}>
-      <Text fontWeight="semibold">{`${name}: `}</Text>
-      <Text>{state}</Text>
+    <Box marginTop="2" key={name}>
+      <Text fontWeight="semibold">
+        {`${name}: `}
+        <Text fontWeight="normal">{state}</Text>
+      </Text>
     </Box>
-  )
+  );
 
   return (
     <Screen loading={!user}>
       <Heading marginTop="10"> Welcome, {user.firstName}! </Heading>
       <Text> You are logged in as {user.email} </Text>
 
-      <Text fontSize="md" marginTop="10"> &quot;Hows your day going?&quot; - {user.workoutBuddy.name} </Text>
-      <Text fontWeight="bold" marginTop="4"> Buddy Progress </Text>
+      <Text fontSize="md" marginTop="10">
+        &quot;Hows your day going?&quot; - {user.workoutBuddy.name}
+      </Text>
+      <Text fontWeight="bold" marginTop="4">
+        Buddy Progress
+      </Text>
       {createStats("Muscle", user.workoutBuddy.data.muscle)}
       {createStats("Power", user.workoutBuddy.data.power)}
       {createStats("Speed", user.workoutBuddy.data.speed)}

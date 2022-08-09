@@ -30,6 +30,9 @@ export function Schedule() {
   const content =
     scheduledWorkouts.length > 0 ? (
       <Carousel
+        loop
+        pagingEnabled
+        snapEnabled
         width={300}
         height={300}
         mode="parallax"
@@ -49,7 +52,7 @@ export function Schedule() {
               switch (activity.type) {
                 case "strength":
                   return (
-                    <HStack justifyContent="center">
+                    <HStack key={activity.id} justifyContent="center">
                       <Text> {activity.name}: </Text>
                       <Text>
                         {activity.sets} x {activity.reps} at {activity.weight}kg
@@ -58,7 +61,7 @@ export function Schedule() {
                   );
                 case "cardio":
                   return (
-                    <HStack justifyContent="center">
+                    <HStack key={activity.id} justifyContent="center">
                       <Text> {activity.name}: </Text>
                       <Text>
                         {activity.distance} km in {activity.duration} minutes

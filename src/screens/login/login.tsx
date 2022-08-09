@@ -83,7 +83,7 @@ export function LoginScreen({ navigation }: NavigationProps) {
               marginTop="10"
               w="75%"
             >
-              <Button size="xl" onPress={onLoginPress(handleSubmit)}>
+              <Button size="md" onPress={onLoginPress(handleSubmit)}>
                 Login
               </Button>
             </VStack>

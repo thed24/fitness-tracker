@@ -7,6 +7,7 @@ module.exports = function (api) {
       store: "./src/store",
       types: "./src/types",
       api: "./src/api",
+      utils: "./src/utils",
     },
   };
 
@@ -16,6 +17,7 @@ module.exports = function (api) {
       "babel-plugin-styled-components",
       "module:react-native-dotenv",
       ["module-resolver", moduleResolverOptions],
+      'react-native-reanimated/plugin',
     ],
   };
 };

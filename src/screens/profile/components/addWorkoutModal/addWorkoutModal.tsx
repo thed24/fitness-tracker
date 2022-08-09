@@ -1,9 +1,8 @@
-import { Button, FormInput } from "components";
+import { Button, DatePicker, FormInput } from "components";
 import { Modal, Text, FormControl, Select, Divider, HStack } from "native-base";
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
-import { Calendar, DateData } from "react-native-calendars";
-import { useExercises } from "../../../../api/exercise/useExercises";
+import { useExercises } from "api";
 
 export interface Props {
   isOpen: boolean;
@@ -14,11 +13,12 @@ export interface Props {
 export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
   const { data, isLoading } = useExercises();
 
+  const [step, setStep] = useState(0);
   const [exerciseType, setExerciseType] = useState<ExerciseType | null>(null);
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
   const [date, setDate] = useState<Date>(new Date());
   const [workout, setWorkout] = useState<ScheduledWorkout>({
-    time: date,
+    time: date.toString(),
     activities: [],
     id: "0",
     past: false,
@@ -43,7 +43,13 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     );
 
     if (exercise && exercise.type === "strength") {
-      setCurrentActivity({ ...exercise, type: "strength", reps: 0, sets: 0, weight: 0 });
+      setCurrentActivity({
+        ...exercise,
+        type: "strength",
+        reps: 0,
+        sets: 0,
+        weight: 0,
+      });
     }
   };
 
@@ -63,10 +69,6 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     }
   };
 
-  const handleDateChange = (value: DateData) => {
-    setDate(new Date(value.dateString));
-  };
-
   const handleSave = () => {
     onSubmit(workout);
     setIsOpen(false);
@@ -82,100 +84,103 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
         <Modal.CloseButton />
         <Modal.Header>New Workout</Modal.Header>
 
-        <Modal.Body>
-          <Text>Current Exercises</Text>
-          {workout.activities.length > 0 ? (
-            workout.activities.map((activity) => <Text>{activity.name}</Text>)
-          ) : (
-            <Text>No Exercises</Text>
-          )}
-        </Modal.Body>
+        {step === 0 && (
+          <Modal.Body>
+            <DatePicker date={date} setDate={setDate} />
+            <Button onPress={() => setStep(1)}>Next</Button>
+          </Modal.Body>
+        )}
 
-        <Divider w="3/4" alignSelf="center" />
+        {step === 1 && (
+          <>
+            <Modal.Body>
+              <Text>Current Exercises</Text>
+              {workout.activities.length > 0 ? (
+                workout.activities.map((activity) => (
+                  <Text>{activity.name}</Text>
+                ))
+              ) : (
+                <Text>No Exercises</Text>
+              )}
+            </Modal.Body>
+            <Divider w="3/4" alignSelf="center" />
+            <Modal.Body>
+              <FormControl>
+                <FormControl.Label>Exercise Type</FormControl.Label>
+                <Select
+                  placeholder="Select at type of exercise"
+                  onValueChange={handleExerciseTypeChange}
+                >
+                  <Select.Item value="strength" label="Strength" />
+                  <Select.Item value="cardio" label="Cardio" />
+                </Select>
+              </FormControl>
 
-        <Modal.Body>
-          <FormControl>
-            <FormControl.Label>Exercise Type</FormControl.Label>
-            <Select
-              placeholder="Select at type of exercise"
-              onValueChange={handleExerciseTypeChange}
-            >
-              <Select.Item value="strength" label="Strength" />
-              <Select.Item value="cardio" label="Cardio" />
-            </Select>
-          </FormControl>
+              <FormControl.Label>Exercise</FormControl.Label>
+              <Select
+                onValueChange={handleExerciseChange}
+                isDisabled={exerciseType === null}
+              >
+                {data.exercises.length > 0 &&
+                  data.exercises
+                    .filter(
+                      (exercise) =>
+                        exercise.type.toLocaleLowerCase() === exerciseType
+                    )
+                    .map((exercise) => (
+                      <Select.Item
+                        value={exercise.name}
+                        label={exercise.name}
+                      />
+                    ))}
+              </Select>
 
-          <FormControl.Label>Exercise</FormControl.Label>
-          <Select
-            onValueChange={handleExerciseChange}
-            isDisabled={exerciseType === null}
-          >
-            {data.exercises.length > 0 &&
-              data.exercises
-                .filter(
-                  (exercise) =>
-                    exercise.type.toLocaleLowerCase() === exerciseType
-                )
-                .map((exercise) => (
-                  <Select.Item value={exercise.name} label={exercise.name} />
-                ))}
-          </Select>
+              {currentActivity && currentActivity.type === "strength" && (
+                <>
+                  <FormInput
+                    name="Sets"
+                    onBlur={() => {}}
+                    onChangeText={handleActivityUpdate("sets")}
+                    value={currentActivity.sets.toString()}
+                  />
 
-          {currentActivity && currentActivity.type === "strength" && (
-            <>
-              <FormInput
-                name="Sets"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("sets")}
-                value={currentActivity.sets.toString()}
-              />
+                  <FormInput
+                    name="Reps"
+                    onBlur={() => {}}
+                    onChangeText={handleActivityUpdate("reps")}
+                    value={currentActivity.reps.toString()}
+                  />
 
-              <FormInput
-                name="Reps"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("reps")}
-                value={currentActivity.reps.toString()}
-              />
+                  <FormInput
+                    name="Weight"
+                    onBlur={() => {}}
+                    onChangeText={handleActivityUpdate("weight")}
+                    value={currentActivity.weight.toString()}
+                  />
+                </>
+              )}
 
-              <FormInput
-                name="Weight"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("weight")}
-                value={currentActivity.weight.toString()}
-              />
-            </>
-          )}
+              <Divider w="3/4" alignSelf="center" />
 
-          <Divider w="3/4" alignSelf="center" />
+              <HStack space={2}>
+                <Button onPress={() => setStep(0)}>Back</Button>
+                <Button
+                  disabled={currentActivity === null}
+                  onPress={handleAddExercise}
+                >
+                  Add Activity
+                </Button>
 
-          <Calendar
-            minDate={new Date().toDateString()}
-            onDayPress={handleDateChange}
-            collapsable
-            theme={{
-              foregroundColor: "#eaeaea",
-            }}
-            markedDates={{
-              [date.toLocaleDateString("en-CA")]: {
-                selected: true,
-                selectedColor: "blue",
-              },
-            }}
-          />
-
-          <HStack space={2}>
-            <Button
-              disabled={currentActivity === null}
-              onPress={handleAddExercise}
-            >
-              Add Activity
-            </Button>
-
-            <Button disabled={currentActivity === null} onPress={handleSave}>
-              Save Workout
-            </Button>
-          </HStack>
-        </Modal.Body>
+                <Button
+                  disabled={currentActivity === null}
+                  onPress={handleSave}
+                >
+                  Save Workout
+                </Button>
+              </HStack>
+            </Modal.Body>
+          </>
+        )}
       </Modal.Content>
     </Modal>
   );

@@ -1,5 +1,5 @@
 import { Button } from "components";
-import { VStack } from "native-base";
+import { HStack } from "native-base";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
 
@@ -31,36 +31,32 @@ export function Navigation({
   };
 
   return (
-    <VStack position="absolute" bottom={5} space={4} alignItems="center" marginTop="10" w="75%">
+    <HStack
+      justifyContent="center"
+      position="absolute"
+      bottom={5}
+      space={4}
+      alignItems="center"
+      marginTop="10"
+      w="75%"
+    >
       {currentIndex > minSteps && (
-        <Button
-          disabled={disabled}
-          size="xl"
-          onPress={onClickPrevious}
-        >
+        <Button disabled={disabled} size="md" onPress={onClickPrevious}>
           Back
         </Button>
       )}
 
       {currentIndex < maxSteps && (
-        <Button
-          disabled={disabled}
-          size="xl"
-          onPress={onClickNext}
-        >
+        <Button disabled={disabled} size="md" onPress={onClickNext}>
           Next
         </Button>
       )}
 
       {currentIndex === maxSteps && (
-        <Button
-          disabled={disabled}
-          size="xl"
-          onPress={onSubmit}
-        >
+        <Button disabled={disabled} size="md" onPress={onSubmit}>
           Submit
         </Button>
       )}
-    </VStack>
+    </HStack>
   );
 }

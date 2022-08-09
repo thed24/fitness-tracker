@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { client } from "../client";
 import { apiErrorHandler } from "../errors";
 import { ApiUser, ApiUserToUser } from "../types";

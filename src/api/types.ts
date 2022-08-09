@@ -18,7 +18,7 @@ export interface ApiActivity {
 
 export interface ApiWorkout {
   id: string;
-  time: Date;
+  time: string;
   completed: boolean;
   past: boolean;
   activities: ApiActivity[];

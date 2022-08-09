@@ -39,7 +39,7 @@ export function ErrorAlert({ errors, clearErrors }: Props) {
           />
         </HStack>
         {errors.map((error: string) => (
-          <Text fontSize="sm" color="coolGray.600">
+          <Text key={error.length} fontSize="sm" color="coolGray.600">
             {error}
           </Text>
         ))}

@@ -8,18 +8,23 @@ import {
   ProfileStack,
   RegisterScreen,
 } from "./src/screens";
-import APIProvider from "./src/api/APIProvider";
+import APIProvider from "./src/api/apiProvider";
+import { theme } from "./src/utils/theme";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <APIProvider>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Profile" component={ProfileStack} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileStack}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
           </Stack.Navigator>
