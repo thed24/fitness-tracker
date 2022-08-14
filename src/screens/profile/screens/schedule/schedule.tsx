@@ -1,103 +1,98 @@
-import { Card, Heading, HStack, Text } from "native-base";
+import { Heading, Stack, Text } from "native-base";
 import React, { useState, useEffect } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
 import { Button, ErrorAlert, Screen } from "components";
 import { ScheduledWorkout } from "types";
-import { useAddWorkout } from "api";
-import { AddWorkoutModal } from "../../components/addWorkoutModal/addWorkoutModal";
+import { useAddWorkout, useEditWorkout } from "api";
+import { Dimensions } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AddWorkoutModal } from "./components/addWorkoutModal";
+import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
 export function Schedule() {
-  const { error, isLoading, mutate } = useAddWorkout();
-  const [errors, setErrors] = useState<string[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const {
+    error: editError,
+    isLoading: editLoading,
+    mutate: editWorkout,
+  } = useEditWorkout();
+  const {
+    error: addError,
+    isLoading: addLoading,
+    mutate: addWorkout,
+  } = useAddWorkout();
   const { user } = useStore();
 
+  const [errors, setErrors] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
-    if (error instanceof Error) {
-      setErrors([error.message]);
+    if (editError instanceof Error) {
+      setErrors([editError.message]);
     }
-  }, [error]);
+    if (addError instanceof Error) {
+      setErrors([addError.message]);
+    }
+  }, [editError, addError]);
 
   if (!user) {
     return <Text>An error has occured, please sign out and try again.</Text>;
   }
 
-  const scheduledWorkouts = user
-    ? user.workouts.filter((userFromState) => !userFromState.past)
-    : [];
+  const scheduledWorkouts = (
+    user ? user.workouts.filter((userFromState) => !userFromState.past) : []
+  ) as ScheduledWorkout[];
 
+  const { width } = Dimensions.get("window");
   const content =
     scheduledWorkouts.length > 0 ? (
-      <Carousel
-        loop
-        pagingEnabled
-        snapEnabled
-        width={300}
-        height={300}
-        mode="parallax"
-        modeConfig={{
-          parallaxScrollingScale: 0.9,
-          parallaxScrollingOffset: 35,
-          parallaxAdjacentItemScale: 0.8,
-        }}
-        data={scheduledWorkouts}
-        renderItem={({ item }) => (
-          <Card height="5/6">
-            <Heading> Workout on {new Date(item.time).toLocaleDateString()} </Heading>
-            <Heading size="md" margin="2">
-              Exercises
-            </Heading>
-            {item.activities.map((activity) => {
-              switch (activity.type) {
-                case "strength":
-                  return (
-                    <HStack key={activity.id} justifyContent="center">
-                      <Text> {activity.name}: </Text>
-                      <Text>
-                        {activity.sets} x {activity.reps} at {activity.weight}kg
-                      </Text>
-                    </HStack>
-                  );
-                case "cardio":
-                  return (
-                    <HStack key={activity.id} justifyContent="center">
-                      <Text> {activity.name}: </Text>
-                      <Text>
-                        {activity.distance} km in {activity.duration} minutes
-                      </Text>
-                    </HStack>
-                  );
-                default:
-                  return null;
+      <GestureHandlerRootView>
+        <Carousel
+          loop={false}
+          width={width / 1.3}
+          height={width}
+          scrollAnimationDuration={1000}
+          data={scheduledWorkouts}
+          mode="parallax"
+          modeConfig={{
+            parallaxScrollingScale: 0.85,
+            parallaxScrollingOffset: 50,
+          }}
+          renderItem={({ item, index }) => (
+            <ScheduledWorkoutCard
+              scheduledWorkout={item}
+              onComplete={() =>
+                editWorkout({
+                  userId: user.id,
+                  workout: { ...item, completed: true, past: true },
+                })
               }
-            })}
-          </Card>
-        )}
-      />
+              key={index}
+            />
+          )}
+        />
+      </GestureHandlerRootView>
     ) : (
       <Text> No workouts scheduled </Text>
     );
 
-  const handleAddWorkout = (workout: ScheduledWorkout) => {
-    mutate({ userId: user.id, workout });
-  };
-
   return (
-    <Screen loading={isLoading}>
+    <Screen loading={editLoading || addLoading}>
       {errors.length > 0 && (
         <ErrorAlert errors={errors} clearErrors={() => setErrors([])} />
       )}
       <AddWorkoutModal
-        onSubmit={handleAddWorkout}
+        onSubmit={(workout) => addWorkout({ userId: user.id, workout })}
         isOpen={showModal}
         setIsOpen={setShowModal}
       />
       <Heading marginTop="10"> Workout Schedule </Heading>
       {content}
-      <Button anchored onPress={() => setShowModal(true)}>
-        Add Workout
-      </Button>
+      <Stack w="md" position="absolute" bottom={5}>
+        <Button centered onPress={() => setShowModal(true)}>
+          Add Workout
+        </Button>
+      </Stack>
     </Screen>
   );
 }

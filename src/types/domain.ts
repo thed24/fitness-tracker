@@ -120,11 +120,8 @@ export interface BuddyTriceps extends BuddyAnatomyBase {
 export interface BuddyData {
   id: string;
   strength: number;
-  stamina: number;
   flexibility: number;
   speed: number;
-  power: number;
-  muscle: number;
   streaks: number;
   AbsAnatomy: BuddyAbs;
   BicepsAnatomy: BuddyBiceps;

@@ -19,3 +19,4 @@ buck-out/
 
 # Bundle artifacts
 *.jsbundle
+network_security_config.xml

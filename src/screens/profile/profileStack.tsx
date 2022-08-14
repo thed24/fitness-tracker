@@ -15,14 +15,18 @@ export function ProfileStack() {
   const Tab = createBottomTabNavigator();
   const theme = useTheme();
 
-  const getColor = (focused: boolean) =>
-    focused ? theme.colors.primary[500] : theme.colors.gray[300];
-
+  const getColor = (focused: boolean) => focused ? theme.colors.primary[500] : theme.colors.gray[300];
   const createTab = (name: string, icon: string, component: React.FC<any>) => (
     <Tab.Screen
       name={name}
       component={component}
       options={({ navigation }) => ({
+        tabBarInactiveTintColor: theme.colors.gray[300],
+        tabBarActiveTintColor: theme.colors.primary[500],
+        tabBarStyle: {
+          paddingBottom: 5,
+          paddingTop: 5,
+        },
         headerRight: () => <LogoutButton navigation={navigation} />,
         tabBarIcon: ({ focused }) => (
           <Icon

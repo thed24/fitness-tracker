@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Heading, Box } from "native-base";
+import { Text, Heading, Box, Progress, HStack } from "native-base";
 import { useStore } from "store";
 import { NavigationProps } from "types";
 import { Screen } from "../../../../components";
@@ -13,11 +13,9 @@ export function Dashboard({ navigation }: NavigationProps) {
   }
 
   const createStats = (name: string, state: number) => (
-    <Box marginTop="2" key={name}>
-      <Text fontWeight="semibold">
-        {`${name}: `}
-        <Text fontWeight="normal">{state}</Text>
-      </Text>
+    <Box w="80%" marginTop="2" key={name}>
+      <Text>{name}: {state} / 10</Text>
+      <Progress value={state * 10} mx={4} size="md" />
     </Box>
   );
 
@@ -32,10 +30,7 @@ export function Dashboard({ navigation }: NavigationProps) {
       <Text fontWeight="bold" marginTop="4">
         Buddy Progress
       </Text>
-      {createStats("Muscle", user.workoutBuddy.data.muscle)}
-      {createStats("Power", user.workoutBuddy.data.power)}
       {createStats("Speed", user.workoutBuddy.data.speed)}
-      {createStats("Stamina", user.workoutBuddy.data.stamina)}
       {createStats("Strength", user.workoutBuddy.data.strength)}
     </Screen>
   );

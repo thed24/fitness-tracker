@@ -1,62 +1,39 @@
-import { Card, Heading, HStack, Text } from "native-base";
+import { Heading, Text } from "native-base";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
 import { Screen } from "components";
+import { CompletedWorkout } from "types";
+import { Dimensions } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PastWorkoutCard } from "./components/pastWorkoutCard";
 
 export function History() {
   const { user } = useStore();
 
-  const pastWorkouts = user
-    ? user.workouts.filter((userFromState) => userFromState.past)
-    : [];
+  const pastWorkouts = (
+    user ? user.workouts.filter((userFromState) => userFromState.past) : []
+  ) as CompletedWorkout[];
 
+  const { width } = Dimensions.get("window");
   const content =
     pastWorkouts.length > 0 ? (
-      <Carousel
-        width={350}
-        height={350}
-        mode="parallax"
-        pagingEnabled
-        modeConfig={{
-          parallaxScrollingScale: 0.9,
-          parallaxScrollingOffset: 35,
-          parallaxAdjacentItemScale: 0.8,
-        }}
-        data={pastWorkouts}
-        renderItem={({ item }) => (
-          <Card shadow="8" height="5/6">
-            <Heading> Workout on {new Date(item.time).toLocaleDateString()} </Heading>
-            <Heading size="md" margin="2">
-              Exercises
-            </Heading>
-            {item.activities.map((activity) => {
-              switch (activity.type) {
-                case "strength":
-                  return (
-                    <HStack justifyContent="center">
-                      <Text> {activity.name}: </Text>
-                      <Text>
-                        {activity.sets} x {activity.reps} at {activity.weight}kg{" "}
-                      </Text>
-                    </HStack>
-                  );
-                case "cardio":
-                  return (
-                    <HStack justifyContent="center">
-                      <Text> {activity.name}: </Text>
-                      <Text>
-                        {activity.distance} km in {activity.duration} minutes{" "}
-                      </Text>
-                    </HStack>
-                  );
-                default:
-                  return null;
-              }
-            })}
-          </Card>
-        )}
-      />
+      <GestureHandlerRootView>
+        <Carousel
+          loop={false}
+          width={width / 1.3}
+          height={width}
+          mode="parallax"
+          modeConfig={{
+            parallaxScrollingScale: 0.85,
+            parallaxScrollingOffset: 50,
+          }}
+          data={pastWorkouts}
+          renderItem={({ item, index }) => (
+            <PastWorkoutCard pastWorkout={item} key={index} />
+          )}
+        />
+      </GestureHandlerRootView>
     ) : (
       <Text> No past workouts exist </Text>
     );

@@ -10,7 +10,6 @@ interface Props {
   onPress?: (event: any) => void;
   centered?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
-  anchored?: boolean;
   colorScheme?: ColorSchemeType;
   children: React.ReactNode;
 }
@@ -22,7 +21,6 @@ export function Button({
   onPress,
   children,
   centered,
-  anchored,
 }: Props) {
   const color: ColorType = disabled ? "gray.300" : "primary.600";
   const borderColor: ColorType = disabled ? "gray.500" : "primary.800";
@@ -35,23 +33,14 @@ export function Button({
   } else if (size === "lg") {
     width = "75%";
   } else {
-    width = "90%";
+    width = "100%";
   }
 
   let style = {};
-
   if (centered) {
     style = {
       ...style,
       alignSelf: "center",
-    };
-  }
-
-  if (anchored) {
-    style = {
-      ...style,
-      posisition: "absolute",
-      bottom: 5,
     };
   }
 
@@ -76,7 +65,6 @@ Button.defaultProps = {
   disabled: false,
   colorScheme: "solid",
   centered: false,
-  anchored: false,
   size: "md",
   onPress: () => {},
 };

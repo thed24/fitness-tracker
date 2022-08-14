@@ -7,7 +7,7 @@ interface Props {
   error?: string;
   helpText?: string;
   name: string;
-  value: string;
+  value: string | number | undefined;
   onBlur: (e: any) => void;
   onChangeText: (value: string) => void;
   type?: "text" | "password";
@@ -23,19 +23,28 @@ export function FormInput({
   required = false,
   type = "text",
 }: Props) {
+  let valueAsString;
+
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    valueAsString = value.toString();
+  }
+  if (typeof value === "number" && Number.isNaN(value)) {
+    valueAsString = "";
+  }
+  if (typeof value === "string") {
+    valueAsString = value;
+  }
+  if (typeof value === "undefined") {
+    valueAsString = "";
+  }
+
   return (
-    <VStack width="90%" mx="3" maxW="300px">
+    <VStack width="100%">
       <FormControl isRequired={required}>
-        <FormControl.Label
-          _text={{
-            bold: true,
-          }}
-        >
-          {name}
-        </FormControl.Label>
+        <FormControl.Label>{name}</FormControl.Label>
         <Input
           type={type}
-          value={value}
+          value={valueAsString}
           onBlur={onBlur}
           onChangeText={onChangeText}
         />

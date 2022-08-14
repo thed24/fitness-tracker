@@ -25,10 +25,6 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     completed: false,
   });
 
-  const handleOnClose = () => {
-    setIsOpen(false);
-  };
-
   const handleExerciseTypeChange = (value: string) => {
     if (value === "strength") {
       setExerciseType("strength");
@@ -70,23 +66,23 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
   };
 
   const handleSave = () => {
-    onSubmit(workout);
+    onSubmit({ ...workout, time: date.toISOString() });
     setIsOpen(false);
   };
 
   if (isLoading || !data?.exercises) {
-    return <Text>Loading...</Text>;
+    return null;
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={handleOnClose}>
-      <Modal.Content maxWidth="400px">
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal.Content maxWidth="500px">
         <Modal.CloseButton />
         <Modal.Header>New Workout</Modal.Header>
 
         {step === 0 && (
           <Modal.Body>
-            <DatePicker date={date} setDate={setDate} />
+            <DatePicker date={date} setDate={setDate} mode="date" />
             <Button onPress={() => setStep(1)}>Next</Button>
           </Modal.Body>
         )}
@@ -94,10 +90,10 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
         {step === 1 && (
           <>
             <Modal.Body>
-              <Text>Current Exercises</Text>
+              <Text fontWeight="bold">Current Exercises</Text>
               {workout.activities.length > 0 ? (
                 workout.activities.map((activity) => (
-                  <Text>{activity.name}</Text>
+                  <Text>- {activity.name} </Text>
                 ))
               ) : (
                 <Text>No Exercises</Text>
@@ -108,7 +104,7 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
               <FormControl>
                 <FormControl.Label>Exercise Type</FormControl.Label>
                 <Select
-                  placeholder="Select at type of exercise"
+                  placeholder="Select a type of exercise"
                   onValueChange={handleExerciseTypeChange}
                 >
                   <Select.Item value="strength" label="Strength" />
@@ -141,28 +137,26 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
                     name="Sets"
                     onBlur={() => {}}
                     onChangeText={handleActivityUpdate("sets")}
-                    value={currentActivity.sets.toString()}
+                    value={currentActivity.sets}
                   />
 
                   <FormInput
                     name="Reps"
                     onBlur={() => {}}
                     onChangeText={handleActivityUpdate("reps")}
-                    value={currentActivity.reps.toString()}
+                    value={currentActivity.reps}
                   />
 
                   <FormInput
                     name="Weight"
                     onBlur={() => {}}
                     onChangeText={handleActivityUpdate("weight")}
-                    value={currentActivity.weight.toString()}
+                    value={currentActivity.weight}
                   />
                 </>
               )}
 
-              <Divider w="3/4" alignSelf="center" />
-
-              <HStack space={2}>
+              <HStack space={2} width="97%">
                 <Button onPress={() => setStep(0)}>Back</Button>
                 <Button
                   disabled={currentActivity === null}
@@ -170,14 +164,15 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
                 >
                   Add Activity
                 </Button>
+              </HStack>
 
-                <Button
+              <Button
                   disabled={currentActivity === null}
                   onPress={handleSave}
+                  size="xl"
                 >
                   Save Workout
-                </Button>
-              </HStack>
+              </Button>
             </Modal.Body>
           </>
         )}
