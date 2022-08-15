@@ -2,11 +2,10 @@ import { Heading, Text } from "native-base";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { Screen } from "components";
+import { Screen, WorkoutCard } from "components";
 import { CompletedWorkout } from "types";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PastWorkoutCard } from "./components/pastWorkoutCard";
 
 export function History() {
   const { user } = useStore();
@@ -30,7 +29,7 @@ export function History() {
           }}
           data={pastWorkouts}
           renderItem={({ item, index }) => (
-            <PastWorkoutCard pastWorkout={item} key={index} />
+            <WorkoutCard workout={item} key={index} footer={null} />
           )}
         />
       </GestureHandlerRootView>

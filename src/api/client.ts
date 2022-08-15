@@ -6,7 +6,7 @@ import { API_URL } from "@env";
 const { manifest } = Constants;
 
 const isDev = manifest?.packagerOpts?.dev ?? true;
-const host = isDev ? "https://408a-49-193-154-29.au.ngrok.io" : API_URL;
+const host = isDev ? "https://2f1c-49-193-13-233.au.ngrok.io" : API_URL;
 
 export const client = axios.create({
   baseURL: host

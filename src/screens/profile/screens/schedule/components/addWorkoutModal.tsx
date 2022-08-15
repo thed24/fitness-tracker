@@ -1,5 +1,13 @@
 import { Button, DatePicker, FormInput } from "components";
-import { Modal, Text, FormControl, Select, Divider, HStack } from "native-base";
+import {
+  Modal,
+  Text,
+  FormControl,
+  Select,
+  Divider,
+  HStack,
+  Slider,
+} from "native-base";
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
 import { useExercises } from "api";
@@ -17,6 +25,7 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
   const [exerciseType, setExerciseType] = useState<ExerciseType | null>(null);
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
   const [date, setDate] = useState<Date>(new Date());
+  const [repeat, setRepeat] = useState(0);
   const [workout, setWorkout] = useState<ScheduledWorkout>({
     time: date.toString(),
     activities: [],
@@ -66,7 +75,14 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
   };
 
   const handleSave = () => {
-    onSubmit({ ...workout, time: date.toISOString() });
+    for (let i = 0; i < repeat + 1; i += 1) {
+      const newTime = date;
+      if (i > 0) {
+        newTime.setDate(newTime.getDate() + i * 7);
+      }
+      onSubmit({ ...workout, time: newTime.toISOString() });
+    }
+
     setIsOpen(false);
   };
 
@@ -82,8 +98,16 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
 
         {step === 0 && (
           <Modal.Body>
+            <Text fontWeight="bold"> Exercise Date </Text>
             <DatePicker date={date} setDate={setDate} mode="date" />
-            <Button onPress={() => setStep(1)}>Next</Button>
+            <Text fontWeight="bold"> Repeat for {repeat} weeks </Text>
+            <Slider value={repeat} onChange={setRepeat} maxValue={10} step={1}>
+              <Slider.Track>
+                <Slider.FilledTrack />
+              </Slider.Track>
+              <Slider.Thumb />
+            </Slider>
+            <Button size="xl" onPress={() => setStep(1)}>Next</Button>
           </Modal.Body>
         )}
 
@@ -148,7 +172,7 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
                   />
 
                   <FormInput
-                    name="Weight"
+                    name="Weight (kg)"
                     onBlur={() => {}}
                     onChangeText={handleActivityUpdate("weight")}
                     value={currentActivity.weight}
@@ -156,23 +180,23 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
                 </>
               )}
 
+              <Button
+                disabled={currentActivity === null}
+                onPress={handleAddExercise}
+                size="xl"
+              >
+                Add Activity
+              </Button>
+
               <HStack space={2} width="97%">
                 <Button onPress={() => setStep(0)}>Back</Button>
                 <Button
                   disabled={currentActivity === null}
-                  onPress={handleAddExercise}
-                >
-                  Add Activity
-                </Button>
-              </HStack>
-
-              <Button
-                  disabled={currentActivity === null}
                   onPress={handleSave}
-                  size="xl"
                 >
                   Save Workout
-              </Button>
+                </Button>
+              </HStack>
             </Modal.Body>
           </>
         )}
