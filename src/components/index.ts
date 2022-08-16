@@ -4,3 +4,4 @@ export { FormInput } from "./formInput/formInput";
 export { Button } from "./button/button";
 export { DatePicker } from "./datePicker/datePicker";
 export { WorkoutCard } from "./workoutCard/workoutCard";
+export { Autocomplete } from "./autocomplete/autocomplete";

@@ -58,6 +58,7 @@ interface BaseWorkout {
   activities: Activity[];
   past: boolean;
   completed: boolean;
+  name: string;
 }
 
 export interface ScheduledWorkout extends BaseWorkout {

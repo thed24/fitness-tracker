@@ -1,4 +1,4 @@
-import { Button, DatePicker, FormInput } from "components";
+import { Autocomplete, Button, DatePicker, FormInput } from "components";
 import {
   Modal,
   Text,
@@ -7,6 +7,7 @@ import {
   Divider,
   HStack,
   Slider,
+  Input,
 } from "native-base";
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
@@ -27,6 +28,7 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
   const [date, setDate] = useState<Date>(new Date());
   const [repeat, setRepeat] = useState(0);
   const [workout, setWorkout] = useState<ScheduledWorkout>({
+    name: "",
     time: date.toString(),
     activities: [],
     id: "0",
@@ -65,12 +67,14 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     }
   };
 
-  const handleAddExercise = () => {
+  const handleAddActivity = () => {
     if (currentActivity) {
       setWorkout((prevWorkout) => ({
         ...prevWorkout,
         activities: [...prevWorkout.activities, currentActivity],
       }));
+      setExerciseType(null);
+      setCurrentActivity(null);
     }
   };
 
@@ -94,27 +98,54 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <Modal.Content maxWidth="500px">
         <Modal.CloseButton />
-        <Modal.Header>New Workout</Modal.Header>
+        <Modal.Header>
+          <Autocomplete
+            w="75%"
+            paddingLeft="-5px"
+            fontWeight="bold"
+            fontSize={18}
+            textContentType="name"
+            variant="unstyled"
+            placeholder="Workout name"
+            value={workout.name}
+            data={["Chest", "Back", "Legs", "Arms", "Shoulders", "Abs"]}
+            keyExtractor={(item: string) => item}
+            onChange={(name) => console.log(name)}
+          />
+        </Modal.Header>
 
         {step === 0 && (
-          <Modal.Body>
-            <Text fontWeight="bold"> Exercise Date </Text>
-            <DatePicker date={date} setDate={setDate} mode="date" />
-            <Text fontWeight="bold"> Repeat for {repeat} weeks </Text>
-            <Slider value={repeat} onChange={setRepeat} maxValue={10} step={1}>
-              <Slider.Track>
-                <Slider.FilledTrack />
-              </Slider.Track>
-              <Slider.Thumb />
-            </Slider>
-            <Button size="xl" onPress={() => setStep(1)}>Next</Button>
-          </Modal.Body>
+          <>
+            <Modal.Body>
+              <FormControl.Label>Workout Date</FormControl.Label>
+              <DatePicker date={date} setDate={setDate} mode="date" />
+
+              <FormControl.Label>Repeat for {repeat} weeks</FormControl.Label>
+              <Slider
+                value={repeat}
+                onChange={setRepeat}
+                maxValue={10}
+                step={1}
+              >
+                <Slider.Track>
+                  <Slider.FilledTrack />
+                </Slider.Track>
+                <Slider.Thumb />
+              </Slider>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button size="xl" onPress={() => setStep(1)}>
+                Next
+              </Button>
+            </Modal.Footer>
+          </>
         )}
 
         {step === 1 && (
           <>
             <Modal.Body>
-              <Text fontWeight="bold">Current Exercises</Text>
+              <FormControl.Label>Exercises</FormControl.Label>
               {workout.activities.length > 0 ? (
                 workout.activities.map((activity) => (
                   <Text>- {activity.name} </Text>
@@ -122,19 +153,22 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
               ) : (
                 <Text>No Exercises</Text>
               )}
-            </Modal.Body>
-            <Divider w="3/4" alignSelf="center" />
-            <Modal.Body>
-              <FormControl>
-                <FormControl.Label>Exercise Type</FormControl.Label>
-                <Select
-                  placeholder="Select a type of exercise"
-                  onValueChange={handleExerciseTypeChange}
-                >
-                  <Select.Item value="strength" label="Strength" />
-                  <Select.Item value="cardio" label="Cardio" />
-                </Select>
-              </FormControl>
+
+              <Divider
+                w="3/4"
+                alignSelf="center"
+                marginTop="2"
+                marginBottom="2"
+              />
+
+              <FormControl.Label>Exercise Type</FormControl.Label>
+              <Select
+                placeholder="Select a type of exercise"
+                onValueChange={handleExerciseTypeChange}
+              >
+                <Select.Item value="strength" label="Strength" />
+                <Select.Item value="cardio" label="Cardio" />
+              </Select>
 
               <FormControl.Label>Exercise</FormControl.Label>
               <Select
@@ -182,22 +216,26 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
 
               <Button
                 disabled={currentActivity === null}
-                onPress={handleAddExercise}
+                onPress={handleAddActivity}
                 size="xl"
               >
                 Add Activity
               </Button>
+            </Modal.Body>
 
-              <HStack space={2} width="97%">
+            <Modal.Footer>
+              <HStack space={2}>
                 <Button onPress={() => setStep(0)}>Back</Button>
                 <Button
-                  disabled={currentActivity === null}
+                  disabled={
+                    workout.activities.length === 0 && currentActivity === null
+                  }
                   onPress={handleSave}
                 >
                   Save Workout
                 </Button>
               </HStack>
-            </Modal.Body>
+            </Modal.Footer>
           </>
         )}
       </Modal.Content>

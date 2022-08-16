@@ -16,6 +16,7 @@ export function Schedule() {
     isLoading: editLoading,
     mutate: editWorkout,
   } = useEditWorkout();
+
   const {
     error: addError,
     isLoading: addLoading,
@@ -49,6 +50,7 @@ export function Schedule() {
       <GestureHandlerRootView>
         <Carousel
           loop={false}
+          pagingEnabled
           width={width / 1.3}
           height={width}
           scrollAnimationDuration={1000}
