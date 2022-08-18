@@ -21,6 +21,7 @@ export interface ApiWorkout {
   time: string;
   completed: boolean;
   past: boolean;
+  name: string;
   activities: ApiActivity[];
 }
 
@@ -41,6 +42,7 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
     time: workout.time,
     completed: workout.completed,
     past: workout.past,
+    name: workout.name,
     activities: workout.activities.map((activity) => ({
       ...activity.exercise,
       ...activity.data,
@@ -68,6 +70,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
     time: workout.time,
     completed: workout.completed,
     past: workout.past,
+    name: workout.name,
     activities: workout.activities.map((activity) => {
       const exercise: Exercise =
         activity.type === "strength"

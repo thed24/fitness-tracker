@@ -7,7 +7,6 @@ import {
   Divider,
   HStack,
   Slider,
-  Input,
 } from "native-base";
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
@@ -100,17 +99,20 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
         <Modal.CloseButton />
         <Modal.Header>
           <Autocomplete
-            w="75%"
             paddingLeft="-5px"
             fontWeight="bold"
             fontSize={18}
-            textContentType="name"
             variant="unstyled"
             placeholder="Workout name"
             value={workout.name}
             data={["Chest", "Back", "Legs", "Arms", "Shoulders", "Abs"]}
             keyExtractor={(item: string) => item}
-            onChange={(name) => console.log(name)}
+            onChange={(name: string) =>
+              setWorkout((prevWorkout) => ({
+                ...prevWorkout,
+                name,
+              }))
+            }
           />
         </Modal.Header>
 

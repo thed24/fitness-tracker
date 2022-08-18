@@ -1,8 +1,6 @@
-/* eslint-disable react/prop-types */
 import { Text } from "native-base";
 import React, { useEffect } from "react";
 import { ErrorAlert, Screen } from "components";
-import { useStore } from "store";
 import { Formik, FormikProps } from "formik";
 import { NavigationProps } from "types";
 import { useRegister } from "../../api/auth/useRegister";
@@ -36,15 +34,11 @@ export interface RegisterProps {
 
 export function RegisterScreen({ navigation }: NavigationProps) {
   const { data, error, isLoading, mutate } = useRegister();
-  const { setUser } = useStore();
   const [errors, setErrors] = React.useState<string[]>([]);
   const [index, setIndex] = React.useState(0);
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
-      navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
-    } else if (error instanceof Error) {
+    if (error instanceof Error) {
       setErrors([error.message]);
     }
   }, [data, error]);

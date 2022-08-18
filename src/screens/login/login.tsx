@@ -2,10 +2,9 @@ import { Formik } from "formik";
 import React, { useEffect } from "react";
 import { GestureResponderEvent } from "react-native";
 import { ErrorAlert, FormInput, Screen, Button } from "components";
-import { useStore } from "store";
 import { NavigationProps } from "types";
 import { VStack } from "native-base";
-import { useLogin } from "../../api/auth/useLogin";
+import { useLogin } from "api";
 import { LoginSchema } from "./loginSchema";
 import * as SC from "./login.styles";
 
@@ -14,17 +13,12 @@ export interface LoginValues {
   password: string;
 }
 
-// eslint-disable-next-line no-unused-vars
 export function LoginScreen({ navigation }: NavigationProps) {
   const { data, error, isLoading, mutate } = useLogin();
   const [apiErrors, setApiErrors] = React.useState<string[]>([]);
-  const { setUser } = useStore();
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
-      navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
-    } else if (error instanceof Error) {
+    if (error instanceof Error) {
       setApiErrors([error.message]);
     }
   }, [data, error]);

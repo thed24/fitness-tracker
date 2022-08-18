@@ -11,7 +11,13 @@ export function History() {
   const { user } = useStore();
 
   const pastWorkouts = (
-    user ? user.workouts.filter((userFromState) => userFromState.past) : []
+    user
+      ? user.workouts
+          .filter((userFromState) => userFromState.past)
+          .sort(
+            (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+          )
+      : []
   ) as CompletedWorkout[];
 
   const { width } = Dimensions.get("window");
@@ -20,6 +26,7 @@ export function History() {
       <GestureHandlerRootView>
         <Carousel
           loop={false}
+          defaultIndex={pastWorkouts.length - 1}
           width={width / 1.3}
           height={width}
           mode="parallax"

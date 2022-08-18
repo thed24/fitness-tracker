@@ -1,6 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+import { useStore } from "store";
+import { useNavigation } from "@react-navigation/native";
 import { client } from "../client";
-import { apiErrorHandler } from "../errors";
+import { handleError } from "../utilities";
 import { ApiUser, ApiUserToUser } from "../types";
 
 type RegisterRequest = {
@@ -17,13 +19,28 @@ type RegisterRawResponse = {
 };
 
 export function useRegister() {
-  return useMutation(async (data: RegisterRequest) => {
-    try {
-      const rawResponse = (await client.post<RegisterRawResponse>("/users/register", data)).data;
-      return ApiUserToUser(rawResponse.user);
-    } catch (error) {
-      apiErrorHandler(error);
+  const { setUser } = useStore();
+  const navigation = useNavigation();
+
+  return useMutation(
+    async (data: RegisterRequest) => {
+      try {
+        const rawResponse = (
+          await client.post<RegisterRawResponse>("/users/register", data)
+        ).data;
+        return ApiUserToUser(rawResponse.user);
+      } catch (error) {
+        handleError(error);
+      }
+      return undefined;
+    },
+    {
+      onSuccess(response) {
+        if (response) {
+          setUser(response);
+          navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
+        }
+      },
     }
-    return undefined;
-  });
+  );
 }

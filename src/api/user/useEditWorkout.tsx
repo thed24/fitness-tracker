@@ -2,18 +2,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { Workout } from "types";
 import { useStore } from "store";
-import { AxiosResponse } from "axios";
 import { client } from "../client";
-import { apiErrorHandler } from "../errors";
-import { ApiWorkout, ApiWorkoutToWorkout, WorkoutToApiWorkout } from "../types";
+import { handleError, updateUser } from "../utilities";
+import { WorkoutToApiWorkout } from "../types";
 
 type EditWorkoutRequest = {
   userId: string;
   workout: Workout;
-};
-
-type RawEditWorkoutsResponse = {
-  workouts: ApiWorkout[];
 };
 
 export function useEditWorkout() {
@@ -29,25 +24,13 @@ export function useEditWorkout() {
           await client.put(`/users/${rawRequest.userId}/workouts/${rawRequest.workout.id}`, request)
         ).data;
       } catch (error) {
-        apiErrorHandler(error);
+        handleError(error);
       }
     },
     {
       onSuccess() {
         if (user) {
-          client
-            .get(`/users/${user.id}/workouts`)
-            .then((response: AxiosResponse<RawEditWorkoutsResponse>) => {
-              setUser({
-                ...user,
-                workouts: response.data.workouts.map((workout) =>
-                  ApiWorkoutToWorkout(workout)
-                ),
-              });
-            })
-            .catch((error) => {
-              apiErrorHandler(error);
-            });
+          updateUser(user, setUser);
         }
       },
     }

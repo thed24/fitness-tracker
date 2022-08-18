@@ -1,4 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import {
+  Box,
   FlatList,
   IInputProps,
   Input,
@@ -28,7 +30,7 @@ export function Autocomplete<T>(props: Props<T>) {
   const filteredData = useMemo(
     () =>
       data.filter((item) =>
-        keyExtractor(item).toLowerCase().includes(value.toLowerCase())
+        keyExtractor(item).toLowerCase().includes(value.toLowerCase()) && keyExtractor(item).toLowerCase() !== value.toLowerCase()
       ),
     [data, value, keyExtractor]
   );
@@ -37,28 +39,28 @@ export function Autocomplete<T>(props: Props<T>) {
     <View>
       <View>
         <Input
+          {...textProps}
           onFocus={() => setShowList(true)}
           onBlur={() => setShowList(false)}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...textProps}
           value={value}
           onChange={(e) => onChange(e.nativeEvent.text)}
         />
       </View>
 
       {showList && (
-        <View>
+        <Box>
           {filteredData.length > 0 && (
             <FlatList
               w="full"
-              zIndex={1}
-              rounded="md"
-              bgColor={theme.colors.white}
-              position="absolute"
+              marginTop={-2}
               data={filteredData}
               renderItem={({ item }) => (
-                <Pressable onPress={() => onChange(keyExtractor(item))}>
-                  <Text fontWeight="bold" color={theme.colors.gray[400]}>
+                <Pressable zIndex={1} onTouchStart={() => onChange(keyExtractor(item))}>
+                  <Text
+                    {...textProps}
+                    fontSize={14}
+                    color={theme.colors.gray[400]}
+                  >
                     {keyExtractor(item)}
                   </Text>
                 </Pressable>
@@ -66,7 +68,7 @@ export function Autocomplete<T>(props: Props<T>) {
               keyExtractor={keyExtractor}
             />
           )}
-        </View>
+        </Box>
       )}
     </View>
   );
