@@ -2,13 +2,15 @@ import { Heading, Text } from "native-base";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { Screen, WorkoutCard } from "components";
+import { Pagination, Screen, WorkoutCard } from "components";
 import { CompletedWorkout } from "types";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSharedValue } from "react-native-reanimated";
 
 export function History() {
   const { user } = useStore();
+  const progressValue = useSharedValue<number>(0);
 
   const pastWorkouts = (
     user
@@ -35,9 +37,17 @@ export function History() {
             parallaxScrollingOffset: 50,
           }}
           data={pastWorkouts}
+          onProgressChange={(_, absoluteProgress) => {
+            progressValue.value = absoluteProgress;
+          }}
           renderItem={({ item, index }) => (
             <WorkoutCard workout={item} key={index} footer={null} />
           )}
+        />
+        <Pagination
+          data={pastWorkouts}
+          animValue={progressValue}
+          length={pastWorkouts.length}
         />
       </GestureHandlerRootView>
     ) : (

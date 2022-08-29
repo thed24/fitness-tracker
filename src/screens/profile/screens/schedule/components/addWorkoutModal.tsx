@@ -10,7 +10,8 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
-import { useExercises } from "api";
+import { useExercises, useGetWorkoutNames } from "api";
+import { useStore } from "store";
 
 export interface Props {
   isOpen: boolean;
@@ -19,8 +20,7 @@ export interface Props {
 }
 
 export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
-  const { data, isLoading } = useExercises();
-
+  const { user } = useStore();
   const [step, setStep] = useState(0);
   const [exerciseType, setExerciseType] = useState<ExerciseType | null>(null);
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
@@ -33,6 +33,12 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
     id: "0",
     past: false,
     completed: false,
+  });
+
+  const { data, isLoading } = useExercises();
+  const { data: workoutNames } = useGetWorkoutNames({
+    userId: user?.id ?? "",
+    order: "Ascending",
   });
 
   const handleExerciseTypeChange = (value: string) => {
@@ -105,7 +111,7 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
             variant="unstyled"
             placeholder="Workout name"
             value={workout.name}
-            data={["Chest", "Back", "Legs", "Arms", "Shoulders", "Abs"]}
+            data={workoutNames?.workoutNames ?? []}
             keyExtractor={(item: string) => item}
             onChange={(name: string) =>
               setWorkout((prevWorkout) => ({
@@ -168,8 +174,8 @@ export function AddWorkoutModal({ isOpen, setIsOpen, onSubmit }: Props) {
                 placeholder="Select a type of exercise"
                 onValueChange={handleExerciseTypeChange}
               >
-                <Select.Item value="strength" label="Strength" />
-                <Select.Item value="cardio" label="Cardio" />
+                <Select.Item key="strength" value="strength" label="Strength" />
+                <Select.Item key="cardio" value="cardio" label="Cardio" />
               </Select>
 
               <FormControl.Label>Exercise</FormControl.Label>

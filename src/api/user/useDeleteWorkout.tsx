@@ -25,7 +25,6 @@ export function useDeleteWorkout() {
     {
       onSuccess() {
         if (user) {
-          console.log("user", user);
           updateUser(user, setUser);
         }
       },

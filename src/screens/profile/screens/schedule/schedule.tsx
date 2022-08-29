@@ -2,11 +2,12 @@ import { Heading, Stack, Text } from "native-base";
 import React, { useState, useEffect } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { Button, ErrorAlert, Screen } from "components";
+import { Button, ErrorAlert, Pagination, Screen } from "components";
 import { ScheduledWorkout } from "types";
 import { useAddWorkout, useEditWorkout } from "api";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSharedValue } from "react-native-reanimated";
 import { AddWorkoutModal } from "./components/addWorkoutModal";
 import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
@@ -22,10 +23,11 @@ export function Schedule() {
     isLoading: addLoading,
     mutate: addWorkout,
   } = useAddWorkout();
-  const { user } = useStore();
 
+  const { user } = useStore();
   const [errors, setErrors] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const progressValue = useSharedValue<number>(0);
 
   useEffect(() => {
     if (editError instanceof Error) {
@@ -47,18 +49,21 @@ export function Schedule() {
   const { width } = Dimensions.get("window");
   const content =
     scheduledWorkouts.length > 0 ? (
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ margin: "auto" }}>
         <Carousel
           loop={false}
           pagingEnabled
-          width={width / 1.3}
+          width={width}
           height={width}
           scrollAnimationDuration={1000}
           data={scheduledWorkouts}
           mode="parallax"
           modeConfig={{
-            parallaxScrollingScale: 0.85,
+            parallaxScrollingScale: 0.9,
             parallaxScrollingOffset: 50,
+          }}
+          onProgressChange={(_, absoluteProgress) => {
+            progressValue.value = absoluteProgress;
           }}
           renderItem={({ item, index }) => (
             <ScheduledWorkoutCard
@@ -72,6 +77,11 @@ export function Schedule() {
               key={index}
             />
           )}
+        />
+        <Pagination
+          data={scheduledWorkouts}
+          animValue={progressValue}
+          length={scheduledWorkouts.length}
         />
       </GestureHandlerRootView>
     ) : (

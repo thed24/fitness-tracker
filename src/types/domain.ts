@@ -1,6 +1,6 @@
 export type ExerciseType = "strength" | "cardio";
 
-type MuscleGroup =
+export type MuscleGroup =
   | "Abs"
   | "Biceps"
   | "Chest"

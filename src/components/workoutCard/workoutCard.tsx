@@ -8,10 +8,10 @@ import {
   Spinner,
   Text,
   useTheme,
+  View,
   VStack,
 } from "native-base";
 import React from "react";
-import Animated from "react-native-reanimated";
 import {
   Activity,
   CardioData,
@@ -64,7 +64,7 @@ export function WorkoutCard({ workout, footer }: Props) {
   };
 
   return (
-    <Animated.View>
+    <View>
       <VStack height="100%">
         <Badge
           onTouchStart={() =>
@@ -77,7 +77,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           alignSelf="flex-end"
           position="absolute"
           top="1"
-          right="2"
+          right="27%"
           shadow="10"
         >
           {isLoading && <Spinner color={theme.colors.primary[300]} />}
@@ -93,10 +93,16 @@ export function WorkoutCard({ workout, footer }: Props) {
             justifyContent="center"
             textAlign="center"
             marginTop="1"
+          >
+            {workout.name}
+          </Heading>
+          <Text
+            justifyContent="center"
+            textAlign="center"
             marginBottom="1"
           >
             {dateFormat(new Date(workout.time), "dddd, mmmm dS")}
-          </Heading>
+          </Text>
           <Divider marginTop="2" marginBottom="6" />
           <ScrollView>
             <VStack space={2}>
@@ -120,6 +126,6 @@ export function WorkoutCard({ workout, footer }: Props) {
           )}
         </Card>
       </VStack>
-    </Animated.View>
+    </View>
   );
 }
