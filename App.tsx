@@ -2,6 +2,7 @@ import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { LogBox } from "react-native";
 import {
   HomeScreen,
   LoginScreen,
@@ -12,6 +13,10 @@ import APIProvider from "./src/api/apiProvider";
 import { theme } from "./src/utils/theme";
 
 const Stack = createNativeStackNavigator();
+
+LogBox.ignoreLogs([
+  "Require cycle: node_modules/victory",
+]);
 
 export default function App() {
   return (

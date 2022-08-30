@@ -1,20 +1,25 @@
 import React, { useMemo } from "react";
-import { Text, Heading, Box, Progress, Divider, useTheme } from "native-base";
+import { Text, Heading, Box, Progress, Divider, useTheme, Spinner } from "native-base";
 import { useStore } from "store";
 import { CompletedWorkout, NavigationProps } from "types";
 import { Screen } from "components";
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Carousel from "react-native-reanimated-carousel";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions } from "react-native";
 import { useGetWorkoutData } from "api";
+import { WorkoutChart } from "./components/workoutChart";
 
 export function Dashboard({ navigation }: NavigationProps) {
   const { user } = useStore();
   const theme = useTheme();
   const [chartedWorkouts, setChartedWorkouts] = React.useState<string>("");
 
-  const { data: workoutData, refetch: getWorkoutdata } = useGetWorkoutData({
+  const {
+    data: workoutData,
+    isLoading: workoutDataLoading,
+    isError: workoutDataError,
+    refetch: getWorkoutdata,
+  } = useGetWorkoutData({
     exerciseName: chartedWorkouts,
     userId: user?.id ?? "",
     workoutGraphType: "weight",
@@ -28,28 +33,37 @@ export function Dashboard({ navigation }: NavigationProps) {
   const completedWorkouts = useMemo(
     () =>
       (user
-        ? user.workouts.filter((userFromState) => userFromState.completed)
+        ? user.workouts.filter((workout) => workout.completed || workout.past)
         : []) as CompletedWorkout[],
     [user]
+  );
+
+  const exerciseNames = useMemo(
+    () =>
+      completedWorkouts
+        .flatMap((workout) => workout.activities)
+        .map((exercise) => exercise.name)
+        .filter((name, index, self) => self.indexOf(name) === index),
+    [completedWorkouts]
   );
 
   const { width } = Dimensions.get("window");
   const workoutOptions =
     completedWorkouts.length > 0 ? (
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <Carousel
-          width={width / 1.4}
+          snap
+          width={width}
           height={width / 6}
           scrollAnimationDuration={1000}
-          data={completedWorkouts.flatMap((workout) =>
-            workout.activities.map((activity) => activity.name)
-          )}
+          data={exerciseNames}
           renderItem={({ item, index }) => (
             <Box
               rounded="lg"
               borderRadius="sm"
-              borderColor={theme.colors.blue[700]}
-              backgroundColor={theme.colors.blue[300]}
+              borderWidth={2}
+              borderColor={theme.colors.primary[700]}
+              backgroundColor={theme.colors.primary[500]}
               padding={2}
               margin="auto"
             >
@@ -71,32 +85,17 @@ export function Dashboard({ navigation }: NavigationProps) {
       <Text> No workouts to graph </Text>
     );
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#f5fcff",
-    },
-  });
+  const createGraphs = () => {
+    if (workoutDataLoading && !workoutDataError) {
+      return <Spinner> Loading... </Spinner>;
+    }
 
-  const createGraphs = () =>
-    workoutData && Object.keys(workoutData.data).length > 0 ? (
-      <View style={styles.container}>
-        <VictoryChart width={350} theme={VictoryTheme.material}>
-          <VictoryBar
-            data={Object.entries(workoutData.data).map(([key, value]) => ({
-              x: key,
-              y: value,
-            }))}
-            x="workout"
-            y="weight"
-          />
-        </VictoryChart>
-      </View>
+    return workoutData && Object.keys(workoutData.data).length > 0 ? (
+      <WorkoutChart data={workoutData.data} />
     ) : (
       <Text> No workouts to graph </Text>
     );
+  };
 
   const createStats = (name: string, state: number) => (
     <Box w="80%" marginTop="2" key={name}>
@@ -116,7 +115,7 @@ export function Dashboard({ navigation }: NavigationProps) {
   );
 
   return (
-    <Screen loading={!user}>
+    <Screen scrollable loading={!user}>
       <Heading marginTop="10"> Welcome, {user.firstName}! </Heading>
 
       <Text fontSize="md" fontWeight="semibold">

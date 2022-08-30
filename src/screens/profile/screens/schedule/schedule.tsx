@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from "native-base";
+import { Heading, Stack, Text, View } from "native-base";
 import React, { useState, useEffect } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
@@ -49,7 +49,7 @@ export function Schedule() {
   const { width } = Dimensions.get("window");
   const content =
     scheduledWorkouts.length > 0 ? (
-      <GestureHandlerRootView style={{ margin: "auto" }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <Carousel
           loop={false}
           pagingEnabled
@@ -66,16 +66,18 @@ export function Schedule() {
             progressValue.value = absoluteProgress;
           }}
           renderItem={({ item, index }) => (
-            <ScheduledWorkoutCard
-              scheduledWorkout={item}
-              onComplete={() =>
-                editWorkout({
-                  userId: user.id,
-                  workout: { ...item, completed: true, past: true },
-                })
-              }
-              key={index}
-            />
+            <View margin="auto">
+              <ScheduledWorkoutCard
+                scheduledWorkout={item}
+                onComplete={() =>
+                  editWorkout({
+                    userId: user.id,
+                    workout: { ...item, completed: true, past: true },
+                  })
+                }
+                key={index}
+              />
+            </View>
           )}
         />
         <Pagination

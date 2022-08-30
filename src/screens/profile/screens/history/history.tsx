@@ -1,4 +1,4 @@
-import { Heading, Text } from "native-base";
+import { Heading, Text, View } from "native-base";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
@@ -25,11 +25,11 @@ export function History() {
   const { width } = Dimensions.get("window");
   const content =
     pastWorkouts.length > 0 ? (
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <Carousel
           loop={false}
           defaultIndex={pastWorkouts.length - 1}
-          width={width / 1.3}
+          width={width}
           height={width}
           mode="parallax"
           modeConfig={{
@@ -41,7 +41,9 @@ export function History() {
             progressValue.value = absoluteProgress;
           }}
           renderItem={({ item, index }) => (
-            <WorkoutCard workout={item} key={index} footer={null} />
+            <View margin="auto">
+              <WorkoutCard workout={item} key={index} footer={null} />
+            </View>
           )}
         />
         <Pagination

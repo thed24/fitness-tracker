@@ -1,20 +1,27 @@
 /* eslint-disable react/require-default-props */
-import { Heading, HStack, Spinner } from "native-base";
+import { Heading, HStack, Spinner, useTheme } from "native-base";
 import React, { ReactNode } from "react";
 import * as SC from "./screen.style";
 
 interface Props {
   children: ReactNode | ReactNode[];
   loading?: boolean;
+  scrollable?: boolean;
 }
 
-export function Screen({ children, loading = false }: Props) {
+export function Screen({
+  children,
+  scrollable = false,
+  loading = false,
+}: Props) {
+  const theme = useTheme();
+
   if (loading) {
     return (
-      <SC.Container>
+      <SC.Container backgroundColor={theme.colors.gray[100]}>
         <HStack marginTop="10" space={2} justifyContent="center">
           <Spinner accessibilityLabel="Loading page" />
-          <Heading color="primary.500" fontSize="md">
+          <Heading color={theme.colors.primary[500]} fontSize="md">
             Loading
           </Heading>
         </HStack>
@@ -22,5 +29,16 @@ export function Screen({ children, loading = false }: Props) {
     );
   }
 
-  return <SC.Container>{children}</SC.Container>;
+  return scrollable ? (
+    <SC.ScrollableContainer
+      backgroundColor={theme.colors.gray[100]}
+      contentContainerStyle={{ alignItems: "center" }}
+    >
+      {children}
+    </SC.ScrollableContainer>
+  ) : (
+    <SC.Container backgroundColor={theme.colors.gray[100]}>
+      {children}
+    </SC.Container>
+  );
 }

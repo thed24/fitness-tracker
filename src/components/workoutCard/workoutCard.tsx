@@ -77,7 +77,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           alignSelf="flex-end"
           position="absolute"
           top="1"
-          right="27%"
+          right="2"
           shadow="10"
         >
           {isLoading && <Spinner color={theme.colors.primary[300]} />}
