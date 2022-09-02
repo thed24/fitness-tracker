@@ -1,12 +1,11 @@
 /* eslint-disable consistent-return */
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { client } from "../client";
 import { handleError } from "../utilities";
 
 type GetWorkoutData = {
   userId: string;
-  exerciseName: string;
+  exerciseName: string | null;
   workoutGraphType: "reps" | "sets" | "weight" | "distance";
 };
 
@@ -23,6 +22,10 @@ export function useGetWorkoutData({
     ["orders", exerciseName, userId, workoutGraphType],
     async () => {
       try {
+        if (!exerciseName) {
+          return { data: {} };
+        }
+
         return (
           await client.get(`/users/${userId}/workoutGraphData`, {
             params: {

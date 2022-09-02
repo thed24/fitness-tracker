@@ -1,8 +1,4 @@
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import React from "react";
 import { useTheme, View } from "native-base";
 

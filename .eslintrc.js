@@ -37,5 +37,6 @@ module.exports = {
     "import/no-unresolved": "error",
     "import/no-cycle": "off",
     "unused-imports/no-unused-imports": "error",
+    "react/prop-types": "off",
   },
 };

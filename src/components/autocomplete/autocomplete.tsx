@@ -25,7 +25,10 @@ export function Autocomplete<T>(props: Props<T>) {
   const theme = useTheme();
   const [showList, setShowList] = React.useState(false);
   const { data, value, onChange, keyExtractor } = props;
-  const textProps = { ...props } as TextProps;
+  const textProps = useMemo(() => {
+    const { data: _, value: __, onChange: ___, ...rest } = props;
+    return rest;
+  }, [props]);
 
   const filteredData = useMemo(
     () =>
@@ -36,7 +39,7 @@ export function Autocomplete<T>(props: Props<T>) {
   );
 
   return (
-    <View>
+    <View {...textProps}>
       <View>
         <Input
           {...textProps}
@@ -51,14 +54,13 @@ export function Autocomplete<T>(props: Props<T>) {
         <Box>
           {filteredData.length > 0 && (
             <FlatList
-              w="full"
-              marginTop={-2}
               data={filteredData}
               renderItem={({ item }) => (
                 <Pressable zIndex={1} onTouchStart={() => onChange(keyExtractor(item))}>
                   <Text
-                    {...textProps}
+                    marginLeft={3}
                     fontSize={14}
+                    fontWeight="bold"
                     color={theme.colors.gray[400]}
                   >
                     {keyExtractor(item)}

@@ -1,7 +1,7 @@
-import { Button } from "components";
 import { HStack } from "native-base";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
+import { Button } from "../button/button";
 
 interface Props {
   minSteps: number;
@@ -12,7 +12,7 @@ interface Props {
   onSubmit: (event: any) => void;
 }
 
-export function Navigation({
+export function NavigationButton({
   minSteps = 0,
   maxSteps = 1,
   disabled,
@@ -41,13 +41,13 @@ export function Navigation({
       w="75%"
     >
       {currentIndex > minSteps && (
-        <Button disabled={disabled} size="md" onPress={onClickPrevious}>
+        <Button size="md" onPress={onClickPrevious}>
           Back
         </Button>
       )}
 
       {currentIndex < maxSteps && (
-        <Button disabled={disabled} size="md" onPress={onClickNext}>
+        <Button size="md" onPress={onClickNext}>
           Next
         </Button>
       )}

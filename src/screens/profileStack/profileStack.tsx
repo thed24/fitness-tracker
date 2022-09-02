@@ -1,18 +1,17 @@
 /* eslint-disable react/no-unstable-nested-components */
 // this is according to react navigation docs
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTheme } from "native-base";
-import { Dashboard } from "./screens/dashboard/dashboard";
-import { History } from "./screens/history/history";
+import { DashboardStack } from "../dashboardStack/dashboardStack";
 import { LogoutButton } from "./components/logoutButton/logoutButton";
-import { Schedule } from "./screens/schedule/schedule";
+import { CreateWorkout } from "../create/createWorkout";
 
 export type SelectedProfileTab = "schedule" | "history";
 
 export function ProfileStack() {
-  const Tab = createBottomTabNavigator();
+  const Tab = createMaterialBottomTabNavigator();
   const theme = useTheme();
 
   const getColor = (focused: boolean) => focused ? theme.colors.primary[500] : theme.colors.gray[300];
@@ -42,9 +41,9 @@ export function ProfileStack() {
 
   return (
     <Tab.Navigator initialRouteName="Dashboard">
-      {createTab("History", "ios-list", History)}
-      {createTab("Dashboard", "ios-speedometer", Dashboard)}
-      {createTab("Schedule", "ios-calendar", Schedule)}
+      {createTab("Dashboard", "ios-speedometer", DashboardStack)}
+      {createTab("Create", "ios-add-circle-outline", CreateWorkout)}
+      {createTab("Settings", "ios-settings", DashboardStack)}
     </Tab.Navigator>
   );
 }

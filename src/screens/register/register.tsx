@@ -1,10 +1,9 @@
 import { Text } from "native-base";
 import React, { useEffect } from "react";
-import { ErrorAlert, Screen } from "components";
+import { ErrorAlert, NavigationButton, Screen } from "components";
 import { Formik, FormikProps } from "formik";
 import { NavigationProps } from "types";
-import { useRegister } from "../../api/auth/useRegister";
-import { Navigation } from "./components/navigation/navigation";
+import { useRegister } from "api";
 import { RegisterForm } from "./forms/details/registerForm";
 import { BuddyForm } from "./forms/buddy/buddyForm";
 import { StatsForm } from "./forms/stats/statsForm";
@@ -54,17 +53,11 @@ export function RegisterScreen({ navigation }: NavigationProps) {
   const getStep = (props: RegisterProps) => {
     switch (index) {
       case 0:
-        return (
-          <RegisterForm form={props.form} />
-        );
+        return <RegisterForm form={props.form} />;
       case 1:
-        return (
-          <StatsForm form={props.form} />
-        );
+        return <StatsForm form={props.form} />;
       case 2:
-        return (
-          <BuddyForm form={props.form} />
-        );
+        return <BuddyForm form={props.form} />;
       default:
         return <Text>Well, this is awkward</Text>;
     }
@@ -79,18 +72,18 @@ export function RegisterScreen({ navigation }: NavigationProps) {
         validationSchema={RegisterSchema}
         validateOnChange
         initialValues={{
-          firstName: "Dom",
-          lastName: "Test",
-          username: "Test",
-          email: "test@gmail.com",
-          password: "123456",
-          confirmPassword: "123456",
-          buddyName: "Jim",
-          buddyDescription: "Your favorite pal",
-          buddyIconId: 1,
-          height: 180,
-          weight: 80,
-          age: 20,
+          email: "",
+          password: "",
+          confirmPassword: "",
+          firstName: "",
+          lastName: "",
+          username: "",
+          buddyName: "",
+          buddyDescription: "",
+          buddyIconId: 0,
+          height: 0,
+          weight: 0,
+          age: 0,
           benchPressMax: null,
           squatMax: null,
           deadliftMax: null,
@@ -100,7 +93,7 @@ export function RegisterScreen({ navigation }: NavigationProps) {
         {(form) => (
           <>
             {getStep({ form })}
-            <Navigation
+            <NavigationButton
               disabled={Object.keys(form.errors).length > 0}
               minSteps={0}
               maxSteps={2}

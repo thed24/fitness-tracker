@@ -13,12 +13,35 @@ export type MuscleGroup =
   | "Back"
   | "Triceps";
 
+type Mechanics = "Compound" | "Isolation" | "Unknown";
+type Equipment =
+  | "Bands"
+  | "Barbell"
+  | "Bench"
+  | "BodyOnly"
+  | "Dumbbell"
+  | "ExerciseBall"
+  | "EzBar"
+  | "FoamRoll"
+  | "Kettlebell"
+  | "MachineCardio"
+  | "MachineStrength"
+  | "Other"
+  | "PullBar"
+  | "WeightPlate"
+  | "Unknown";
+
 interface BaseExercise {
   id: string;
   name: string;
   description: string;
   type: ExerciseType;
-  primaryMuscleGroup: string;
+  mainMuscleGroup: MuscleGroup;
+  detailedMuscleGroup: MuscleGroup | null;
+  otherMuscleGroups: MuscleGroup[];
+  mechanics: Mechanics;
+  equipment: Equipment;
+  muscleGroupStats: Record<MuscleGroup, number>;
 }
 
 export interface StrengthExercise extends BaseExercise {

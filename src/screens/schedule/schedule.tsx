@@ -1,14 +1,13 @@
-import { Heading, Stack, Text, View } from "native-base";
+import { Heading, Text, View } from "native-base";
 import React, { useState, useEffect } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { Button, ErrorAlert, Pagination, Screen } from "components";
+import { ErrorAlert, Pagination, Screen } from "components";
 import { ScheduledWorkout } from "types";
-import { useAddWorkout, useEditWorkout } from "api";
+import {  useEditWorkout } from "api";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSharedValue } from "react-native-reanimated";
-import { AddWorkoutModal } from "./components/addWorkoutModal";
 import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
 export function Schedule() {
@@ -18,25 +17,15 @@ export function Schedule() {
     mutate: editWorkout,
   } = useEditWorkout();
 
-  const {
-    error: addError,
-    isLoading: addLoading,
-    mutate: addWorkout,
-  } = useAddWorkout();
-
   const { user } = useStore();
   const [errors, setErrors] = useState<string[]>([]);
-  const [showModal, setShowModal] = useState(false);
   const progressValue = useSharedValue<number>(0);
 
   useEffect(() => {
     if (editError instanceof Error) {
       setErrors([editError.message]);
     }
-    if (addError instanceof Error) {
-      setErrors([addError.message]);
-    }
-  }, [editError, addError]);
+  }, [editError]);
 
   if (!user) {
     return <Text>An error has occured, please sign out and try again.</Text>;
@@ -91,22 +80,12 @@ export function Schedule() {
     );
 
   return (
-    <Screen loading={editLoading || addLoading}>
+    <Screen loading={editLoading}>
       {errors.length > 0 && (
         <ErrorAlert errors={errors} clearErrors={() => setErrors([])} />
       )}
-      <AddWorkoutModal
-        onSubmit={(workout) => addWorkout({ userId: user.id, workout })}
-        isOpen={showModal}
-        setIsOpen={setShowModal}
-      />
       <Heading marginTop="10"> Workout Schedule </Heading>
       {content}
-      <Stack w="md" position="absolute" bottom={5}>
-        <Button centered onPress={() => setShowModal(true)}>
-          Add Workout
-        </Button>
-      </Stack>
     </Screen>
   );
 }
