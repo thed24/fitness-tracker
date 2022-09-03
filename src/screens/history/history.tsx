@@ -1,17 +1,17 @@
-import { Heading, Text, View } from "native-base";
+import { Box, Heading, Text, useTheme, View } from "native-base";
 import React from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { Pagination, Screen, WorkoutCard } from "components";
+import { Screen, WorkoutCard } from "components";
 import { CompletedWorkout } from "types";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+import PaginationDot from "react-native-animated-pagination-dot";
 
 export function History() {
   const { user } = useStore();
-  const progressValue = useSharedValue<number>(0);
-
+  const theme = useTheme();
+  const { width } = Dimensions.get("window");
   const pastWorkouts = (
     user
       ? user.workouts
@@ -21,8 +21,8 @@ export function History() {
           )
       : []
   ) as CompletedWorkout[];
+  const [activeIndex, setActiveIndex] = React.useState(pastWorkouts.length - 1);
 
-  const { width } = Dimensions.get("window");
   const content =
     pastWorkouts.length > 0 ? (
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -36,21 +36,21 @@ export function History() {
             parallaxScrollingScale: 0.85,
             parallaxScrollingOffset: 50,
           }}
+          onSnapToItem={(index) => setActiveIndex(index)}
           data={pastWorkouts}
-          onProgressChange={(_, absoluteProgress) => {
-            progressValue.value = absoluteProgress;
-          }}
           renderItem={({ item, index }) => (
             <View margin="auto">
               <WorkoutCard workout={item} key={index} footer={null} />
             </View>
           )}
         />
-        <Pagination
-          data={pastWorkouts}
-          animValue={progressValue}
-          length={pastWorkouts.length}
-        />
+        <Box marginLeft="auto" marginRight="auto">
+          <PaginationDot
+            activeDotColor={theme.colors.primary[500]}
+            curPage={activeIndex}
+            maxPage={pastWorkouts.length}
+          />
+        </Box>
       </GestureHandlerRootView>
     ) : (
       <Text> No past workouts exist </Text>

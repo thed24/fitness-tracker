@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as BaseButton } from "native-base";
+import { Button as BaseButton, useTheme } from "native-base";
 import {
   ColorSchemeType,
   ColorType,
@@ -22,8 +22,8 @@ export function Button({
   children,
   centered,
 }: Props) {
-  const color: ColorType = disabled ? "gray.300" : "primary.600";
-  const borderColor: ColorType = disabled ? "gray.500" : "primary.800";
+  const theme = useTheme();
+  const color: ColorType = disabled ? theme.colors.gray[300] : theme.colors.primary[500];
 
   let width;
   if (size === "sm") {
@@ -31,7 +31,7 @@ export function Button({
   } else if (size === "md") {
     width = "50%";
   } else if (size === "lg") {
-    width = "75%";
+    width = "80%";
   } else {
     width = "100%";
   }
@@ -47,14 +47,17 @@ export function Button({
   return (
     <BaseButton
       colorScheme={colorScheme}
-      marginTop={4}
-      width={width}
-      borderWidth={2}
-      borderColor={borderColor}
+      textAlign="center"
+      w={width}
+      rounded={8}
       disabled={disabled}
       bg={color}
       onPress={onPress}
       style={style}
+      _text={{
+        color: "white",
+        fontWeight: "semibold",
+      }}
     >
       {children}
     </BaseButton>

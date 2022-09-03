@@ -93,7 +93,7 @@ export function CreateWorkout() {
         {(form) => (
           <>
             <Autocomplete
-              width="80%"
+              width="94%"
               paddingTop={4}
               variant="unstyled"
               fontWeight="bold"

@@ -1,35 +1,41 @@
-export type ExerciseType = "strength" | "cardio";
+export const ExerciseTypes = ["strength", "cardio"];
+export type ExerciseType = typeof ExerciseTypes[number];
 
-export type MuscleGroup =
-  | "Abs"
-  | "Biceps"
-  | "Chest"
-  | "Forearms"
-  | "Glutes"
-  | "Traps"
-  | "Shoulders"
-  | "Lats"
-  | "Legs"
-  | "Back"
-  | "Triceps";
+export const MuscleGroups = [
+  "Abs",
+  "Biceps",
+  "Chest",
+  "Forearms",
+  "Glutes",
+  "Traps",
+  "Shoulders",
+  "Lats",
+  "Legs",
+  "Back",
+  "Triceps"
+];
+export type MuscleGroup = typeof MuscleGroups[number];
 
-type Mechanics = "Compound" | "Isolation" | "Unknown";
-type Equipment =
-  | "Bands"
-  | "Barbell"
-  | "Bench"
-  | "BodyOnly"
-  | "Dumbbell"
-  | "ExerciseBall"
-  | "EzBar"
-  | "FoamRoll"
-  | "Kettlebell"
-  | "MachineCardio"
-  | "MachineStrength"
-  | "Other"
-  | "PullBar"
-  | "WeightPlate"
-  | "Unknown";
+export type Mechanics = "Compound" | "Isolation" | "Unknown";
+export const Equipments = [
+  "Bands",
+  "Barbell",
+  "Bench",
+  "BodyOnly",
+  "Dumbbell",
+  "ExerciseBall",
+  "EzBar",
+  "FoamRoll",
+  "Kettlebell",
+  "MachineCardio",
+  "MachineStrength",
+  "Other",
+  "PullBar",
+  "WeightPlate",
+  "Unknown"
+];
+
+export type Equipment = typeof Equipments[number];
 
 interface BaseExercise {
   id: string;

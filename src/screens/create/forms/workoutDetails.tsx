@@ -1,16 +1,43 @@
 import { useExercises } from "api";
-import { Button, FormInput } from "components";
-import { Box, Divider, FormControl, Select, Text } from "native-base";
+import { Autocomplete, Button, Card, FormInput, FormLabel } from "components";
+import { Box, HStack, Text } from "native-base";
 import React from "react";
+import { ExerciseFilters, Filters } from "../components/exerciseFilters";
 import { CreateWorkoutProps } from "../createWorkout";
 
 export function WorkoutDetails({ form }: CreateWorkoutProps) {
   const { data, isLoading } = useExercises();
+  const [workoutName, setWorkoutName] = React.useState("");
   const { workout, activity, exerciseType } = form.values;
+  const [filters, setFilters] = React.useState<Filters>({
+    muscleGroup: undefined,
+    equipment: undefined,
+    type: undefined,
+  });
 
-  const handleExerciseTypeChange = (value: string) => {
-    form.setFieldValue("exerciseType", value);
-  };
+  const filteredExercises = React.useMemo(() => {
+    if (!data) return [];
+    return data.exercises.filter((exercise) => {
+      if (
+        filters.muscleGroup &&
+        exercise.mainMuscleGroup.toLocaleLowerCase() !==
+          filters.muscleGroup.toLocaleLowerCase()
+      )
+        return false;
+      if (
+        filters.equipment &&
+        exercise.equipment.toLocaleLowerCase() !==
+          filters.equipment.toLocaleLowerCase()
+      )
+        return false;
+      if (
+        filters.type &&
+        exercise.type.toLocaleLowerCase() !== filters.type.toLocaleLowerCase()
+      )
+        return false;
+      return true;
+    });
+  }, [data, filters]);
 
   const handleExerciseChange = (value: string) => {
     const exercise = data?.exercises?.find(
@@ -58,7 +85,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       switch (activity.type) {
         case "strength":
           return (
-            <Box w="80%">
+            <Box>
               <FormInput
                 name="Sets"
                 onBlur={() => {}}
@@ -83,7 +110,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
           );
         case "cardio":
           return (
-            <Box w="80%">
+            <Box>
               <FormInput
                 name="Distance (km)"
                 onBlur={() => {}}
@@ -107,54 +134,51 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
   };
 
   return (
-    <>
-      <FormControl.Label>Exercises</FormControl.Label>
-      {workout.activities.length > 0 ? (
-        workout.activities.map((currActivity) => (
-          <Text>- {currActivity.name} </Text>
-        ))
-      ) : (
-        <Text>No Exercises</Text>
-      )}
+    <Box w="80%">
+      <FormLabel>Exercises</FormLabel>
 
-      <Divider w="3/4" alignSelf="center" marginTop="2" marginBottom="2" />
+      <Card marginBottom={2}>
+        {workout.activities.length > 0 ? (
+          workout.activities.map((currActivity) => (
+            <Box key={currActivity.id}>
+              <Text>{currActivity.name}</Text>
+            </Box>
+          ))
+        ) : (
+          <Text>No exercises currently selected</Text>
+        )}
+      </Card>
 
-      <FormControl.Label>Exercise Type</FormControl.Label>
-      <Select
-        w="80%"
-        placeholder="Select a type of exercise"
-        onValueChange={handleExerciseTypeChange}
-      >
-        <Select.Item key="strength" value="strength" label="Strength" />
-        <Select.Item key="cardio" value="cardio" label="Cardio" />
-      </Select>
+      <HStack>
+        <FormLabel>Exercise</FormLabel>
+        <ExerciseFilters filters={filters} setFilters={setFilters} />
+      </HStack>
 
-      <FormControl.Label>Exercise</FormControl.Label>
-      <Select
-        w="80%"
-        onValueChange={handleExerciseChange}
-        isDisabled={exerciseType === null}
-      >
-        {data &&
-          data.exercises.length > 0 &&
-          data.exercises
-            .filter(
-              (exercise) => exercise.type.toLocaleLowerCase() === exerciseType
-            )
-            .map((exercise) => (
-              <Select.Item value={exercise.name} label={exercise.name} />
-            ))}
-      </Select>
+      <Autocomplete
+        isDisabled={!exerciseType}
+        w="full"
+        placeholder="Bench press"
+        marginBottom={2}
+        marginLeft="auto"
+        marginRight="auto"
+        data={filteredExercises}
+        keyExtractor={(item) => item.name}
+        value={workoutName}
+        onChange={(value) => {
+          setWorkoutName(value);
+          handleExerciseChange(value);
+        }}
+      />
 
       {getActivitySpecificFields()}
 
       <Button
         disabled={activity === null}
         onPress={handleAddActivity}
-        size="lg"
+        size="xl"
       >
         Add Activity
       </Button>
-    </>
+    </Box>
   );
 }

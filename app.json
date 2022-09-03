@@ -9,7 +9,8 @@
       "web"
     ],
     "android": {
-      "package": "fitness.tracker"
+      "package": "fitness.tracker",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "ios": {
       "bundleIdentifier": "fitness.tracker"

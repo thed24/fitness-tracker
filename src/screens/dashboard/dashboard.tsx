@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Heading, Divider } from "native-base";
+import { Text, Heading } from "native-base";
 import { useStore } from "store";
 import { Screen } from "components";
 import { WorkoutChart } from "./components/workoutChart";
@@ -10,13 +10,11 @@ export function Dashboard() {
 
   return (
     <Screen scrollable loading={!user}>
-      <Heading marginTop="10"> Welcome, {user?.firstName}! </Heading>
+      <Heading marginTop="10"> Welcome back {user?.firstName}! </Heading>
 
-      <Text fontSize="md" fontWeight="semibold">
+      <Text fontSize="md" fontWeight="semibold" marginBottom={4}>
         Its time to get your workout on!
       </Text>
-
-      <Divider marginTop="4" w="3/4" bg="gray.400" />
 
       <BuddyStats />
 

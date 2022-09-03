@@ -1,13 +1,13 @@
-import { Heading, Text, View } from "native-base";
+import { Box, Heading, Text, useTheme, View } from "native-base";
 import React, { useState, useEffect } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { ErrorAlert, Pagination, Screen } from "components";
+import { ErrorAlert, Screen } from "components";
 import { ScheduledWorkout } from "types";
 import {  useEditWorkout } from "api";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+import PaginationDot from "react-native-animated-pagination-dot";
 import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
 export function Schedule() {
@@ -18,8 +18,9 @@ export function Schedule() {
   } = useEditWorkout();
 
   const { user } = useStore();
+  const theme = useTheme();
   const [errors, setErrors] = useState<string[]>([]);
-  const progressValue = useSharedValue<number>(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (editError instanceof Error) {
@@ -51,9 +52,7 @@ export function Schedule() {
             parallaxScrollingScale: 0.9,
             parallaxScrollingOffset: 50,
           }}
-          onProgressChange={(_, absoluteProgress) => {
-            progressValue.value = absoluteProgress;
-          }}
+          onSnapToItem={(index) => setActiveIndex(index)}
           renderItem={({ item, index }) => (
             <View margin="auto">
               <ScheduledWorkoutCard
@@ -69,11 +68,13 @@ export function Schedule() {
             </View>
           )}
         />
-        <Pagination
-          data={scheduledWorkouts}
-          animValue={progressValue}
-          length={scheduledWorkouts.length}
-        />
+        <Box marginLeft="auto" marginRight="auto">
+          <PaginationDot
+            activeDotColor={theme.colors.primary[500]}
+            curPage={activeIndex}
+            maxPage={scheduledWorkouts.length}
+          />
+        </Box>
       </GestureHandlerRootView>
     ) : (
       <Text> No workouts scheduled </Text>

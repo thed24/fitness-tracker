@@ -33,8 +33,6 @@ export function NavigationButton({
   return (
     <HStack
       justifyContent="center"
-      position="absolute"
-      bottom={5}
       space={4}
       alignItems="center"
       marginTop="10"

@@ -32,11 +32,15 @@ export function Autocomplete<T>(props: Props<T>) {
 
   const filteredData = useMemo(
     () =>
-      data.filter((item) =>
-        keyExtractor(item).toLowerCase().includes(value.toLowerCase()) && keyExtractor(item).toLowerCase() !== value.toLowerCase()
+      data.filter(
+        (item) =>
+          keyExtractor(item).toLowerCase().includes(value.toLowerCase()) &&
+          keyExtractor(item).toLowerCase() !== value.toLowerCase()
       ),
     [data, value, keyExtractor]
   );
+
+  const limitedData = useMemo(() => filteredData.slice(0, 5), [filteredData]);
 
   return (
     <View {...textProps}>
@@ -54,11 +58,16 @@ export function Autocomplete<T>(props: Props<T>) {
         <Box>
           {filteredData.length > 0 && (
             <FlatList
-              data={filteredData}
+              data={limitedData}
               renderItem={({ item }) => (
-                <Pressable zIndex={1} onTouchStart={() => onChange(keyExtractor(item))}>
+                <Pressable
+                  key={keyExtractor(item)}
+                  zIndex={1}
+                  onTouchStart={() => onChange(keyExtractor(item))}
+                >
                   <Text
-                    marginLeft={3}
+                    key={keyExtractor(item)}
+                    marginLeft={5}
                     fontSize={14}
                     fontWeight="bold"
                     color={theme.colors.gray[400]}

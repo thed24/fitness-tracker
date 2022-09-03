@@ -20,12 +20,6 @@ export function ProfileStack() {
       name={name}
       component={component}
       options={({ navigation }) => ({
-        tabBarInactiveTintColor: theme.colors.gray[300],
-        tabBarActiveTintColor: theme.colors.primary[500],
-        tabBarStyle: {
-          paddingBottom: 5,
-          paddingTop: 5,
-        },
         headerRight: () => <LogoutButton navigation={navigation} />,
         tabBarIcon: ({ focused }) => (
           <Icon
@@ -40,7 +34,9 @@ export function ProfileStack() {
   );
 
   return (
-    <Tab.Navigator initialRouteName="Dashboard">
+    <Tab.Navigator activeColor={theme.colors.primary[600]} barStyle={{
+      backgroundColor: theme.colors.white,
+    }} initialRouteName="Dashboard">
       {createTab("Dashboard", "ios-speedometer", DashboardStack)}
       {createTab("Create", "ios-add-circle-outline", CreateWorkout)}
       {createTab("Settings", "ios-settings", DashboardStack)}

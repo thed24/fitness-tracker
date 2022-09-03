@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 import { FormControl, Input, VStack, Text } from "native-base";
 import React from "react";
+import { FormLabel } from "../formLabel/formLabel";
 
 interface Props {
   required?: boolean;
@@ -41,7 +42,7 @@ export function FormInput({
   return (
     <VStack width="100%">
       <FormControl isRequired={required}>
-        <FormControl.Label>{name}</FormControl.Label>
+        <FormLabel>{name}</FormLabel>
         <Input
           type={type}
           value={valueAsString}

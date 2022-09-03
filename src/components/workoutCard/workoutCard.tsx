@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Card,
   Divider,
   Heading,
   ScrollView,
@@ -23,6 +22,7 @@ import {
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
+import { Card } from "components";
 
 interface Props {
   workout: Workout;

@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, Box, Progress, useTheme, Card, Heading } from "native-base";
+import { Text, Box, Progress, useTheme, Heading } from "native-base";
 import { useStore } from "store";
+import { Card } from "components";
 
 export function BuddyStats() {
   const { user } = useStore();

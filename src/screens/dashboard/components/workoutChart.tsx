@@ -6,7 +6,6 @@ import {
 } from "victory-native";
 import React, { useMemo } from "react";
 import {
-  Card,
   Spinner,
   useTheme,
   Text,
@@ -19,6 +18,7 @@ import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useGetWorkoutData } from "api";
 import { useStore } from "store";
 import { CompletedWorkout, ExerciseType } from "types";
+import { Card } from "components";
 
 export function WorkoutChart() {
   const { user } = useStore();
@@ -139,22 +139,21 @@ export function WorkoutChart() {
   return (
     <Card
       w="90%"
-      backgroundColor={theme.colors.white}
       marginBottom={4}
       marginTop={4}
-      shadow={2}
     >
       <HStack>
         <Heading size="md" marginTop={4} marginLeft={4}>
           Workout Chart
         </Heading>
 
-        <VStack w="55%" marginTop={1}>
+        <VStack w="55%" marginBottom={-10} marginTop={1}>
           <Select
             textAlign="right"
             selectedValue={workoutType}
             variant="unstyled"
             onValueChange={(val) => setWorkoutType(val as ExerciseType)}
+            marginBottom={-6}
           >
             <Select.Item label="Strength" value="strength" />
             <Select.Item label="Cardio" value="cardio" />
