@@ -5,8 +5,8 @@ import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTheme } from "native-base";
 import { DashboardStack } from "../dashboardStack/dashboardStack";
-import { LogoutButton } from "./components/logoutButton/logoutButton";
 import { CreateWorkout } from "../create/createWorkout";
+import { Settings } from '../settings/settings';
 
 export type SelectedProfileTab = "schedule" | "history";
 
@@ -19,8 +19,7 @@ export function ProfileStack() {
     <Tab.Screen
       name={name}
       component={component}
-      options={({ navigation }) => ({
-        headerRight: () => <LogoutButton navigation={navigation} />,
+      options={() => ({
         tabBarIcon: ({ focused }) => (
           <Icon
             name={icon}
@@ -39,7 +38,7 @@ export function ProfileStack() {
     }} initialRouteName="Dashboard">
       {createTab("Dashboard", "ios-speedometer", DashboardStack)}
       {createTab("Create", "ios-add-circle-outline", CreateWorkout)}
-      {createTab("Settings", "ios-settings", DashboardStack)}
+      {createTab("Settings", "ios-settings", Settings)}
     </Tab.Navigator>
   );
 }

@@ -1,32 +1,21 @@
 import { Box, Heading, Text, useTheme, View } from "native-base";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { useStore } from "store";
-import { ErrorAlert, Screen } from "components";
+import { Screen } from "components";
 import { ScheduledWorkout } from "types";
-import {  useEditWorkout } from "api";
+import { useEditWorkout } from "api";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PaginationDot from "react-native-animated-pagination-dot";
 import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
 export function Schedule() {
-  const {
-    error: editError,
-    isLoading: editLoading,
-    mutate: editWorkout,
-  } = useEditWorkout();
+  const { isLoading: editLoading, mutate: editWorkout } = useEditWorkout();
 
   const { user } = useStore();
   const theme = useTheme();
-  const [errors, setErrors] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    if (editError instanceof Error) {
-      setErrors([editError.message]);
-    }
-  }, [editError]);
 
   if (!user) {
     return <Text>An error has occured, please sign out and try again.</Text>;
@@ -82,9 +71,6 @@ export function Schedule() {
 
   return (
     <Screen loading={editLoading}>
-      {errors.length > 0 && (
-        <ErrorAlert errors={errors} clearErrors={() => setErrors([])} />
-      )}
       <Heading marginTop="10"> Workout Schedule </Heading>
       {content}
     </Screen>

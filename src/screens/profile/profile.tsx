@@ -5,19 +5,18 @@ import { Screen } from "components";
 import { WorkoutChart } from "./components/workoutChart";
 import { BuddyStats } from "./components/buddyStats";
 
-export function Dashboard() {
+export function Profile() {
   const { user } = useStore();
 
   return (
     <Screen scrollable loading={!user}>
-      <Heading marginTop="10"> Welcome back {user?.firstName}! </Heading>
+      <Heading marginTop="10"> Welcome back {user?.username}! </Heading>
 
       <Text fontSize="md" fontWeight="semibold" marginBottom={4}>
         Its time to get your workout on!
       </Text>
 
       <BuddyStats />
-
       <WorkoutChart />
     </Screen>
   );

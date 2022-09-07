@@ -1,7 +1,7 @@
 import { Formik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { GestureResponderEvent } from "react-native";
-import { ErrorAlert, FormInput, Screen, Button } from "components";
+import { FormInput, Screen, Button } from "components";
 import { NavigationProps } from "types";
 import { VStack } from "native-base";
 import { useLogin } from "api";
@@ -14,14 +14,7 @@ export interface LoginValues {
 }
 
 export function LoginScreen({ navigation }: NavigationProps) {
-  const { data, error, isLoading, mutate } = useLogin();
-  const [apiErrors, setApiErrors] = React.useState<string[]>([]);
-
-  useEffect(() => {
-    if (error instanceof Error) {
-      setApiErrors([error.message]);
-    }
-  }, [data, error]);
+  const { isLoading, mutate } = useLogin();
 
   const onSubmit = ({ email, password }: LoginValues) => {
     mutate({ email, password });
@@ -33,15 +26,8 @@ export function LoginScreen({ navigation }: NavigationProps) {
       callback();
     };
 
-  const onClearErrors = () => {
-    setApiErrors([]);
-  };
-
   return (
     <Screen loading={isLoading}>
-      {apiErrors.length > 0 && (
-        <ErrorAlert errors={apiErrors} clearErrors={onClearErrors} />
-      )}
       <Formik
         validationSchema={LoginSchema}
         validateOnChange

@@ -169,16 +169,12 @@ export interface BuddyData {
 export interface Buddy {
   id: string;
   name: string;
-  description: string;
-  iconUrl: string;
   data: BuddyData;
 }
 
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
+  username: string;
   email: string;
   password: string;
   workouts: Workout[];

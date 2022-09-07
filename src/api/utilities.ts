@@ -7,12 +7,14 @@ export function handleError(err: unknown) {
   try {
     if (axios.isAxiosError(err)) {
       const error = err as AxiosError<ApiError>;
+      console.error(error.response?.data);
 
       throw error?.response?.data
         ? new Error(error.response.data.errors.join("\n"))
         : new Error(error.message);
     }
   } catch (e) {
+    console.error(e);
     throw new Error("Something went wrong, please try again!");
   }
 

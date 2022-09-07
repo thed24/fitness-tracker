@@ -97,7 +97,7 @@ export function CreateWorkout() {
               paddingTop={4}
               variant="unstyled"
               fontWeight="bold"
-              fontSize={18}
+              fontSize={24}
               placeholder="Workout name"
               value={form.values.workout.name}
               data={workoutNames?.workoutNames ?? []}

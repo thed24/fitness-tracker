@@ -22,9 +22,11 @@ interface BaseProps<T> {
 type Props<T> = BaseProps<T> & TextProps;
 
 export function Autocomplete<T>(props: Props<T>) {
-  const theme = useTheme();
-  const [showList, setShowList] = React.useState(false);
   const { data, value, onChange, keyExtractor } = props;
+  const [showList, setShowList] = React.useState(false);
+
+  const theme = useTheme();
+
   const textProps = useMemo(() => {
     const { data: _, value: __, onChange: ___, ...rest } = props;
     return rest;
@@ -32,11 +34,11 @@ export function Autocomplete<T>(props: Props<T>) {
 
   const filteredData = useMemo(
     () =>
-      data.filter(
+      [...new Set(data.filter(
         (item) =>
           keyExtractor(item).toLowerCase().includes(value.toLowerCase()) &&
           keyExtractor(item).toLowerCase() !== value.toLowerCase()
-      ),
+      ))],
     [data, value, keyExtractor]
   );
 
@@ -61,12 +63,12 @@ export function Autocomplete<T>(props: Props<T>) {
               data={limitedData}
               renderItem={({ item }) => (
                 <Pressable
-                  key={keyExtractor(item)}
+                  key={`${keyExtractor(item)}-pressable`}
                   zIndex={1}
                   onTouchStart={() => onChange(keyExtractor(item))}
                 >
                   <Text
-                    key={keyExtractor(item)}
+                    key={`${keyExtractor(item)}-text`}
                     marginLeft={5}
                     fontSize={14}
                     fontWeight="bold"

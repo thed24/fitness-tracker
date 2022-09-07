@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Text, Heading, Divider } from "native-base";
+import { Text, Heading, Divider, VStack } from "native-base";
 import { useStore } from "store";
 import { NavigationProps } from "types";
 import { Screen, Button } from "components";
@@ -18,8 +18,14 @@ export function HomeScreen({ navigation }: NavigationProps) {
       <Heading marginTop="10">Welcome to Fitness Tracker!</Heading>
       <Text> Please register below to get started </Text>
       <Divider my="5" w="4/6" thickness="2" />
-      <Button onPress={() => navigation.navigate("Login")}>Login</Button>
-      <Button onPress={() => navigation.navigate("Register")}>Register</Button>
+      <VStack space={4} w="100%" alignItems="center">
+        <Button size="lg" onPress={() => navigation.navigate("Login")}>
+          Login
+        </Button>
+        <Button size="lg" onPress={() => navigation.navigate("Register")}>
+          Register
+        </Button>
+      </VStack>
     </Screen>
   );
 }

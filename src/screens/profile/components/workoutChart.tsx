@@ -60,11 +60,11 @@ export function WorkoutChart() {
     }
 
     if (!workoutData || Object.keys(workoutData.data).length === 0) {
-      return <Text marginLeft={4}> No workouts to graph </Text>;
+      return <Text mx={2}> No workouts to graph </Text>;
     }
 
     if (!selectedExercise) {
-      return <Text marginLeft={4}> Select an exercise to graph </Text>;
+      return <Text mx={2}> Select an exercise to graph </Text>;
     }
 
     const highestValue = Math.max(...Object.values(workoutData.data));
@@ -143,11 +143,11 @@ export function WorkoutChart() {
       marginTop={4}
     >
       <HStack>
-        <Heading size="md" marginTop={4} marginLeft={4}>
+        <Heading size="md" marginTop={4} marginLeft={3}>
           Workout Chart
         </Heading>
 
-        <VStack w="55%" marginBottom={-10} marginTop={1}>
+        <VStack w="55%" space={1} marginBottom={-10} marginTop={1}>
           <Select
             textAlign="right"
             selectedValue={workoutType}

@@ -7,13 +7,9 @@ export const CreateWorkoutSchema = Yup.object<
   repeat: Yup.number()
     .required("Repeat is required")
     .min(0, "Repeat must be at least 0"),
-  date: Yup.date()
-    .required("Date is required")
-    .min(new Date(), "Date must be in the future"),
+  date: Yup.date().required("Date is required"),
   workout: Yup.object().shape({
     name: Yup.string().required("Workout is required"),
-    activities: Yup.array()
-      .min(1, "At least one activity is required")
-      .required()
+    activities: Yup.array().required("Activities are required")
   })
 });

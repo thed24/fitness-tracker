@@ -85,7 +85,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       switch (activity.type) {
         case "strength":
           return (
-            <Box>
+            <Box marginBottom={4}>
               <FormInput
                 name="Sets"
                 onBlur={() => {}}
@@ -110,7 +110,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
           );
         case "cardio":
           return (
-            <Box>
+            <Box marginBottom={4}>
               <FormInput
                 name="Distance (km)"
                 onBlur={() => {}}

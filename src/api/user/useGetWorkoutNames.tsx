@@ -21,7 +21,7 @@ export function useGetWorkoutNames({
     async () => {
       try {
         return (
-          await client.get(`/users/${userId}/WorkoutsNames`, {
+          await client.get(`/users/${userId}/WorkoutNames`, {
             params: {
                 order,
             },

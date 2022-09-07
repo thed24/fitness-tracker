@@ -25,6 +25,7 @@ export function useLogin() {
         const rawResponse = (
           await client.post<RawLoginResponse>("/users/login", data)
         ).data;
+
         return ApiUserToUser(rawResponse.user);
       } catch (error) {
         handleError(error);

@@ -3,8 +3,6 @@ import {
   Data,
   Exercise,
   User,
-  StrengthExercise,
-  CardioExercise,
   StrengthData,
   CardioData,
   Workout
@@ -27,9 +25,7 @@ export interface ApiWorkout {
 
 export interface ApiUser {
   id: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
+  username: string;
   email: string;
   password: string;
   workouts: ApiWorkout[];
@@ -54,12 +50,10 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
 export function ApiUserToUser(apiUser: ApiUser): User {
   return {
     id: apiUser.id,
-    firstName: apiUser.firstName,
-    lastName: apiUser.lastName,
-    userName: apiUser.userName,
+    username: apiUser.username,
     email: apiUser.email,
     password: apiUser.password,
-    workouts: apiUser.workouts.map((workout) => ApiWorkoutToWorkout(workout)),
+    workouts: apiUser.workouts.map(ApiWorkoutToWorkout),
     workoutBuddy: apiUser.workoutBuddy
   };
 }
@@ -72,22 +66,18 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
     past: workout.past,
     name: workout.name,
     activities: workout.activities.map((activity) => {
-      const exercise: Exercise =
-        activity.type === "strength"
-          ? ({
-              id: activity.id,
-              name: activity.name,
-              type: activity.type,
-              description: activity.description,
-              primaryMuscleGroup: activity.primaryMuscleGroup
-            } as StrengthExercise)
-          : ({
-              id: activity.id,
-              name: activity.name,
-              type: activity.type,
-              description: activity.description,
-              primaryMuscleGroup: activity.primaryMuscleGroup
-            } as CardioExercise);
+      const exercise: Exercise = {
+        id: activity.id,
+        name: activity.name,
+        type: activity.type,
+        description: activity.description,
+        mainMuscleGroup: activity.mainMuscleGroup,
+        detailedMuscleGroup: activity.detailedMuscleGroup,
+        otherMuscleGroups: activity.otherMuscleGroups,
+        mechanics: activity.mechanics,
+        equipment: activity.equipment,
+        muscleGroupStats: activity.muscleGroupStats
+      };
 
       const data: Data =
         activity.type === "strength"
@@ -115,12 +105,10 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
 export function UserToApiUser(user: User): ApiUser {
   return {
     id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    userName: user.userName,
+    username: user.username,
     email: user.email,
     password: user.password,
-    workouts: user.workouts.map((workout) => WorkoutToApiWorkout(workout)),
+    workouts: user.workouts.map(WorkoutToApiWorkout),
     workoutBuddy: user.workoutBuddy
   };
 }

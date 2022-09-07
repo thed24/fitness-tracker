@@ -13,8 +13,6 @@ export const RegisterSchema = Yup.object<
     .min(6, "Password must be at least 6 characters")
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  firstName: Yup.string().required("First Name is required"),
-  lastName: Yup.string().required("Last Name is required"),
   height: Yup.number()
     .required("Height is required")
     .min(1, "Height must be positive"),
@@ -36,7 +34,5 @@ export const RegisterSchema = Yup.object<
     .nullable(true)
     .transform((_, val) => (val === Number(val) ? val : null))
     .min(0, "Deadlift max must be positive"),
-  buddyName: Yup.string().required("Buddy Name is required"),
-  buddyDescription: Yup.string().required("Buddy Description is required"),
-  buddyIconId: Yup.number().required("Buddy Icon is required")
+  buddyName: Yup.string().required("Buddy Name is required")
 });

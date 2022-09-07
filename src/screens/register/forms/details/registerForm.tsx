@@ -12,7 +12,11 @@ export function RegisterForm({ form }: RegisterProps) {
         onBlur={form.handleBlur("username")}
         value={form.values.username}
         name="Username"
-        error={form.errors.username}
+        error={
+          form.errors.username && form.touched.username
+            ? form.errors.username
+            : undefined
+        }
       />
       <FormInput
         required
@@ -20,23 +24,11 @@ export function RegisterForm({ form }: RegisterProps) {
         onBlur={form.handleBlur("email")}
         value={form.values.email}
         name="Email"
-        error={form.errors.email}
-      />
-      <FormInput
-        required
-        onChangeText={form.handleChange("firstName")}
-        onBlur={form.handleBlur("firstName")}
-        value={form.values.firstName}
-        name="First Name"
-        error={form.errors.firstName}
-      />
-      <FormInput
-        required
-        onChangeText={form.handleChange("lastName")}
-        onBlur={form.handleBlur("lastName")}
-        value={form.values.lastName}
-        name="Last Name"
-        error={form.errors.lastName}
+        error={
+          form.errors.email && form.touched.email
+            ? form.errors.email
+            : undefined
+        }
       />
       <FormInput
         required
@@ -45,7 +37,11 @@ export function RegisterForm({ form }: RegisterProps) {
         onBlur={form.handleBlur("password")}
         value={form.values.password}
         name="Password"
-        error={form.errors.password}
+        error={
+          form.errors.password && form.touched.password
+            ? form.errors.password
+            : undefined
+        }
       />
       <FormInput
         required
@@ -54,7 +50,11 @@ export function RegisterForm({ form }: RegisterProps) {
         onBlur={form.handleBlur("confirmPassword")}
         value={form.values.confirmPassword}
         name="Confirm Password"
-        error={form.errors.confirmPassword}
+        error={
+          form.errors.confirmPassword && form.touched.confirmPassword
+            ? form.errors.confirmPassword
+            : undefined
+        }
       />
     </SC.Container>
   );

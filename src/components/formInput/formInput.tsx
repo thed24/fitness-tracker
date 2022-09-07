@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-import { FormControl, Input, VStack, Text } from "native-base";
+import { FormControl, Input, VStack, Text, HStack } from "native-base";
 import React from "react";
 import { FormLabel } from "../formLabel/formLabel";
 
@@ -42,7 +42,12 @@ export function FormInput({
   return (
     <VStack width="100%">
       <FormControl isRequired={required}>
-        <FormLabel>{name}</FormLabel>
+        <HStack>
+          <FormLabel>{name}</FormLabel>
+          {required && <Text textAlign="left" fontSize="xs" color="red.400">
+            {" "}*
+          </Text>}
+        </HStack>
         <Input
           type={type}
           value={valueAsString}

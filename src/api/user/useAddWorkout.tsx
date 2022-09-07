@@ -18,10 +18,9 @@ export function useAddWorkout() {
     async (rawRequest: AddWorkoutRequest) => {
       try {
         const workout = WorkoutToApiWorkout(rawRequest.workout);
-        const request = { workout };
 
         return (
-          await client.post(`/users/${rawRequest.userId}/workouts`, request)
+          await client.post(`/users/${rawRequest.userId}/workouts`, workout)
         ).data;
       } catch (error) {
         handleError(error);

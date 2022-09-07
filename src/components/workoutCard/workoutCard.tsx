@@ -22,7 +22,7 @@ import {
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
-import { Card } from "components";
+import { Card } from "../card/card";
 
 interface Props {
   workout: Workout;
