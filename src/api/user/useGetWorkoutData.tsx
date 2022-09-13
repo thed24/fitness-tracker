@@ -7,10 +7,15 @@ type GetWorkoutData = {
   userId: string;
   exerciseName: string | null;
   workoutGraphType: "reps" | "sets" | "weight" | "distance";
+  reps: number;
 };
 
 type GetWorkoutDataResponse = {
-  data: Record<number, number>;
+  graphData: {
+    xAxis: number;
+    timeOfExercise: string;
+    exerciseMetaData: number;
+  }[]
 };
 
 export function useGetWorkoutData({

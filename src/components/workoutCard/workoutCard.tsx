@@ -22,6 +22,7 @@ import {
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
+import { createMeasurementFormatter, createWeightFormatter } from "utils";
 import { Card } from "../card/card";
 
 interface Props {
@@ -33,6 +34,9 @@ export function WorkoutCard({ workout, footer }: Props) {
   const theme = useTheme();
   const { user } = useStore();
   const { isLoading, mutate } = useDeleteWorkout();
+
+  const weightFormatter = createWeightFormatter(user?.userSettings?.weightUnit ?? "kilograms");
+  const measurementFormatter = createMeasurementFormatter(user?.userSettings?.measurementUnit ?? "metric");
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="md" bgColor={theme.colors.primary[600]}>
@@ -46,7 +50,7 @@ export function WorkoutCard({ workout, footer }: Props) {
   const createStrengthContent = (activity: StrengthExercise & StrengthData) => {
     const text = (
       <Text>
-        {activity.sets} x {activity.reps} at {activity.weight}kg
+        {weightFormatter(`${activity.sets} x ${activity.reps} at ${activity.weight}`, false)}
       </Text>
     );
 
@@ -56,7 +60,7 @@ export function WorkoutCard({ workout, footer }: Props) {
   const createCardioContent = (activity: CardioExercise & CardioData) => {
     const text = (
       <Text>
-        {activity.distance} km in {activity.duration} minutes
+        {measurementFormatter(`${activity.distance} km in ${activity.duration} minutes`, false)}
       </Text>
     );
 
@@ -120,7 +124,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           </ScrollView>
           {footer && (
             <>
-              <Divider marginTop="4" />
+              <Divider marginTop={4} marginBottom={3} />
               {footer}
             </>
           )}

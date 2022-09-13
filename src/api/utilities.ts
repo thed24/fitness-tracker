@@ -18,6 +18,7 @@ export function handleError(err: unknown) {
     throw new Error("Something went wrong, please try again!");
   }
 
+  console.error(err);
   throw err;
 }
 

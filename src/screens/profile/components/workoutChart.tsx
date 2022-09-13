@@ -21,25 +21,22 @@ import { CompletedWorkout, ExerciseType } from "types";
 import { Card } from "components";
 
 export function WorkoutChart() {
-  const { user } = useStore();
-  const theme = useTheme();
-
-  const [workoutType, setWorkoutType] =
-    React.useState<ExerciseType>("strength");
+  const [workoutType, setWorkoutType] = React.useState<ExerciseType>("strength");
   const [selectedExercise, setSelectedExercise] = React.useState<string | null>(
     null
   );
 
-  const { data: workoutData, isLoading: workoutDataLoading } =
-    useGetWorkoutData({
-      exerciseName: selectedExercise,
-      userId: user?.id ?? "",
-      workoutGraphType: "weight",
-    });
+  const { user } = useStore();
+  const theme = useTheme();
 
-  const completedWorkouts = useMemo(
-    () =>
-      (user
+  const { data: workoutData, isLoading: workoutDataLoading } = useGetWorkoutData({
+    exerciseName: selectedExercise,
+    userId: user?.id ?? "",
+    workoutGraphType: "reps",
+    reps: 5
+  });
+
+  const completedWorkouts = useMemo(() => (user
         ? user.workouts.filter((workout) => workout.completed || workout.past)
         : []) as CompletedWorkout[],
     [user]
@@ -59,7 +56,7 @@ export function WorkoutChart() {
       return <Spinner />;
     }
 
-    if (!workoutData || Object.keys(workoutData.data).length === 0) {
+    if (!workoutData?.graphData || workoutData.graphData.length === 0) {
       return <Text mx={2}> No workouts to graph </Text>;
     }
 
@@ -67,10 +64,11 @@ export function WorkoutChart() {
       return <Text mx={2}> Select an exercise to graph </Text>;
     }
 
-    const highestValue = Math.max(...Object.values(workoutData.data));
-    const chartData = Object.entries(workoutData.data).map(([key, value]) => ({
-      x: (Number.parseInt(key, 10) + 1).toString(),
-      y: value,
+    const highestValue = Math.max(...workoutData.graphData.map((data) => data.exerciseMetaData));
+    const chartData = workoutData.graphData.map((data) => ({
+      x: data.xAxis.toString(),
+      y: data.exerciseMetaData,
+      label: new Date(data.timeOfExercise).toLocaleDateString(),
     }));
 
     return (
@@ -147,7 +145,7 @@ export function WorkoutChart() {
           Workout Chart
         </Heading>
 
-        <VStack w="55%" space={1} marginBottom={-10} marginTop={1}>
+        <VStack w="55%" space={1} marginTop={1}>
           <Select
             textAlign="right"
             selectedValue={workoutType}

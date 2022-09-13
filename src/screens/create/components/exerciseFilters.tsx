@@ -46,6 +46,7 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
   const createOptions = (key: keyof Filters, options: string[]) => [
     <Select.Item
       label="Clear"
+      key={`${key}-clear`}
       value=""
       onPress={() => setLocalFilters({ ...localFilters, [key]: undefined })}
     />,
@@ -53,7 +54,7 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
       <Select.Item
         label={option}
         value={option}
-        key={option}
+        key={`${key}-${option}`}
         onPress={() => setLocalFilters({ ...localFilters, [key]: option })}
       />
     )),
@@ -74,6 +75,7 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
 
   const createSelect = (key: keyof Filters, options: string[]) => (
     <Select
+      key={`${key}-select`}
       selectedValue={localFilters[key]}
       minWidth={200}
       placeholder={createPlaceholder(key)}
@@ -83,7 +85,7 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
       }
       _selectedItem={{
         bg: "blue.600",
-        endIcon: <CheckIcon size={4} />,
+        endIcon: <CheckIcon key={`${key}-suffix`} size={4} />,
       }}
     >
       {createOptions(key, options)}

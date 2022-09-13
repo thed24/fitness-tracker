@@ -1,7 +1,10 @@
 import { useExercises } from "api";
 import { Autocomplete, Button, Card, FormInput, FormLabel } from "components";
 import { Box, HStack, Text } from "native-base";
-import React from "react";
+import React, { useMemo } from "react";
+import { useStore } from "store";
+import { Activity } from "types";
+import { createDistanceFormatter, createWeightFormatter } from "utils";
 import { ExerciseFilters, Filters } from "../components/exerciseFilters";
 import { CreateWorkoutProps } from "../createWorkout";
 
@@ -14,6 +17,15 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     equipment: undefined,
     type: undefined,
   });
+
+  const { user } = useStore();
+
+  if (!user) {
+    return <Text>Loading...</Text>;
+  }
+
+  const distanceFormatter = createDistanceFormatter(user.userSettings.measurementUnit);
+  const weightFormatter = createWeightFormatter(user.userSettings.weightUnit);
 
   const filteredExercises = React.useMemo(() => {
     if (!data) return [];
@@ -101,7 +113,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
               />
 
               <FormInput
-                name="Weight (kg)"
+                name={weightFormatter("Weight")}
                 onBlur={() => {}}
                 onChangeText={handleActivityUpdate("weight")}
                 value={activity.weight}
@@ -112,14 +124,14 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
           return (
             <Box marginBottom={4}>
               <FormInput
-                name="Distance (km)"
+                name={distanceFormatter("Distance")}
                 onBlur={() => {}}
                 onChangeText={handleActivityUpdate("distance")}
                 value={activity.distance}
               />
 
               <FormInput
-                name="Duration (min)"
+                name="Duration (minutes)"
                 onBlur={() => {}}
                 onChangeText={handleActivityUpdate("duration")}
                 value={activity.duration}
@@ -133,20 +145,44 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     return null;
   };
 
+  const exerciseDetails = useMemo(() => {
+    const createChild = (currActivity: Activity) => {
+      switch (currActivity.type) {
+        case "strength":
+          return (
+            <Text>
+              {currActivity.name}{": "}
+              {currActivity.sets}x{currActivity.reps},{" "}
+              {weightFormatter(currActivity.weight.toString(), false)}
+            </Text>
+          );
+        case "cardio":
+          return (
+            <Text>
+              {distanceFormatter(currActivity.distance.toString())} in
+              {currActivity.duration} minutes
+            </Text>
+          );
+        default:
+          return <Text> Unsupported exercise type </Text>
+      }
+    };
+
+    if (workout.activities.length === 0){
+      return (<Text>No exercises currently selected</Text>);
+    }
+
+    return workout.activities.map((currActivity) => (
+      createChild(currActivity)
+    ));
+  }, [workout.activities, weightFormatter, distanceFormatter]);
+
   return (
     <Box w="80%">
       <FormLabel>Exercises</FormLabel>
 
       <Card marginBottom={2}>
-        {workout.activities.length > 0 ? (
-          workout.activities.map((currActivity) => (
-            <Box key={currActivity.id}>
-              <Text>{currActivity.name}</Text>
-            </Box>
-          ))
-        ) : (
-          <Text>No exercises currently selected</Text>
-        )}
+        {exerciseDetails}
       </Card>
 
       <HStack>

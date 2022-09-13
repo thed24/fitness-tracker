@@ -38,5 +38,6 @@ module.exports = {
     "import/no-cycle": "off",
     "unused-imports/no-unused-imports": "error",
     "react/prop-types": "off",
+    "no-case-declarations": "off",
   },
 };

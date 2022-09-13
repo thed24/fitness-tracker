@@ -172,6 +172,12 @@ export interface Buddy {
   data: BuddyData;
 }
 
+export interface UserSettings {
+  weightUnit: "pounds" | "kilograms";
+  measurementUnit: "metric" | "imperial";
+  darkMode: boolean;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -179,4 +185,5 @@ export interface User {
   password: string;
   workouts: Workout[];
   workoutBuddy: Buddy;
+  userSettings: UserSettings;
 }

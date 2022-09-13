@@ -1,6 +1,6 @@
 import { Autocomplete, NavigationButton, Screen } from "components";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
 import { useAddWorkout, useGetWorkoutNames } from "api";
 import { useStore } from "store";
@@ -35,14 +35,7 @@ export function CreateWorkout() {
   const {
     isLoading: addLoading,
     mutate: addWorkout,
-    isSuccess: addSuccess,
   } = useAddWorkout();
-
-  useEffect(() => {
-    if (addSuccess) {
-      navigation.reset({ index: 0, routes: [{ name: "Schedule" as never }] });
-    }
-  }, [addSuccess, navigation]);
 
   const getStep = (props: CreateWorkoutProps) => {
     switch (index) {
@@ -66,6 +59,8 @@ export function CreateWorkout() {
         userId: user?.id ?? "",
       });
     }
+    setIndex(0);
+    navigation.reset({ index: 0, routes: [{ name: "Schedule" as never }] });
   };
 
 

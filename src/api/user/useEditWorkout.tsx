@@ -20,7 +20,7 @@ export function useEditWorkout() {
         const workout = WorkoutToApiWorkout(rawRequest.workout);
 
         return (
-          await client.put(`/users/${rawRequest.userId}/workouts/${rawRequest.workout.id}`, workout)
+          await client.put(`/users/${rawRequest.userId}/workouts/${rawRequest.workout.id}`, {workout})
         ).data;
       } catch (error) {
         handleError(error);

@@ -5,7 +5,8 @@ import {
   User,
   StrengthData,
   CardioData,
-  Workout
+  Workout,
+  UserSettings
 } from "types";
 
 export interface ApiActivity {
@@ -30,6 +31,7 @@ export interface ApiUser {
   password: string;
   workouts: ApiWorkout[];
   workoutBuddy: Buddy;
+  userSettings: UserSettings;
 }
 
 export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
@@ -54,7 +56,8 @@ export function ApiUserToUser(apiUser: ApiUser): User {
     email: apiUser.email,
     password: apiUser.password,
     workouts: apiUser.workouts.map(ApiWorkoutToWorkout),
-    workoutBuddy: apiUser.workoutBuddy
+    workoutBuddy: apiUser.workoutBuddy,
+    userSettings: apiUser.userSettings
   };
 }
 
@@ -109,6 +112,7 @@ export function UserToApiUser(user: User): ApiUser {
     email: user.email,
     password: user.password,
     workouts: user.workouts.map(WorkoutToApiWorkout),
-    workoutBuddy: user.workoutBuddy
+    workoutBuddy: user.workoutBuddy,
+    userSettings: user.userSettings
   };
 }

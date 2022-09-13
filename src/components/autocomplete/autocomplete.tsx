@@ -34,11 +34,11 @@ export function Autocomplete<T>(props: Props<T>) {
 
   const filteredData = useMemo(
     () =>
-      [...new Set(data.filter(
+      data.filter(
         (item) =>
           keyExtractor(item).toLowerCase().includes(value.toLowerCase()) &&
           keyExtractor(item).toLowerCase() !== value.toLowerCase()
-      ))],
+      ),
     [data, value, keyExtractor]
   );
 
