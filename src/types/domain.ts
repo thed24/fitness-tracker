@@ -38,9 +38,8 @@ export const Equipments = [
 export type Equipment = typeof Equipments[number];
 
 interface BaseExercise {
-  id: string;
+  id: number;
   name: string;
-  description: string;
   type: ExerciseType;
   mainMuscleGroup: MuscleGroup;
   detailedMuscleGroup: MuscleGroup | null;
@@ -82,7 +81,7 @@ export type Data = StrengthData | CardioData;
 export type Activity = Exercise & Data;
 
 interface BaseWorkout {
-  id: string;
+  id: number;
   time: string;
   activities: Activity[];
   past: boolean;
@@ -148,7 +147,7 @@ export interface BuddyTriceps extends BuddyAnatomyBase {
 }
 
 export interface BuddyData {
-  id: string;
+  id: number;
   strength: number;
   flexibility: number;
   speed: number;
@@ -167,7 +166,7 @@ export interface BuddyData {
 }
 
 export interface Buddy {
-  id: string;
+  id: number;
   name: string;
   data: BuddyData;
 }
@@ -179,7 +178,7 @@ export interface UserSettings {
 }
 
 export interface User {
-  id: string;
+  id: number;
   username: string;
   email: string;
   password: string;

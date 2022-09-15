@@ -1,24 +1,21 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ApiError, User } from "types";
+import { log } from "utils";
 import { client } from "./client";
 import { ApiUser, ApiUserToUser } from "./types";
 
 export function handleError(err: unknown) {
+  log(err, "error");
   try {
     if (axios.isAxiosError(err)) {
       const error = err as AxiosError<ApiError>;
-      console.error(error.response?.data);
-
       throw error?.response?.data
         ? new Error(error.response.data.errors.join("\n"))
         : new Error(error.message);
     }
   } catch (e) {
-    console.error(e);
     throw new Error("Something went wrong, please try again!");
   }
-
-  console.error(err);
   throw err;
 }
 
