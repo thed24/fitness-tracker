@@ -2,7 +2,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { ScheduledWorkout } from "types";
 import { useStore } from "store";
-import { log } from "utils";
 import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 import { WorkoutToApiWorkout } from "../types";
@@ -19,8 +18,6 @@ export function useAddWorkout() {
     async (rawRequest: AddWorkoutRequest) => {
       try {
         const workout = WorkoutToApiWorkout(rawRequest.workout);
-
-        log(workout);
 
         return (
           await client.post(`/users/${rawRequest.userId}/workouts`, workout)

@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, Box, Progress, useTheme, Heading } from "native-base";
+import { Text, Box, Progress, useTheme } from "native-base";
 import { useStore } from "store";
-import { Card } from "components";
+import { Accordion, Card } from "components";
 
 export function BuddyStats() {
   const { user } = useStore();
@@ -11,12 +11,13 @@ export function BuddyStats() {
     return null;
   }
 
-  const createStats = (name: string, state: number) => (
-    <Box marginTop="2" key={name}>
-      <Text>
+  const createStats = (name: string, state: number, index: number) => (
+    <Box key={`${name}-${index}-container`} marginTop="2">
+      <Text key={`${name}-${index}-text`}>
         {name}: {state} / 10
       </Text>
       <Progress
+        key={`${name}-${index}-progress`}
         borderWidth="2"
         borderColor={theme.colors.coolGray[600]}
         bg={theme.colors.coolGray[400]}
@@ -36,12 +37,11 @@ export function BuddyStats() {
       marginTop={4}
       shadow={2}
     >
-      <Heading size="md" marginBottom={4} marginLeft={2}>
-        Progress
-      </Heading>
-
-      {createStats("Speed", user.workoutBuddy.data.speed)}
-      {createStats("Strength", user.workoutBuddy.data.strength)}
+      <Accordion title="Progress">
+      {user.workoutBuddy.data.anatomy.sort(a => a.level).map((anatomy, i) =>
+        createStats(anatomy.muscleGroup, anatomy.level, i)
+      )}
+      </Accordion>
     </Card>
   );
 }

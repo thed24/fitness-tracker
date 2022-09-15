@@ -146,23 +146,15 @@ export interface BuddyTriceps extends BuddyAnatomyBase {
   muscleGroup: "Triceps";
 }
 
-export interface BuddyData {
+export interface BuddyAnatomy {
   id: number;
-  strength: number;
-  flexibility: number;
-  speed: number;
-  streaks: number;
-  AbsAnatomy: BuddyAbs;
-  BicepsAnatomy: BuddyBiceps;
-  ChestAnatomy: BuddyChest;
-  ForearmsAnatomy: BuddyForearms;
-  GlutesAnatomy: BuddyGlutes;
-  TrapsAnatomy: BuddyTraps;
-  ShouldersAnatomy: BuddyShoulders;
-  LatsAnatomy: BuddyLats;
-  LegsAnatomy: BuddyLegs;
-  BackAnatomy: BuddyBack;
-  TricepsAnatomy: BuddyTriceps;
+  level: number;
+  muscleGroup: MuscleGroup;
+}
+
+export interface BuddyData {
+  anatomy: BuddyAnatomy[];
+  muscleGroupStats: Record<MuscleGroup, number>;
 }
 
 export interface Buddy {
