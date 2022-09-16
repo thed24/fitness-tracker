@@ -1,11 +1,11 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Heading,
-  Pressable,
-  View,
-} from "native-base";
-import React, { useState } from "react";
+import { ChevronUpIcon, Heading, Pressable } from "native-base";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { Content, Container } from "./accordion.style";
 
 interface Props {
   children: React.ReactNode;
@@ -15,13 +15,36 @@ interface Props {
 export function Accordion({ title, children }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const fadeAnimation = useSharedValue(0);
+  const fadeStyle = useAnimatedStyle(() => ({
+    height: withSpring(fadeAnimation.value),
+  }));
+
+  const rotateAnimation = useSharedValue(0);
+  const rotateStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotateAnimation.value}deg` }],
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 8,
+  }));
+
+  const handlePress = () => {
+    setIsOpen(!isOpen);
+    fadeAnimation.value = withSpring(isOpen ? 0 : 250);
+    rotateAnimation.value = withSpring(isOpen ? 0 : 180);
+  };
+
   return (
-    <Pressable onPress={() => setIsOpen(!isOpen)}>
+    <Container>
       <Heading size="md">{title}</Heading>
-      {isOpen && children}
-      <View alignSelf="center" marginTop={4}>
-        {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-      </View>
-    </Pressable>
+      <Animated.View style={fadeStyle}>
+        <Content>{isOpen && children}</Content>
+      </Animated.View>
+      <Animated.View style={rotateStyle}>
+        <Pressable onPress={handlePress}>
+          <ChevronUpIcon />
+        </Pressable>
+      </Animated.View>
+    </Container>
   );
 }
