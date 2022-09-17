@@ -29,6 +29,8 @@ export function BuddyStats() {
     </Box>
   );
 
+  const { anatomy } = user.workoutBuddy.data;
+
   return (
     <Card
       w="90%"
@@ -38,8 +40,8 @@ export function BuddyStats() {
       shadow={2}
     >
       <Accordion title="Progress">
-      {user.workoutBuddy.data.anatomy.sort(a => a.level).map((anatomy, i) =>
-        createStats(anatomy.muscleGroup, anatomy.level, i)
+      {anatomy.sort((a, b) => a.level > b.level ? 0 : 1).map((bodyPart, i) =>
+        createStats(bodyPart.muscleGroup, bodyPart.level, i)
       )}
       </Accordion>
     </Card>

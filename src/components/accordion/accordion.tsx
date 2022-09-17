@@ -1,5 +1,5 @@
 import { ChevronUpIcon, Heading, Pressable } from "native-base";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

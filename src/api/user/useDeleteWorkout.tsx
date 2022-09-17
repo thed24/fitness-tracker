@@ -5,8 +5,8 @@ import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
 type DeleteWorkoutRequest = {
-  userId: string;
-  workoutId: string;
+  userId: number;
+  workoutId: number;
 };
 
 export function useDeleteWorkout() {

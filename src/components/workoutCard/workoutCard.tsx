@@ -32,8 +32,9 @@ interface Props {
 
 export function WorkoutCard({ workout, footer }: Props) {
   const theme = useTheme();
+  const [deleting, setDeleting] = React.useState(false);
   const { user } = useStore();
-  const { isLoading, mutate } = useDeleteWorkout();
+  const { mutate } = useDeleteWorkout();
 
   const weightFormatter = createWeightFormatter(user?.userSettings?.weightUnit ?? "kilograms");
   const measurementFormatter = createMeasurementFormatter(user?.userSettings?.measurementUnit ?? "metric");
@@ -71,9 +72,10 @@ export function WorkoutCard({ workout, footer }: Props) {
     <View>
       <VStack height="100%">
         <Badge
-          onTouchStart={() =>
-            mutate({ userId: user?.id ?? "-1", workoutId: workout.id })
-          }
+          onTouchStart={() => {
+            setDeleting(true);
+            mutate({ userId: user?.id ?? -1, workoutId: workout.id })
+          }}
           bgColor={theme.colors.primary[600]}
           rounded="full"
           zIndex={1}
@@ -84,8 +86,8 @@ export function WorkoutCard({ workout, footer }: Props) {
           right="2"
           shadow="10"
         >
-          {isLoading && <Spinner color={theme.colors.primary[300]} />}
-          {!isLoading && <Text color={theme.colors.white}>Remove</Text>}
+          {deleting && <Spinner color={theme.colors.primary[300]} />}
+          {!deleting && <Text color={theme.colors.white}>Remove</Text>}
         </Badge>
         <Card
           backgroundColor={theme.colors.white}

@@ -4,7 +4,7 @@ import { client } from "../client";
 import { handleError } from "../utilities";
 
 type GetWorkoutData = {
-  userId: string;
+  userId: number;
   exerciseName: string | null;
   workoutGraphType: "reps" | "sets" | "weight" | "distance";
   reps: number;
@@ -22,9 +22,10 @@ export function useGetWorkoutData({
   exerciseName,
   userId,
   workoutGraphType,
+  reps,
 }: GetWorkoutData): UseQueryResult<GetWorkoutDataResponse, unknown> {
   return useQuery(
-    ["orders", exerciseName, userId, workoutGraphType],
+    ["orders", exerciseName, userId, workoutGraphType, reps],
     async () => {
       try {
         if (!exerciseName) {
@@ -36,6 +37,7 @@ export function useGetWorkoutData({
             params: {
               ExerciseName: exerciseName,
               WorkoutGraphType: workoutGraphType,
+              Reps: reps,
             },
           })
         ).data;

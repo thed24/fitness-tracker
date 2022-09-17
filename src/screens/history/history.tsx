@@ -33,8 +33,8 @@ export function History() {
           height={width}
           mode="parallax"
           modeConfig={{
-            parallaxScrollingScale: 0.85,
-            parallaxScrollingOffset: 50,
+            parallaxScrollingScale: 0.90,
+            parallaxScrollingOffset: 30,
           }}
           onSnapToItem={(index) => setActiveIndex(index)}
           data={pastWorkouts}

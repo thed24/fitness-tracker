@@ -13,30 +13,45 @@ import {
   Heading,
   VStack,
   HStack,
+  Center,
 } from "native-base";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useGetWorkoutData } from "api";
 import { useStore } from "store";
-import { CompletedWorkout, ExerciseType } from "types";
+import {
+  CompletedWorkout,
+  ExerciseType,
+  GraphType,
+  StrengthData,
+  StrengthExercise,
+} from "types";
 import { Card } from "components";
+import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {
-  const [workoutType, setWorkoutType] = React.useState<ExerciseType>("strength");
+  const [workoutType, setWorkoutType] =
+    React.useState<ExerciseType>("strength");
+  const [workoutGraphType, setWorkoutGraphType] =
+    React.useState<GraphType>("reps");
   const [selectedExercise, setSelectedExercise] = React.useState<string | null>(
     null
   );
+  const [reps, setReps] = React.useState<number>(0);
 
   const { user } = useStore();
   const theme = useTheme();
 
-  const { data: workoutData, isLoading: workoutDataLoading } = useGetWorkoutData({
-    exerciseName: selectedExercise,
-    userId: user?.id ?? "",
-    workoutGraphType: "reps",
-    reps: 5
-  });
+  const { data: workoutData, isLoading: workoutDataLoading } =
+    useGetWorkoutData({
+      exerciseName: selectedExercise,
+      userId: user?.id ?? 0,
+      workoutGraphType,
+      reps,
+    });
 
-  const completedWorkouts = useMemo(() => (user
+  const completedWorkouts = useMemo(
+    () =>
+      (user
         ? user.workouts.filter((workout) => workout.completed || workout.past)
         : []) as CompletedWorkout[],
     [user]
@@ -51,20 +66,47 @@ export function WorkoutChart() {
     [completedWorkouts]
   );
 
+  const options =
+    workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
+
+  const repCounts = useMemo(
+    () => [
+      ...new Set(
+        completedWorkouts
+          .flatMap((workout) => workout.activities)
+          .filter(
+            (exercise) =>
+              exercise.name === selectedExercise && exercise.type === "strength"
+          )
+          .map((exercise) => exercise as StrengthExercise & StrengthData)
+          .map((exercise) => exercise.reps)
+      ),
+    ],
+    [completedWorkouts, selectedExercise]
+  );
+
   const content = useMemo(() => {
     if (workoutDataLoading) {
-      return <Spinner />;
+      return <Spinner  mt={10} />;
     }
 
-    if (!workoutData?.graphData || workoutData.graphData.length === 0) {
-      return <Text mx={2}> No workouts to graph </Text>;
+    if (
+      !workoutData ||
+      completedWorkouts
+        .flatMap((workout) => workout.activities)
+        .map((activity) => activity.type === workoutType).length === 0
+    ) {
+      return <Text mt={10}> No workouts to graph </Text>;
     }
 
     if (!selectedExercise) {
-      return <Text mx={2}> Select an exercise to graph </Text>;
+      return <Text mt={10}> Select an exercise to graph </Text>;
     }
 
-    const highestValue = Math.max(...workoutData.graphData.map((data) => data.exerciseMetaData));
+    const highestValue = Math.max(
+      ...workoutData.graphData.map((data) => data.exerciseMetaData)
+    );
+
     const chartData = workoutData.graphData.map((data) => ({
       x: data.xAxis.toString(),
       y: data.exerciseMetaData,
@@ -135,43 +177,66 @@ export function WorkoutChart() {
   ]);
 
   return (
-    <Card
-      w="90%"
-      marginBottom={4}
-      marginTop={4}
-    >
+    <Card w="90%" marginBottom={4} marginTop={4}>
       <HStack>
-        <Heading size="md" marginTop={4} marginLeft={3}>
+        <Heading size="md" marginTop={4}>
           Workout Chart
         </Heading>
 
-        <VStack w="55%" space={1} marginTop={1}>
-          <Select
-            textAlign="right"
+        <VStack w="55%" marginTop={4} marginLeft={1}>
+          <Dropdown
             selectedValue={workoutType}
-            variant="unstyled"
             onValueChange={(val) => setWorkoutType(val as ExerciseType)}
-            marginBottom={-6}
           >
             <Select.Item label="Strength" value="strength" />
             <Select.Item label="Cardio" value="cardio" />
-          </Select>
+          </Dropdown>
 
-          <Select
-            textAlign="right"
-            variant="unstyled"
+          <Dropdown
             selectedValue={selectedExercise ?? ""}
             onValueChange={setSelectedExercise}
+            isDisabled={!exerciseNames.length}
             placeholder="Select an exercise"
           >
             {exerciseNames.map((name) => (
               <Select.Item key={name} label={name} value={name} />
             ))}
-          </Select>
+          </Dropdown>
+
+          <Dropdown
+            selectedValue={workoutGraphType ?? ""}
+            onValueChange={(val) => setWorkoutGraphType(val as GraphType)}
+            isDisabled={!selectedExercise}
+            placeholder="Select unit type"
+          >
+            {options.map((name) => (
+              <Select.Item key={name} label={name} value={name} />
+            ))}
+          </Dropdown>
+
+          {workoutType === "strength" &&
+            selectedExercise !== null &&
+            workoutGraphType.toLocaleLowerCase() === "weight" && (
+              <Dropdown
+                selectedValue={reps.toString()}
+                onValueChange={(val) => setReps(Number(val))}
+                placeholder="Select rep range"
+              >
+                {repCounts.map((count) => (
+                  <Select.Item
+                    key={count}
+                    label={count.toString()}
+                    value={count.toString()}
+                  />
+                ))}
+              </Dropdown>
+            )}
         </VStack>
       </HStack>
 
-      {content}
+      <Center marginLeft="auto" marginRight="auto" marginTop={-8}>
+        {content}
+      </Center>
     </Card>
   );
 }
