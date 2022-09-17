@@ -8,10 +8,17 @@ import { ApiUser, ApiUserToUser } from "../types";
 type RegisterRequest = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  username: string;
   confirmPassword: string;
+  username: string;
+  buddyName: string;
+  height: number;
+  weight: number;
+  weightUnit: "kilograms" | "pounds";
+  measurementUnit: "metric" | "imperial";
+  age: number;
+  benchPressMax: number | null;
+  squatMax: number | null;
+  deadliftMax: number | null;
 };
 
 type RegisterRawResponse = {

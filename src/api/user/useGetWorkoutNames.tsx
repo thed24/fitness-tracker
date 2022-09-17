@@ -4,7 +4,7 @@ import { client } from "../client";
 import { handleError } from "../utilities";
 
 type GetWorkoutData = {
-  userId: string;
+  userId: number;
   order: "Ascending" | "Descending";
 };
 

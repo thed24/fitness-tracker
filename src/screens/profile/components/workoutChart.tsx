@@ -19,7 +19,6 @@ import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useGetWorkoutData } from "api";
 import { useStore } from "store";
 import {
-  CompletedWorkout,
   ExerciseType,
   GraphType,
   StrengthData,
@@ -38,8 +37,9 @@ export function WorkoutChart() {
   );
   const [reps, setReps] = React.useState<number>(0);
 
-  const { user } = useStore();
+  const { user, getPastWorkouts } = useStore();
   const theme = useTheme();
+  const pastWorkouts = getPastWorkouts();
 
   const { data: workoutData, isLoading: workoutDataLoading } =
     useGetWorkoutData({
@@ -49,21 +49,13 @@ export function WorkoutChart() {
       reps,
     });
 
-  const completedWorkouts = useMemo(
-    () =>
-      (user
-        ? user.workouts.filter((workout) => workout.completed || workout.past)
-        : []) as CompletedWorkout[],
-    [user]
-  );
-
   const exerciseNames = useMemo(
     () =>
-      completedWorkouts
+      pastWorkouts
         .flatMap((workout) => workout.activities)
         .map((exercise) => exercise.name)
         .filter((name, index, self) => self.indexOf(name) === index),
-    [completedWorkouts]
+    [pastWorkouts]
   );
 
   const options =
@@ -72,7 +64,7 @@ export function WorkoutChart() {
   const repCounts = useMemo(
     () => [
       ...new Set(
-        completedWorkouts
+        pastWorkouts
           .flatMap((workout) => workout.activities)
           .filter(
             (exercise) =>
@@ -82,7 +74,7 @@ export function WorkoutChart() {
           .map((exercise) => exercise.reps)
       ),
     ],
-    [completedWorkouts, selectedExercise]
+    [pastWorkouts, selectedExercise]
   );
 
   const content = useMemo(() => {
@@ -92,7 +84,7 @@ export function WorkoutChart() {
 
     if (
       !workoutData ||
-      completedWorkouts
+      pastWorkouts
         .flatMap((workout) => workout.activities)
         .map((activity) => activity.type === workoutType).length === 0
     ) {

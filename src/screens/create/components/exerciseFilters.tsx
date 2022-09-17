@@ -7,11 +7,9 @@ import {
   Popover,
   Select,
   ThreeDotsIcon,
-  useTheme,
 } from "native-base";
 import React, { useCallback } from "react";
-import { MuscleGroups } from "types";
-import { Equipments, ExerciseTypes } from "../../../types/domain";
+import { Equipments, MuscleGroups, ExerciseTypes } from "types";
 
 export interface Filters {
   muscleGroup: string | undefined;
@@ -26,18 +24,18 @@ interface Props {
 
 export function ExerciseFilters({ filters, setFilters }: Props) {
   const [localFilters, setLocalFilters] = React.useState<Filters>(filters);
-  const theme = useTheme();
 
   const popOverChild = useCallback(
     (props: any) => (
       <IconButton
         {...props}
+        key="filter-button"
         variant="unstyled"
         marginLeft={-1}
         _focus={{
           borderWidth: 0,
         }}
-        icon={<ThreeDotsIcon size="3" color="coolGray.600" />}
+        icon={<ThreeDotsIcon key="filter-icon" size="3" color="coolGray.600" />}
       />
     ),
     [filters, setFilters]

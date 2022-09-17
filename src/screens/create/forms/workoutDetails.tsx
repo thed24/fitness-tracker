@@ -1,15 +1,14 @@
 import { useExercises } from "api";
 import { Autocomplete, Button, Card, FormInput, FormLabel } from "components";
 import { Box, HStack, Text } from "native-base";
-import React, { useMemo } from "react";
+import React from "react";
 import { useStore } from "store";
-import { Activity } from "types";
-import { createDistanceFormatter, createWeightFormatter } from "utils";
+import { ActivityEntry } from "../components/activityEntry";
 import { ExerciseFilters, Filters } from "../components/exerciseFilters";
 import { CreateWorkoutProps } from "../createWorkout";
 
 export function WorkoutDetails({ form }: CreateWorkoutProps) {
-  const { data, isLoading } = useExercises();
+  const { data } = useExercises();
   const [workoutName, setWorkoutName] = React.useState("");
   const { workout, activity, exerciseType } = form.values;
   const [filters, setFilters] = React.useState<Filters>({
@@ -18,14 +17,11 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     type: undefined,
   });
 
-  const { user } = useStore();
+  const { user, weightFormatter, distanceFormatter } = useStore();
 
   if (!user) {
     return <Text>Loading...</Text>;
   }
-
-  const distanceFormatter = createDistanceFormatter(user.userSettings.measurementUnit);
-  const weightFormatter = createWeightFormatter(user.userSettings.weightUnit);
 
   const filteredExercises = React.useMemo(() => {
     if (!data) return [];
@@ -90,7 +86,14 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       });
     }
     form.setFieldValue("activity", null);
+    setWorkoutName("");
   };
+
+  const deleteActivity = (index: number) => () => {
+    const newActivities = [...workout.activities];
+    newActivities.splice(index, 1);
+    form.setFieldValue("workout", { ...workout, activities: newActivities });
+  }
 
   const getActivitySpecificFields = () => {
     if (activity) {
@@ -145,48 +148,26 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     return null;
   };
 
-  const exerciseDetails = useMemo(() => {
-    const createChild = (currActivity: Activity) => {
-      switch (currActivity.type) {
-        case "strength":
-          return (
-            <Text>
-              {currActivity.name}{": "}
-              {currActivity.sets}x{currActivity.reps},{" "}
-              {weightFormatter(currActivity.weight.toString(), false)}
-            </Text>
-          );
-        case "cardio":
-          return (
-            <Text>
-              {distanceFormatter(currActivity.distance.toString())} in
-              {currActivity.duration} minutes
-            </Text>
-          );
-        default:
-          return <Text> Unsupported exercise type </Text>
-      }
-    };
-
-    if (workout.activities.length === 0){
-      return (<Text>No exercises currently selected</Text>);
-    }
-
-    return workout.activities.map((currActivity) => (
-      createChild(currActivity)
-    ));
-  }, [workout.activities, weightFormatter, distanceFormatter]);
-
   return (
     <Box w="80%">
-      <FormLabel>Exercises</FormLabel>
+      <FormLabel>Activities</FormLabel>
 
       <Card marginBottom={2}>
-        {exerciseDetails}
+        {workout.activities.length > 0 ? (
+          workout.activities.map((currentActivity, i) => (
+            <ActivityEntry
+              key={currentActivity.id}
+              activity={currentActivity}
+              deleteActivity={deleteActivity(i)}
+            />
+          ))
+        ) : (
+          <Text>No exercises added yet</Text>
+        )}
       </Card>
 
       <HStack>
-        <FormLabel>Exercise</FormLabel>
+        <FormLabel>New Activity</FormLabel>
         <ExerciseFilters filters={filters} setFilters={setFilters} />
       </HStack>
 
@@ -194,7 +175,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         isDisabled={!exerciseType}
         w="full"
         placeholder="Bench press"
-        marginBottom={2}
+        marginBottom={1}
         marginLeft="auto"
         marginRight="auto"
         data={filteredExercises}

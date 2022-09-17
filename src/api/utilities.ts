@@ -6,16 +6,14 @@ import { ApiUser, ApiUserToUser } from "./types";
 
 export function handleError(err: unknown) {
   log(err, "error");
-  try {
-    if (axios.isAxiosError(err)) {
-      const error = err as AxiosError<ApiError>;
-      throw error?.response?.data
-        ? new Error(error.response.data.errors.join("\n"))
-        : new Error(error.message);
-    }
-  } catch (e) {
-    throw new Error("Something went wrong, please try again!");
+
+  if (axios.isAxiosError(err)) {
+    const error = err as AxiosError<ApiError>;
+    throw error?.response?.data
+      ? new Error(error.response.data.errors.join("\n"))
+      : new Error(error.message);
   }
+
   throw err;
 }
 

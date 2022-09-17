@@ -28,7 +28,7 @@ export function CreateWorkout() {
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const { data: workoutNames } = useGetWorkoutNames({
-    userId: user?.id ?? "",
+    userId: user?.id ?? -1,
     order: "Ascending",
   });
 
@@ -56,13 +56,12 @@ export function CreateWorkout() {
       }
       addWorkout({
         workout: { ...createWorkoutValues.workout, time: newTime.toISOString() },
-        userId: user?.id ?? "",
+        userId: user?.id ?? -1,
       });
     }
     setIndex(0);
-    navigation.reset({ index: 0, routes: [{ name: "Schedule" as never }] });
+    navigation.reset({ index: 0, routes: [{ name: "Dashboard" as never }] });
   };
-
 
   return (
     <Screen loading={addLoading}>
@@ -71,7 +70,7 @@ export function CreateWorkout() {
         validateOnChange
         initialValues={{
           workout: {
-            id: "0",
+            id: 0,
             name: "",
             time: new Date().toString(),
             past: false,

@@ -14,10 +14,10 @@ export function Card({ children, shadow, ...props }: Props) {
   const theme = useTheme();
   return (
     <BaseCard
-      {...props}
       bg={theme.colors.white}
       shadow={shadow ?? "none"}
       borderRadius={4}
+      {...props}
     >
       {children}
     </BaseCard>

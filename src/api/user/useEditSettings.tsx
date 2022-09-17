@@ -5,7 +5,7 @@ import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
 type RawEditSettingsRequest = {
-  userId: string;
+  userId: number;
   userSettings: {
     weightUnit: "pounds" | "kilograms" | null;
     measurementUnit: "metric" | "imperial" | null;

@@ -22,7 +22,6 @@ import {
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
-import { createMeasurementFormatter, createWeightFormatter } from "utils";
 import { Card } from "../card/card";
 
 interface Props {
@@ -33,11 +32,8 @@ interface Props {
 export function WorkoutCard({ workout, footer }: Props) {
   const theme = useTheme();
   const [deleting, setDeleting] = React.useState(false);
-  const { user } = useStore();
+  const { user, weightFormatter, measurementFormatter } = useStore();
   const { mutate } = useDeleteWorkout();
-
-  const weightFormatter = createWeightFormatter(user?.userSettings?.weightUnit ?? "kilograms");
-  const measurementFormatter = createMeasurementFormatter(user?.userSettings?.measurementUnit ?? "metric");
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="md" bgColor={theme.colors.primary[600]}>

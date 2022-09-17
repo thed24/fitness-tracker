@@ -7,7 +7,7 @@ import { handleError, updateUser } from "../utilities";
 import { WorkoutToApiWorkout } from "../types";
 
 type EditWorkoutRequest = {
-  userId: string;
+  userId: number;
   workout: Workout;
 };
 

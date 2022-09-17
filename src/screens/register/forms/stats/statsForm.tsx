@@ -1,13 +1,11 @@
 import { FormInput } from "components";
 import React from "react";
-import { createMeasurementFormatter, createWeightFormatter } from "utils";
+import { useStore } from "store";
 import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";
 
 export function StatsForm({ form }: RegisterProps) {
-  const { measurementUnit, weightUnit } = form.values;
-  const suffixWithWeight = createWeightFormatter(weightUnit);
-  const suffixWithMeasurement = createMeasurementFormatter(measurementUnit);
+  const { weightFormatter, measurementFormatter } = useStore();
 
   return (
     <SC.Container>
@@ -21,7 +19,7 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.height
             : undefined
         }
-        name={suffixWithMeasurement("Height")}
+        name={measurementFormatter("Height")}
       />
       <FormInput
         onChangeText={form.handleChange("weight")}
@@ -33,7 +31,7 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.weight
             : undefined
         }
-        name={suffixWithWeight("Weight")}
+        name={weightFormatter("Weight")}
       />
       <FormInput
         onChangeText={form.handleChange("age")}
@@ -54,7 +52,7 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.benchPressMax
             : undefined
         }
-        name={suffixWithWeight("Bench Press Max")}
+        name={weightFormatter("Bench Press Max")}
       />
       <FormInput
         onChangeText={form.handleChange("squatMax")}
@@ -65,7 +63,7 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.squatMax
             : undefined
         }
-        name={suffixWithWeight("Squat Max")}
+        name={weightFormatter("Squat Max")}
       />
       <FormInput
         onChangeText={form.handleChange("deadliftMax")}
@@ -76,7 +74,7 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.deadliftMax
             : undefined
         }
-        name={suffixWithWeight("Deadlift Max")}
+        name={weightFormatter("Deadlift Max")}
       />
     </SC.Container>
   );

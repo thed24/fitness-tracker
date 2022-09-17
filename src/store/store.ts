@@ -31,8 +31,8 @@ function createStore<TState extends Record<string | number | symbol, any>>(
 }
 
 export const [useStore] = createStore<State>(
-  (set, get, write, persister) => ({
-    ...createUserSlice(set, get, write, persister)
+  (...a) => ({
+    ...createUserSlice(...a)
   }),
   "useStore"
 );

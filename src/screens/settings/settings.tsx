@@ -99,10 +99,10 @@ export function Settings() {
 
   const createCard = (children: React.ReactNode) => (
     <Card
-      shadow="0"
       _text={{ fontSize: "md" }}
       my={2}
       px={2}
+      shadow={2}
     >
       {children}
     </Card>
@@ -113,7 +113,7 @@ export function Settings() {
       <Heading marginTop="10"> Settings </Heading>
 
       <SectionList
-        w="80%"
+        w="85%"
         sections={sections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
@@ -126,9 +126,6 @@ export function Settings() {
             w="100%"
             background={theme.colors.gray[100]}
             _text={{ fontSize: "md", fontWeight: "bold" }}
-            bg={theme.colors.gray[100]}
-            px={1}
-            py={2}
           >
             {title}
           </Box>
@@ -136,7 +133,7 @@ export function Settings() {
       />
 
       <SectionList
-        w="80%"
+        w="85%"
         sections={settingsSections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) =>
@@ -178,9 +175,6 @@ export function Settings() {
             w="100%"
             background={theme.colors.gray[100]}
             _text={{ fontSize: "md", fontWeight: "bold" }}
-            bg={theme.colors.gray[100]}
-            px={1}
-            py={2}
           >
             {title}
           </Box>

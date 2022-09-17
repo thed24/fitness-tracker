@@ -6,6 +6,7 @@ import {
   Mechanics,
   Equipment
 } from "types";
+import { MuscleGroup } from "../types/domain";
 
 export type ApiData = {
   id: number;
@@ -32,6 +33,7 @@ export interface ApiActivity {
   id: number;
   exercise: ApiExercise;
   data: ApiData;
+  muscleGroupStats: Record<MuscleGroup, number>;
 }
 
 export interface ApiWorkout {
@@ -63,7 +65,7 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
     activities: workout.activities.map((activity) => ({
       ...activity.exercise,
       ...activity.data,
-      muscleGroupStats: {},
+      muscleGroupStats: activity.muscleGroupStats,
       id: activity.id
     }))
   };
@@ -124,7 +126,8 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
       return {
         id: 0,
         exercise,
-        data
+        data,
+        muscleGroupStats: activity.muscleGroupStats
       };
     })
   };

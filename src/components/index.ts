@@ -8,3 +8,4 @@ export { NavigationButton } from "./navigationButton/navigationButton";
 export { Card } from "./card/card";
 export { FormLabel } from "./formLabel/formLabel";
 export { Accordion } from "./accordion/accordion";
+export { Carousel } from "./carousel/carousel";

@@ -10,23 +10,21 @@ import { AxiosError } from "axios";
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
-      if (query.state.data !== undefined) {
-        if (error instanceof Error) {
-          Toast.show({
-            title: "Error",
-            placement: "top",
-            description: error.message,
-            duration: 5000,
-          });
-        }
-        if (error instanceof AxiosError) {
-          Toast.show({
-            title: "Error",
-            placement: "top",
-            description: error?.response?.data ?? error.message,
-            duration: 5000,
-          });
-        }
+      if (error instanceof Error) {
+        Toast.show({
+          title: "Error",
+          placement: "top",
+          description: error.message,
+          duration: 5000,
+        });
+      }
+      if (error instanceof AxiosError) {
+        Toast.show({
+          title: "Error",
+          placement: "top",
+          description: error?.response?.data ?? error.message,
+          duration: 5000,
+        });
       }
     },
   }),
