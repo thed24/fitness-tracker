@@ -99,10 +99,12 @@ export function Settings() {
 
   const createCard = (children: React.ReactNode) => (
     <Card
+      w="95%"
+      marginLeft="auto"
+      marginRight="auto"
       _text={{ fontSize: "md" }}
       my={2}
       px={2}
-      shadow={2}
     >
       {children}
     </Card>
@@ -113,7 +115,7 @@ export function Settings() {
       <Heading marginTop="10"> Settings </Heading>
 
       <SectionList
-        w="85%"
+        w="95%"
         sections={sections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
@@ -123,6 +125,7 @@ export function Settings() {
         )}
         renderSectionHeader={({ section: { title } }) => (
           <Box
+            ml={2}
             w="100%"
             background={theme.colors.gray[100]}
             _text={{ fontSize: "md", fontWeight: "bold" }}
@@ -133,7 +136,7 @@ export function Settings() {
       />
 
       <SectionList
-        w="85%"
+        w="95%"
         sections={settingsSections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) =>
@@ -163,7 +166,7 @@ export function Settings() {
               >
                 {item.options.map((option) => (
                   <Radio value={option.value} key={option.title}>
-                    {option.title}
+                    <Text>{option.title}</Text>
                   </Radio>
                 ))}
               </Radio.Group>
@@ -173,6 +176,7 @@ export function Settings() {
         renderSectionHeader={({ section: { title } }) => (
           <Box
             w="100%"
+            ml={2}
             background={theme.colors.gray[100]}
             _text={{ fontSize: "md", fontWeight: "bold" }}
           >
