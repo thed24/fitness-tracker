@@ -2,6 +2,7 @@ import React from "react";
 import { Text, Box, Progress, useTheme } from "native-base";
 import { useStore } from "store";
 import { Accordion, Card } from "components";
+import { titleCase } from "utils";
 
 export function BuddyStats() {
   const { user } = useStore();
@@ -14,7 +15,7 @@ export function BuddyStats() {
   const createStats = (name: string, state: number, index: number) => (
     <Box key={`${name}-${index}-container`} marginTop="2">
       <Text key={`${name}-${index}-text`}>
-        {name}: {state} / 10
+        {titleCase(name)}: {state} / 10
       </Text>
       <Progress
         key={`${name}-${index}-progress`}
@@ -40,7 +41,7 @@ export function BuddyStats() {
       shadow={2}
     >
       <Accordion title="Progress">
-      {anatomy.sort((a, b) => a.level > b.level ? 0 : 1).map((bodyPart, i) =>
+      {anatomy.sort((a, b) => a.level < b.level ? 1 : -1).map((bodyPart, i) =>
         createStats(bodyPart.muscleGroup, bodyPart.level, i)
       )}
       </Accordion>

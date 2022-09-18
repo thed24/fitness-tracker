@@ -2,8 +2,8 @@ import React from "react";
 import { Text, Heading } from "native-base";
 import { useStore } from "store";
 import { Screen } from "components";
-import { WorkoutChart } from "./components/workoutChart";
-import { BuddyStats } from "./components/buddyStats";
+import { WorkoutChart } from "./components/workoutChart/workoutChart";
+import { BuddyStats } from "./components/buddyStats/buddyStats";
 
 export function Profile() {
   const { user } = useStore();

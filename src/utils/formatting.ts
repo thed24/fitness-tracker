@@ -18,3 +18,11 @@ export const createDistanceFormatter =
     const message = `${word} (${distanceUnit === "metric" ? "km" : "mi"})`;
     return addBrackets ? message : message.replace("(", "").replace(")", "");
   };
+
+export const titleCase = (str: string): string => {
+  const words = str.split(/(?=[A-Z])/);
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+  );
+  return capitalizedWords.join(" ");
+};
