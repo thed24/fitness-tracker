@@ -20,11 +20,11 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
       </Card>
 
       <Text fontSize={16} fontWeight="semibold" textAlign="left">
-        Repeat for {repeat} additional weeks
+        Schedule this for {repeat} {repeat === 1 ? "week" : "weeks"}
       </Text>
 
       <Card marginTop={4} paddingLeft={10} paddingRight={10}>
-        <Slider value={repeat} onChange={setRepeat} maxValue={10} minValue={-1} step={1}>
+        <Slider value={repeat} onChange={setRepeat} maxValue={10} minValue={1} step={1}>
           <Slider.Track>
             <Slider.FilledTrack />
           </Slider.Track>

@@ -163,7 +163,7 @@ export interface Buddy {
   data: BuddyData;
 }
 
-export type GraphType = "reps" | "sets" | "weight" | "distance";
+export type GraphType = "Reps" | "Sets" | "Weight" | "Distance";
 
 export interface UserSettings {
   weightUnit: "pounds" | "kilograms";

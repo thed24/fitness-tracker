@@ -152,7 +152,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     <Box w="80%">
       <FormLabel>Activities</FormLabel>
 
-      <Card marginBottom={2}>
+      <Card mb={2} py={-1}>
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
             <ActivityEntry

@@ -6,7 +6,7 @@ import { handleError } from "../utilities";
 type GetWorkoutData = {
   userId: number;
   exerciseName: string | null;
-  workoutGraphType: "reps" | "sets" | "weight" | "distance";
+  workoutGraphType: "Reps" | "Sets" | "Weight" | "Distance";
   reps: number;
 };
 

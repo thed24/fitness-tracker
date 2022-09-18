@@ -49,7 +49,7 @@ export function CreateWorkout() {
   };
 
   const handleSave = (createWorkoutValues: CreateWorkoutValues) => {
-    for (let i = 0; i < createWorkoutValues.repeat + 1; i += 1) {
+    for (let i = 0; i < createWorkoutValues.repeat; i += 1) {
       const newTime = createWorkoutValues.date;
       if (i > 0) {
         newTime.setDate(newTime.getDate() + i * 7);

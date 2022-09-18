@@ -18,12 +18,7 @@ import {
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useGetWorkoutData } from "api";
 import { useStore } from "store";
-import {
-  ExerciseType,
-  GraphType,
-  StrengthData,
-  StrengthExercise,
-} from "types";
+import { ExerciseType, GraphType, StrengthData, StrengthExercise } from "types";
 import { Card } from "components";
 import { Dropdown } from "./workoutChart.styles";
 
@@ -31,7 +26,7 @@ export function WorkoutChart() {
   const [workoutType, setWorkoutType] =
     React.useState<ExerciseType>("strength");
   const [workoutGraphType, setWorkoutGraphType] =
-    React.useState<GraphType>("reps");
+    React.useState<GraphType>("Reps");
   const [selectedExercise, setSelectedExercise] = React.useState<string | null>(
     null
   );
@@ -58,8 +53,7 @@ export function WorkoutChart() {
     [pastWorkouts]
   );
 
-  const options =
-    workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
+  const options = workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
 
   const repCounts = useMemo(
     () => [
@@ -79,7 +73,7 @@ export function WorkoutChart() {
 
   const content = useMemo(() => {
     if (workoutDataLoading) {
-      return <Spinner  mt={10} />;
+      return <Spinner mt={10} />;
     }
 
     if (

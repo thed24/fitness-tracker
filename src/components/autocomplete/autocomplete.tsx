@@ -57,7 +57,7 @@ export function Autocomplete<T>(props: Props<T>) {
       </View>
 
       {showList && (
-        <Box>
+        <Box ml={3}>
           {filteredData.length > 0 && (
             <FlatList
               data={limitedData}
@@ -69,7 +69,6 @@ export function Autocomplete<T>(props: Props<T>) {
                 >
                   <Text
                     key={`${keyExtractor(item)}-text`}
-                    marginLeft={5}
                     fontSize={14}
                     fontWeight="bold"
                     color={theme.colors.gray[400]}

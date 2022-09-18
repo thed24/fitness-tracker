@@ -1,4 +1,4 @@
-import { Box, useTheme } from "native-base";
+import { Box, useTheme, View } from "native-base";
 import React, { JSXElementConstructor, ReactElement } from "react";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -21,18 +21,19 @@ export function Carousel({ renderItem, items }: Props) {
         loop={false}
         pagingEnabled
         width={width}
-        height={width}
+        height={width * 1.2}
         scrollAnimationDuration={1000}
         data={items}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.9,
+          parallaxScrollingScale: 0.90,
           parallaxScrollingOffset: 50,
         }}
         onSnapToItem={(index) => setActiveIndex(index)}
         renderItem={({ item, index }) => renderItem(item, index)}
       />
       <Box marginLeft="auto" marginRight="auto">
+        <View my={1} />
         <PaginationDot
           activeDotColor={theme.colors.primary[500]}
           curPage={activeIndex}

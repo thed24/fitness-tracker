@@ -1,14 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Button } from "components";
-import {
-  Box,
-  CheckIcon,
-  IconButton,
-  Popover,
-  Select,
-  ThreeDotsIcon,
-} from "native-base";
+import { Box, CheckIcon, IconButton, Popover, Select } from "native-base";
 import React, { useCallback } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 import { Equipments, MuscleGroups, ExerciseTypes } from "types";
 
 export interface Filters {
@@ -24,18 +18,20 @@ interface Props {
 
 export function ExerciseFilters({ filters, setFilters }: Props) {
   const [localFilters, setLocalFilters] = React.useState<Filters>(filters);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const popOverChild = useCallback(
     (props: any) => (
       <IconButton
         {...props}
         key="filter-button"
-        variant="unstyled"
-        marginLeft={-1}
+        mt={-1}
+        ml={1}
+        onPress={() => setIsOpen(true)}
         _focus={{
           borderWidth: 0,
         }}
-        icon={<ThreeDotsIcon key="filter-icon" size="3" color="coolGray.600" />}
+        icon={<Icon name="ios-funnel" size={15} />}
       />
     ),
     [filters, setFilters]
@@ -91,11 +87,16 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
   );
 
   return (
-    <Box alignItems="center">
-      <Popover offset={15} placement="bottom" trigger={popOverChild}>
+    <Box>
+      <Popover
+        isOpen={isOpen}
+        offset={15}
+        placement="bottom"
+        trigger={popOverChild}
+      >
         <Popover.Content w="56">
           <Popover.Arrow />
-          <Popover.CloseButton />
+          <Popover.CloseButton onPress={() => setIsOpen(false)} />
           <Popover.Header>Exercise Filters</Popover.Header>
           <Popover.Body>
             {createSelect("muscleGroup", Object.values(MuscleGroups))}
@@ -103,7 +104,13 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
             {createSelect("type", Object.values(ExerciseTypes))}
           </Popover.Body>
           <Popover.Footer justifyContent="flex-end">
-            <Button onPress={() => setFilters(localFilters)} size="md">
+            <Button
+              onPress={() => {
+                setFilters(localFilters);
+                setIsOpen(false);
+              }}
+              size="md"
+            >
               Save
             </Button>
           </Popover.Footer>

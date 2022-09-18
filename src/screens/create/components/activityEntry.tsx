@@ -46,7 +46,7 @@ export function ActivityEntry({ activity, deleteActivity }: Props) {
       <IconButton
         onPress={deleteActivity}
         key={`${activity.name}-delete-button`}
-        marginLeft="auto"
+        ml="auto"
         icon={
           <DeleteIcon
             key={`${activity.name}-delete-icon`}
