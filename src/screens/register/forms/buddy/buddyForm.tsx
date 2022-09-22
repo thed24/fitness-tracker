@@ -1,5 +1,5 @@
-import { FormInput } from "components";
-import { Radio } from "native-base";
+import { FormInput, FormLabel } from "components";
+import { Box, HStack, Radio, VStack } from "native-base";
 import React from "react";
 import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";

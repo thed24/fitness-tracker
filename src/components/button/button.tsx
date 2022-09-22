@@ -49,7 +49,7 @@ export function Button({
       colorScheme={colorScheme}
       textAlign="center"
       w={width}
-      rounded={8}
+      rounded={4}
       disabled={disabled}
       bg={color}
       onPress={onPress}

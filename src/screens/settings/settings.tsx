@@ -4,7 +4,6 @@ import { Card, Screen } from "components";
 import {
   Box,
   Text,
-  Heading,
   Pressable,
   Radio,
   SectionList,
@@ -112,10 +111,9 @@ export function Settings() {
 
   return (
     <Screen>
-      <Heading marginTop="10"> Settings </Heading>
-
       <SectionList
         w="95%"
+        marginTop="10"
         sections={sections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (

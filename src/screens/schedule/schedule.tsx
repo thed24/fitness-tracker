@@ -1,4 +1,4 @@
-import { Heading, Text, View } from "native-base";
+import { Text, View } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { Screen, Carousel } from "components";
@@ -35,12 +35,11 @@ export function Schedule() {
     scheduledWorkouts.length > 0 ? (
       <Carousel renderItem={renderItem} items={scheduledWorkouts} />
     ) : (
-      <Text> No workouts scheduled </Text>
+      <Text marginTop={10}> No workouts scheduled </Text>
     );
 
   return (
     <Screen loading={editLoading}>
-      <Heading marginTop="10"> Workout Schedule </Heading>
       {content}
     </Screen>
   );

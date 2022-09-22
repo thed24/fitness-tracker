@@ -1,4 +1,4 @@
-import { Heading, Text, View } from "native-base";
+import { Text, View } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { Screen, WorkoutCard, Carousel } from "components";
@@ -19,12 +19,11 @@ export function History() {
     pastWorkouts.length > 0 ? (
       <Carousel renderItem={renderItem} items={pastWorkouts} />
     ) : (
-      <Text> No past workouts exist </Text>
+      <Text marginTop={10}> No past workouts exist </Text>
     );
 
   return (
     <Screen>
-      <Heading marginTop="10"> Workout History </Heading>
       {content}
     </Screen>
   );

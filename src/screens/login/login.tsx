@@ -34,7 +34,7 @@ export function LoginScreen({ navigation }: NavigationProps) {
         initialValues={{ email: "", password: "" }}
         onSubmit={onSubmit}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
           <>
             <SC.Container>
               <FormInput
@@ -42,13 +42,13 @@ export function LoginScreen({ navigation }: NavigationProps) {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 value={values.email}
-                error={errors.email}
+                error={errors.email && touched.email ? errors.email : undefined}
                 name="Email"
               />
               <FormInput
                 required
                 type="password"
-                error={errors.password}
+                error={errors.password && touched.password ? errors.password : undefined}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
