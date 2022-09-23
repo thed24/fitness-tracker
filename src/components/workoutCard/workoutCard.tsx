@@ -38,7 +38,7 @@ export function WorkoutCard({ workout, footer }: Props) {
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="md" bgColor={theme.colors.primary[600]}>
       <Text padding="1"> {activity.name} </Text>
-      <Box padding="2" roundedBottom="md" bgColor={theme.colors.primary[500]}>
+      <Box padding="2" roundedBottom="md" bgColor={theme.colors.primary[400]}>
         {children}
       </Box>
     </Box>

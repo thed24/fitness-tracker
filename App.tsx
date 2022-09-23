@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -5,10 +6,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LogBox } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useStore } from "store";
+import { useFonts } from 'expo-font';
 import {
   DashboardStack,
   HomeScreen,
-  LoginScreen,
   ProfileStack,
   RegisterScreen,
 } from "./src/screens";
@@ -27,6 +28,10 @@ const nativeBaseConfig = {
 
 export default function App() {
   const { user } = useStore();
+  const [fontsLoaded] = useFonts({
+    'JakartaSans': require('./assets/fonts/PlusJakartaSans-VariableFont_wght.ttf'),
+    'JakartaSansItalic': require('./assets/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf'),
+  });
 
   return (
     <NativeBaseProvider config={nativeBaseConfig} theme={theme}>
@@ -49,7 +54,6 @@ export default function App() {
             ) : (
               <>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Register" component={RegisterScreen} />
               </>
             )}

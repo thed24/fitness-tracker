@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Text, Heading, Divider, VStack } from "native-base";
+import { Text, Heading, Pressable, useTheme } from "native-base";
 import { useStore } from "store";
 import { NavigationProps } from "types";
-import { Screen, Button } from "components";
+import { Screen } from "components";
+import { Login } from "./components/login";
 
 export function HomeScreen({ navigation }: NavigationProps) {
   const { user } = useStore();
+  const theme = useTheme();
 
   useEffect(() => {
     if (user) {
@@ -15,17 +17,18 @@ export function HomeScreen({ navigation }: NavigationProps) {
 
   return (
     <Screen>
-      <Heading marginTop="10">Welcome to Fitness Tracker!</Heading>
-      <Text> Please register below to get started </Text>
-      <Divider my="5" w="4/6" thickness="2" />
-      <VStack space={4} w="100%" alignItems="center">
-        <Button size="lg" onPress={() => navigation.navigate("Login")}>
-          Login
-        </Button>
-        <Button size="lg" onPress={() => navigation.navigate("Register")}>
-          Register
-        </Button>
-      </VStack>
+      <Heading marginTop="10"> Welcome to Fitness Tracker </Heading>
+      <Text> Sign in or register below to get started! </Text>
+      <Login />
+      <Pressable onPress={() => navigation.navigate("Register")}>
+        <Text>
+          Don&apos;t have an account?
+          <Text fontWeight="bold" color={theme.colors.primary[800]}>
+            {" "}
+            Register here!
+          </Text>
+        </Text>
+      </Pressable>
     </Screen>
   );
 }

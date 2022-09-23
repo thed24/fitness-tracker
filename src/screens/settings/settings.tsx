@@ -9,12 +9,10 @@ import {
   SectionList,
   useTheme,
 } from "native-base";
-import { useNavigation } from "@react-navigation/native";
 import { useEditSettings } from "api";
 
 export function Settings() {
-  const { user, setUser } = useStore();
-  const navigation = useNavigation();
+  const { user } = useStore();
   const theme = useTheme();
 
   const { mutate } = useEditSettings();
@@ -107,6 +105,7 @@ export function Settings() {
       <SectionList
         w="95%"
         marginTop="10"
+        marginBottom={-20}
         sections={sections}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
@@ -133,7 +132,7 @@ export function Settings() {
         renderItem={({ item }) =>
           createCard(
             <>
-              <Text mb={2} fontWeight="bold">
+              <Text mb={2}>
                 {item.title}
               </Text>
               <Radio.Group
