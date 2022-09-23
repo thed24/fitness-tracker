@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React from "react";
 import { Input as InputBase, useTheme } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";

@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { useMutation } from "@tanstack/react-query";
 import { ScheduledWorkout } from "types";
 import { useStore } from "store";

@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";

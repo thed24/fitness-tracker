@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { Heading, HStack, Spinner, useTheme } from "native-base";
 import React, { ReactNode } from "react";
 import * as SC from "./screen.style";

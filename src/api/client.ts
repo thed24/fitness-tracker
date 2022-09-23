@@ -1,6 +1,5 @@
 import axios from "axios";
 import Constants from "expo-constants";
-// eslint-disable-next-line import/no-unresolved
 import { API_URL } from "@env";
 
 const { manifest } = Constants;

@@ -14,6 +14,8 @@ export function ProfileStack() {
   const Tab = createBottomTabNavigator();
   const theme = useTheme();
 
+  const createLogoutButton = (props: any) => <LogoutButton {...props} />;
+
   const createTab = (
     name: string,
     icon: string,
@@ -32,8 +34,7 @@ export function ProfileStack() {
         name={name}
         component={component}
         options={(props) => ({
-          // eslint-disable-next-line react/no-unstable-nested-components
-          headerRight: () => <LogoutButton navigation={props.navigation} />,
+          headerRight: () => createLogoutButton(props),
           tabBarIconStyle: action
             ? {
                 paddingLeft: 5,

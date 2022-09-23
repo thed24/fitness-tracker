@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { Button } from "components";
 import { Box, CheckIcon, IconButton, Popover, Select } from "native-base";
 import React, { useCallback } from "react";

@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { client } from "../client";
 import { handleError } from "../utilities";

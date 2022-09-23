@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useTheme, Text } from "native-base";
 import React from "react";
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { Input } from "components";
 import { FormControl, VStack, Text, HStack } from "native-base";
 import React from "react";
