@@ -3,6 +3,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LogBox } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useStore } from "store";
 import {
   DashboardStack,
   HomeScreen,
@@ -15,29 +17,42 @@ import { theme } from "./src/utils/theme";
 
 const Stack = createNativeStackNavigator();
 
-LogBox.ignoreLogs([
-  "Require cycle: node_modules/victory",
-]);
+LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
+
+const nativeBaseConfig = {
+  dependencies: {
+    "linear-gradient": LinearGradient,
+  },
+};
 
 export default function App() {
+  const { user } = useStore();
+
   return (
-    <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider config={nativeBaseConfig} theme={theme}>
       <NavigationContainer>
         <APIProvider>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen
-              name="Profile"
-              component={ProfileStack}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Dashboard"
-              component={DashboardStack}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            {user ? (
+              <>
+                <Stack.Screen
+                  name="Profile"
+                  component={ProfileStack}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Dashboard"
+                  component={DashboardStack}
+                  options={{ headerShown: false }}
+                />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Register" component={RegisterScreen} />
+              </>
+            )}
           </Stack.Navigator>
         </APIProvider>
       </NavigationContainer>

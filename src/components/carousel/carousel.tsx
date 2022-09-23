@@ -16,7 +16,7 @@ export function Carousel({ renderItem, items }: Props) {
   const [activeIndex, setActiveIndex] = React.useState(items.length - 1);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, marginTop: 35 }}>
       <BaseCarousel
         loop={false}
         pagingEnabled

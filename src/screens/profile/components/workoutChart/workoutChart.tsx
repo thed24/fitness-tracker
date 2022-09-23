@@ -3,6 +3,8 @@ import {
   VictoryTheme,
   VictoryArea,
   VictoryAxis,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
 } from "victory-native";
 import React, { useMemo } from "react";
 import {
@@ -23,16 +25,17 @@ import { Card } from "components";
 import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {
-  const [workoutType, setWorkoutType] =
-    React.useState<ExerciseType>("strength");
+  const [reps, setReps] = React.useState<number>(0);
+  const [workoutType, setWorkoutType] = React.useState<ExerciseType | null>(
+    "strength"
+  );
   const [workoutGraphType, setWorkoutGraphType] =
     React.useState<GraphType>("Reps");
   const [selectedExercise, setSelectedExercise] = React.useState<string | null>(
     null
   );
-  const [reps, setReps] = React.useState<number>(0);
 
-  const { user, getPastWorkouts } = useStore();
+  const { user, getPastWorkouts, weightFormatter } = useStore();
   const theme = useTheme();
   const pastWorkouts = getPastWorkouts();
 
@@ -53,7 +56,8 @@ export function WorkoutChart() {
     [pastWorkouts]
   );
 
-  const options = workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
+  const options =
+    workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
 
   const repCounts = useMemo(
     () => [
@@ -89,18 +93,23 @@ export function WorkoutChart() {
       return <Text mt={10}> Select an exercise to graph </Text>;
     }
 
-    const highestValue = Math.max(
-      ...workoutData.graphData.map((data) => data.exerciseMetaData)
-    );
-
     const chartData = workoutData.graphData.map((data) => ({
       x: data.xAxis.toString(),
       y: data.exerciseMetaData,
       label: new Date(data.timeOfExercise).toLocaleDateString(),
     }));
 
+    const highestValue = Math.max(
+      ...workoutData.graphData.map((data) => data.exerciseMetaData)
+    );
+
     return (
-      <VictoryChart height={400} width={350} theme={VictoryTheme.material}>
+      <VictoryChart
+        height={400}
+        width={350}
+        theme={VictoryTheme.material}
+        containerComponent={<VictoryVoronoiContainer />}
+      >
         <Defs>
           {/*
           // @ts-ignore */}
@@ -124,14 +133,17 @@ export function WorkoutChart() {
         </Defs>
         <VictoryArea
           interpolation="natural"
-          domain={{ y: [0, highestValue * 1.2] }}
+          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          labels={({ datum }) => `${datum.label}: ${datum.y}`}
           domainPadding={{ x: 2 }}
-          minDomain={{ y: 1 }}
+          domain={{ y: [0, highestValue * 1.2] }}
           style={{
             data: {
               fill: "url(#gradient)",
               strokeWidth: 3,
+              zIndex: 1,
               stroke: theme.colors.primary[500],
+              width: 10,
             },
           }}
           data={chartData}
@@ -140,7 +152,7 @@ export function WorkoutChart() {
           dependentAxis
           style={{
             axis: { stroke: "transparent" },
-            grid: { stroke: theme.colors.gray[300] },
+            grid: { stroke: "transparent" },
             ticks: { stroke: "transparent" },
             tickLabels: { fontSize: 15 },
           }}
@@ -165,15 +177,21 @@ export function WorkoutChart() {
   return (
     <Card w="90%" marginBottom={4} marginTop={4}>
       <HStack>
-        <Heading size="md" marginTop={4}>
-          Workout Chart
-        </Heading>
+        <Heading size="md">Workout Chart</Heading>
 
-        <VStack w="55%" marginTop={4} marginLeft={1}>
+        <VStack w="55%" marginLeft={1}>
           <Dropdown
-            selectedValue={workoutType}
-            onValueChange={(val) => setWorkoutType(val as ExerciseType)}
+            selectedValue={workoutType || ""}
+            onValueChange={(val) => {
+              if (val === "") {
+                setWorkoutType(null);
+                setSelectedExercise(null);
+              } else {
+                setWorkoutType(val);
+              }
+            }}
           >
+            <Select.Item label="Clear" value="" />
             <Select.Item label="Strength" value="strength" />
             <Select.Item label="Cardio" value="cardio" />
           </Dropdown>
@@ -181,7 +199,7 @@ export function WorkoutChart() {
           <Dropdown
             selectedValue={selectedExercise ?? ""}
             onValueChange={setSelectedExercise}
-            isDisabled={!exerciseNames.length}
+            isDisabled={!exerciseNames.length || workoutType === null}
             placeholder="Select an exercise"
           >
             {exerciseNames.map((name) => (
@@ -191,7 +209,12 @@ export function WorkoutChart() {
 
           <Dropdown
             selectedValue={workoutGraphType ?? ""}
-            onValueChange={(val) => setWorkoutGraphType(val as GraphType)}
+            onValueChange={(val) => {
+              if (val === "weight") {
+                setReps(0);
+              }
+              setWorkoutGraphType(val as GraphType);
+            }}
             isDisabled={!selectedExercise}
             placeholder="Select unit type"
           >
@@ -220,7 +243,7 @@ export function WorkoutChart() {
         </VStack>
       </HStack>
 
-      <Center marginLeft="auto" marginRight="auto" marginTop={-8}>
+      <Center marginLeft="auto" marginRight="auto">
         {content}
       </Center>
     </Card>

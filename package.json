@@ -12,6 +12,7 @@
     "expo": "^46.0.10",
     "expo-constants": "~13.2.4",
     "expo-dev-client": "~1.2.1",
+    "expo-linear-gradient": "~11.4.0",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
     "expo-updates": "~0.14.5",

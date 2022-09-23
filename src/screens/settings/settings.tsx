@@ -24,13 +24,6 @@ export function Settings() {
       title: "Account",
       data: [
         {
-          title: "Logout",
-          onPress: () => {
-            setUser(null);
-            navigation.reset({ index: 0, routes: [{ name: "Home" as never }] });
-          },
-        },
-        {
           title: "Change Password",
           onPress: () => null,
         },
