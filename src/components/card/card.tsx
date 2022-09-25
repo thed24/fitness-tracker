@@ -1,13 +1,12 @@
 import React from "react";
 import { Card as BaseCard, useTheme } from "native-base";
-import { InterfaceCardProps } from "native-base/lib/typescript/components/composites/Card/types";
 
 interface BaseProps {
   children: React.ReactNode;
   shadow?: string | number | undefined;
 }
 
-type Props = BaseProps & InterfaceCardProps;
+type Props = BaseProps & React.ComponentProps<typeof BaseCard>;
 
 export function Card({ children, shadow, ...props }: Props) {
   const theme = useTheme();
@@ -15,7 +14,7 @@ export function Card({ children, shadow, ...props }: Props) {
     <BaseCard
       bg={theme.colors.white}
       shadow={shadow ?? "none"}
-      borderRadius={4}
+      rounded={8}
       {...props}
     >
       {children}

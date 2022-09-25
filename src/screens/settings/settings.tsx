@@ -4,7 +4,6 @@ import { Card, Screen } from "components";
 import {
   Box,
   Text,
-  Pressable,
   Radio,
   SectionList,
   useTheme,
@@ -16,22 +15,6 @@ export function Settings() {
   const theme = useTheme();
 
   const { mutate } = useEditSettings();
-
-  const sections = [
-    {
-      title: "Account",
-      data: [
-        {
-          title: "Change Password",
-          onPress: () => null,
-        },
-        {
-          title: "Delete Account",
-          onPress: () => null,
-        },
-      ],
-    },
-  ];
 
   const settingsSections = [
     {
@@ -103,29 +86,7 @@ export function Settings() {
   return (
     <Screen>
       <SectionList
-        w="95%"
-        marginTop="10"
-        marginBottom={-20}
-        sections={sections}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => (
-          <Pressable onPress={item.onPress} _pressed={{ opacity: 0.5 }}>
-            {createCard(<Text>{item.title}</Text>)}
-          </Pressable>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Box
-            ml={2}
-            w="100%"
-            background={theme.colors.gray[100]}
-            _text={{ fontSize: "md", fontWeight: "bold" }}
-          >
-            {title}
-          </Box>
-        )}
-      />
-
-      <SectionList
+        mt={10}
         w="95%"
         sections={settingsSections}
         keyExtractor={(item) => item.title}

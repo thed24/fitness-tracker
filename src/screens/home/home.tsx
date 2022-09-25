@@ -17,10 +17,10 @@ export function HomeScreen({ navigation }: NavigationProps) {
 
   return (
     <Screen>
-      <Heading marginTop="10"> Welcome to Fitness Tracker </Heading>
+      <Heading mt={10}> Welcome to Fitness Tracker </Heading>
       <Text> Sign in or register below to get started! </Text>
       <Login />
-      <Pressable onPress={() => navigation.navigate("Register")}>
+      <Pressable mt={5} onPress={() => navigation.navigate("Register")}>
         <Text>
           Don&apos;t have an account?
           <Text fontWeight="bold" color={theme.colors.primary[800]}>

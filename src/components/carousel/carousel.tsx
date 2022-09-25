@@ -8,9 +8,10 @@ import PaginationDot from "react-native-animated-pagination-dot";
 interface Props {
     items: any[];
     renderItem: (item: any, index: number) => ReactElement<any, string | JSXElementConstructor<any>>;
+    defaultIndex?: number | undefined;
 }
 
-export function Carousel({ renderItem, items }: Props) {
+export function Carousel({ renderItem, items, defaultIndex = undefined }: Props) {
   const theme = useTheme();
   const { width } = Dimensions.get("window");
   const [activeIndex, setActiveIndex] = React.useState(items.length - 1);
@@ -22,12 +23,14 @@ export function Carousel({ renderItem, items }: Props) {
         pagingEnabled
         width={width}
         height={width * 1.2}
+        snapEnabled
         scrollAnimationDuration={1000}
         data={items}
+        defaultIndex={defaultIndex}
         mode="parallax"
         modeConfig={{
           parallaxScrollingScale: 0.90,
-          parallaxScrollingOffset: 50,
+          parallaxScrollingOffset: 100,
         }}
         onSnapToItem={(index) => setActiveIndex(index)}
         renderItem={({ item, index }) => renderItem(item, index)}

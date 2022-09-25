@@ -1,4 +1,4 @@
-import { useTheme, Text } from "native-base";
+import { Text } from "native-base";
 import React from "react";
 
 interface BaseProps {
@@ -7,10 +7,9 @@ interface BaseProps {
   color?: string;
 }
 
-type Props = BaseProps & any;
+type Props = BaseProps & React.ComponentProps<typeof Text>;
 
-export function FormLabel({ children, textAlign, color }: Props) {
-  const theme = useTheme();
+export function FormLabel({ children, textAlign, color, ...props }: Props) {
   return (
     <Text
       color={color}
@@ -18,6 +17,7 @@ export function FormLabel({ children, textAlign, color }: Props) {
       marginBottom={2}
       fontSize={16}
       fontWeight="semibold"
+      {...props}
     >
       {children}
     </Text>

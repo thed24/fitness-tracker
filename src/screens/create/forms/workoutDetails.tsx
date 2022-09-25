@@ -1,10 +1,11 @@
 import { useExercises } from "api";
-import { Autocomplete, Button, Card, FormInput, FormLabel } from "components";
-import { Box, HStack, Text } from "native-base";
+import { Autocomplete, Button, Card, FormLabel } from "components";
+import { Box, HStack, ScrollView, Text } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { ActivityEntry } from "../components/activityEntry";
 import { ExerciseFilters, Filters } from "../components/exerciseFilters";
+import { IncrementBar } from "../components/incrementBar";
 import { CreateWorkoutProps } from "../createWorkout";
 
 export function WorkoutDetails({ form }: CreateWorkoutProps) {
@@ -93,7 +94,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     const newActivities = [...workout.activities];
     newActivities.splice(index, 1);
     form.setFieldValue("workout", { ...workout, activities: newActivities });
-  }
+  };
 
   const getActivitySpecificFields = () => {
     if (activity) {
@@ -101,43 +102,41 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         case "strength":
           return (
             <Box marginBottom={4}>
-              <FormInput
+              <IncrementBar
                 name="Sets"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("sets")}
+                increments={[3, 1, -1, -3]}
                 value={activity.sets}
+                onChange={handleActivityUpdate("sets")}
               />
-
-              <FormInput
+              <IncrementBar
                 name="Reps"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("reps")}
+                increments={[5, 1, -1, -5]}
                 value={activity.reps}
+                onChange={handleActivityUpdate("reps")}
               />
-
-              <FormInput
-                name={weightFormatter("Weight")}
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("weight")}
+              <IncrementBar
+                name="Weight"
+                increments={[50, 10, -10, -50]}
                 value={activity.weight}
+                onChange={handleActivityUpdate("weight")}
               />
             </Box>
           );
         case "cardio":
           return (
             <Box marginBottom={4}>
-              <FormInput
-                name={distanceFormatter("Distance")}
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("distance")}
-                value={activity.distance}
+              <IncrementBar
+                name="Distance"
+                increments={[5, 1, -1, -5]}
+                value={activity.duration}
+                onChange={handleActivityUpdate("duration")}
               />
 
-              <FormInput
+              <IncrementBar
                 name="Duration (minutes)"
-                onBlur={() => {}}
-                onChangeText={handleActivityUpdate("duration")}
+                increments={[5, 1, -1, -5]}
                 value={activity.duration}
+                onChange={handleActivityUpdate("duration")}
               />
             </Box>
           );
@@ -149,7 +148,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
   };
 
   return (
-    <Box w="80%">
+    <ScrollView w="90%">
       <FormLabel>Activities</FormLabel>
 
       <Card mb={2} py={-1}>
@@ -162,7 +161,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
             />
           ))
         ) : (
-          <Text>No exercises added yet</Text>
+          <Text py={4}>No exercises added yet</Text>
         )}
       </Card>
 
@@ -175,6 +174,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         isDisabled={!exerciseType}
         w="full"
         placeholder="Bench press"
+        rounded={8}
         marginBottom={1}
         marginLeft="auto"
         marginRight="auto"
@@ -196,6 +196,6 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       >
         Add Activity
       </Button>
-    </Box>
+    </ScrollView>
   );
 }

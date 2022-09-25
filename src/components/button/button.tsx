@@ -4,17 +4,21 @@ import {
   ColorSchemeType,
   ColorType,
 } from "native-base/lib/typescript/components/types";
-import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
 
-interface Props {
+interface NewProps {
   disabled?: boolean;
   onPress?: (event: any) => void;
   centered?: boolean;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   colorScheme?: ColorSchemeType;
   children: React.ReactNode;
   loading?: boolean;
 }
+
+type Props = NewProps & Omit<React.ComponentProps<typeof BaseButton>, keyof NewProps>;
+
+const AnimatedButton = Animated.createAnimatedComponent(BaseButton)
 
 export function Button({
   disabled,
@@ -24,17 +28,20 @@ export function Button({
   children,
   centered,
   loading,
+  ...rest
 }: Props) {
   const theme = useTheme();
   const color: ColorType = disabled ? theme.colors.gray[300] : theme.colors.primary[500];
 
-  const animatedValue = useSharedValue(0);
+  const animatedValue = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: withTiming(animatedValue.value, { duration: 300 }) }],
+      transform: [{ scale: animatedValue.value }],
     }));
 
   let width;
-  if (size === "sm") {
+  if (size === "xs") {
+    width = "15%";
+  } else if (size === "sm") {
     width = "25%";
   } else if (size === "md") {
     width = "50%";
@@ -54,16 +61,13 @@ export function Button({
   }
 
   const handleOnPress = (event: any) => {
-    animatedValue.value = 0.8;
-    setTimeout(() => {
-      animatedValue.value = 1;
-    }, 300);
-
     if (onPress) onPress(event);
+    animatedValue.value = withSpring(1.05);
+    animatedValue.value = withDelay(100, withSpring(1));
   };
 
   return (
-    <BaseButton
+    <AnimatedButton
       isLoading={loading}
       colorScheme={colorScheme}
       textAlign="center"
@@ -77,9 +81,10 @@ export function Button({
         color: "white",
         fontWeight: "semibold",
       }}
+      {...rest}
     >
       {children}
-    </BaseButton>
+    </AnimatedButton>
   );
 }
 

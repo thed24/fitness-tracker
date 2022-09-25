@@ -25,12 +25,14 @@ export function ExerciseFilters({ filters, setFilters }: Props) {
         {...props}
         key="filter-button"
         mt={-1}
-        ml={1}
         onPress={() => setIsOpen(true)}
         _focus={{
           borderWidth: 0,
         }}
-        icon={<Icon name="ios-funnel" size={15} />}
+        _pressed={{
+          borderRadius: 100,
+        }}
+        icon={<Icon name="ios-funnel-sharp" size={15} />}
       />
     ),
     [filters, setFilters]

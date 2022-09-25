@@ -87,7 +87,7 @@ export function CreateWorkout() {
         {(form) => (
           <>
             <Autocomplete
-              width="94%"
+              width="97%"
               paddingTop={4}
               variant="unstyled"
               fontWeight="bold"
@@ -106,6 +106,7 @@ export function CreateWorkout() {
               currentIndex={index}
               setIndex={setIndex}
               onSubmit={form.handleSubmit}
+              size="lg"
             />
           </>
         )}

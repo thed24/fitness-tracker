@@ -5,7 +5,7 @@ import { DashboardStack } from "../dashboardStack/dashboardStack";
 import { CreateWorkout } from "../create/createWorkout";
 import { Settings } from "../settings/settings";
 import { GradientIcon } from "./components/gradientIcon";
-import { TabIcon } from "./components/tabIcon";
+import { IoniconsIconsNames, TabIcon } from "./components/tabIcon";
 import { LogoutButton } from "./components/logoutButton";
 
 export type SelectedProfileTab = "schedule" | "history";
@@ -18,7 +18,7 @@ export function ProfileStack() {
 
   const createTab = (
     name: string,
-    icon: string,
+    icon: IoniconsIconsNames,
     component: React.FC<any>,
     action: boolean = false
   ) => {
@@ -51,11 +51,12 @@ export function ProfileStack() {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: theme.colors.gray[50],
           borderTopWidth: 0,
-          height: 60,
+          height: 50,
           elevation: 5,
           borderRadius: 30,
           width: "95%",

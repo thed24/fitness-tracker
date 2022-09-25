@@ -2,7 +2,7 @@ import React from "react";
 import { Input as InputBase, useTheme } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 
-interface Props {
+interface InputProps {
   value: string | undefined;
   onChangeText: (value: string) => void;
   onBlur?: (value: any) => void;
@@ -10,12 +10,15 @@ interface Props {
   type: "text" | "password";
 }
 
+type Props = InputProps & React.ComponentProps<typeof InputBase>;
+
 export function Input({
   value,
   onChangeText,
   placeholder,
   type,
   onBlur = () => {},
+  ...props
 }: Props) {
   const [hidden, setHidden] = React.useState(type === "password");
   const theme = useTheme();
@@ -38,11 +41,13 @@ export function Input({
       value={value}
       onChangeText={onChangeText}
       borderRadius={10}
+      borderWidth={1}
       backgroundColor="white"
-      type={type === "password" || hidden ? "password" : "text"}
+      type={hidden ? "password" : "text"}
       rightElement={rightElement}
       onBlur={onBlur}
       placeholder={placeholder}
+      {...props}
     />
   );
 }

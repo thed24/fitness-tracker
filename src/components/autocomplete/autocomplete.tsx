@@ -1,7 +1,5 @@
 import {
-  Box,
   FlatList,
-  IInputProps,
   Input,
   Pressable,
   Text,
@@ -9,8 +7,8 @@ import {
   View,
 } from "native-base";
 import React, { useMemo } from "react";
+import { SafeAreaView } from "react-native";
 
-type TextProps = Omit<IInputProps, "value" | "onChange">;
 interface BaseProps<T> {
   data: T[];
   keyExtractor: (item: T) => string;
@@ -18,7 +16,7 @@ interface BaseProps<T> {
   onChange: (value: string) => void;
 }
 
-type Props<T> = BaseProps<T> & TextProps;
+type Props<T> = BaseProps<T> & React.ComponentProps<typeof Input>;
 
 export function Autocomplete<T>(props: Props<T>) {
   const { data, value, onChange, keyExtractor } = props;
@@ -56,9 +54,10 @@ export function Autocomplete<T>(props: Props<T>) {
       </View>
 
       {showList && (
-        <Box ml={3}>
+        <SafeAreaView>
           {filteredData.length > 0 && (
             <FlatList
+              style={{ marginLeft: 3 }}
               data={limitedData}
               renderItem={({ item }) => (
                 <Pressable
@@ -79,7 +78,7 @@ export function Autocomplete<T>(props: Props<T>) {
               keyExtractor={keyExtractor}
             />
           )}
-        </Box>
+        </SafeAreaView>
       )}
     </View>
   );

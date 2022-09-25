@@ -10,6 +10,7 @@ interface Props {
   disabled: boolean;
   setIndex: (index: number) => void;
   onSubmit: (event: any) => void;
+  size: "sm" | "md" | "lg" | "xl";
 }
 
 export function NavigationButton({
@@ -19,6 +20,7 @@ export function NavigationButton({
   currentIndex,
   setIndex,
   onSubmit,
+  size,
 }: Props) {
   const onClickNext = (event: GestureResponderEvent) => {
     event.preventDefault();
@@ -30,13 +32,32 @@ export function NavigationButton({
     setIndex(currentIndex - 1);
   };
 
+  let width;
+  switch (size) {
+    case "sm":
+      width = "50%";
+      break;
+    case "md":
+      width = "75%";
+      break;
+    case "lg":
+      width = "86%";
+      break;
+    case "xl":
+      width = "100%";
+      break;
+    default:
+      width = "100%";
+  }
+
   return (
     <HStack
       justifyContent="center"
       space={4}
       alignItems="center"
-      marginTop="10"
-      w="75%"
+      marginTop={5}
+      marginBottom={20}
+      w={width}
     >
       {currentIndex > minSteps && (
         <Button size="md" onPress={onClickPrevious}>

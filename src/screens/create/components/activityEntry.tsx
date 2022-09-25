@@ -15,22 +15,22 @@ export function ActivityEntry({ activity, deleteActivity }: Props) {
     switch (currActivity.type) {
       case "strength":
         return (
-          <Text key={`${currActivity.name}-text`}>
+          <Text key={`${currActivity.name}-text`} my={2}>
             <Text fontWeight="bold" key={`${currActivity.name}-text-title`}>
               {currActivity.name.trim()}
             </Text>
-            {": "}
+            {"\n"}
             {currActivity.sets}x{currActivity.reps},{" "}
             {weightFormatter(currActivity.weight.toString(), false)}
           </Text>
         );
       case "cardio":
         return (
-          <Text key={`${currActivity.name}-text`}>
+          <Text key={`${currActivity.name}-text`} my={2}>
             <Text fontWeight="bold" key={`${currActivity.name}-text-title`}>
               {currActivity.name}
             </Text>
-            {": "}
+            {"\n"}
             {distanceFormatter(currActivity.distance.toString(), false)} in{" "}
             {currActivity.duration} minutes
           </Text>
