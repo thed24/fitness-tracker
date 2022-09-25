@@ -13,7 +13,6 @@ import { useEditSettings } from "api";
 export function Settings() {
   const { user } = useStore();
   const theme = useTheme();
-
   const { mutate } = useEditSettings();
 
   const settingsSections = [
@@ -104,15 +103,17 @@ export function Settings() {
                   .filter(([key, value]) => key === item.key)[0][1]
                   .toString()}
                 onChange={(val) =>
-                  mutate({
-                    userId: user!.id,
-                    userSettings: {
-                      weightUnit: null,
-                      measurementUnit: null,
-                      darkMode: null,
-                      [item.key]: val,
-                    },
-                  })
+                  {
+                    mutate({
+                      userId: user!.id,
+                      userSettings: {
+                        weightUnit: null,
+                        measurementUnit: null,
+                        darkMode: null,
+                        [item.key]: val,
+                      },
+                    });
+                  }
                 }
               >
                 {item.options.map((option) => (

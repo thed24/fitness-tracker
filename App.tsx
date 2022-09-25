@@ -13,7 +13,7 @@ import {
   RegisterScreen,
 } from "./src/screens";
 import APIProvider from "./src/api/apiProvider";
-import { theme } from "./src/utils/theme";
+import { createTheme } from "./src/utils/theme";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +33,7 @@ export default function App() {
   });
 
   return (
-    <NativeBaseProvider config={nativeBaseConfig} theme={theme}>
+    <NativeBaseProvider config={nativeBaseConfig} theme={createTheme(user?.userSettings?.darkMode ?? false)}>
       <NavigationContainer>
         <APIProvider>
           <Stack.Navigator>
