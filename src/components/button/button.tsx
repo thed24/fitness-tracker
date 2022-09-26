@@ -4,7 +4,12 @@ import {
   ColorSchemeType,
   ColorType,
 } from "native-base/lib/typescript/components/types";
-import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+} from "react-native-reanimated";
 
 interface NewProps {
   disabled?: boolean;
@@ -16,9 +21,10 @@ interface NewProps {
   loading?: boolean;
 }
 
-type Props = NewProps & Omit<React.ComponentProps<typeof BaseButton>, keyof NewProps>;
+type Props = NewProps &
+  Omit<React.ComponentProps<typeof BaseButton>, keyof NewProps>;
 
-const AnimatedButton = Animated.createAnimatedComponent(BaseButton)
+const AnimatedButton = Animated.createAnimatedComponent(BaseButton);
 
 export function Button({
   disabled,
@@ -31,12 +37,14 @@ export function Button({
   ...rest
 }: Props) {
   const theme = useTheme();
-  const color: ColorType = disabled ? theme.colors.gray[300] : theme.colors.primary[500];
+  const color: ColorType = disabled
+    ? theme.colors.gray[300]
+    : theme.colors.primary[500];
 
   const animatedValue = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: animatedValue.value }],
-    }));
+    transform: [{ scale: animatedValue.value }],
+  }));
 
   let width;
   if (size === "xs") {

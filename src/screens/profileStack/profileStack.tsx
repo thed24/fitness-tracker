@@ -54,11 +54,11 @@ export function ProfileStack() {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: theme.colors.gray[50],
+          backgroundColor: theme.colors.gray[100],
           borderTopWidth: 0,
           height: 50,
           elevation: 5,
-          borderRadius: 30,
+          borderRadius: 20,
           width: "95%",
           alignSelf: "center",
           position: "absolute",

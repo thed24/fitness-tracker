@@ -30,8 +30,12 @@ export function Accordion({ title, children }: Props) {
 
   const handlePress = () => {
     setIsOpen(!isOpen);
-    fadeAnimation.value = withSpring(isOpen ? 0 : 250);
     rotateAnimation.value = withSpring(isOpen ? 0 : 180);
+    fadeAnimation.value = withSpring(isOpen ? 15 : 250, {
+      overshootClamping: true,
+      damping: 20,
+      stiffness: 100,
+    });
   };
 
   return (

@@ -1,6 +1,6 @@
+import { MotiView } from "moti";
 import { Box, useTheme } from "native-base";
 import React from "react";
-import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/Ionicons";
 
 interface Props {
@@ -10,11 +10,6 @@ interface Props {
 
 export function GradientIcon({ name, focused }: Props) {
   const theme = useTheme();
-
-  const scaleValue = useSharedValue(1);
-  const scaleStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scaleValue.value }],
-  }));
 
   const color = () => focused ? theme.colors.primary[500] : theme.colors.gray[300];
   const gradient = () => {
@@ -29,10 +24,7 @@ export function GradientIcon({ name, focused }: Props) {
   };
 
   return (
-    <Box
-      bg={{
-        linearGradient: gradient(),
-      }}
+    <MotiView
       style={{
         position: "absolute",
         bottom: 17,
@@ -42,14 +34,25 @@ export function GradientIcon({ name, focused }: Props) {
         height: 57,
         borderRadius: 100,
       }}
+      animate={{ scale: focused ? 1.2 : 1 }}
+      transition={{ type: "spring" }}
     >
-      <Icon
-        name={name}
-        style={{ marginLeft: 2 }}
-        size={50}
-        color="white"
-        selectionColor={color()}
-      />
-    </Box>
+      <Box
+        bg={{
+          linearGradient: gradient(),
+        }}
+        style={{
+          borderRadius: 100,
+        }}
+      >
+        <Icon
+          name={name}
+          style={{ marginLeft: 2 }}
+          size={50}
+          color="white"
+          selectionColor={color()}
+        />
+      </Box>
+    </MotiView>
   );
 }
