@@ -2,13 +2,14 @@
   "expo": {
     "name": "fitnesstracker",
     "slug": "fitnesstracker",
-    "version": "alpha-0.0.3",
+    "version": "alpha-0.0.4",
     "platforms": [
       "android"
     ],
     "android": {
-      "package": "fitness.tracker",
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "versionCode": 4,
+      "package": "fitness.tracker"
     },
     "ios": {
       "bundleIdentifier": "fitness.tracker"

@@ -39,7 +39,9 @@ export const createUserSlice: StateCreator<
   getScheduledWorkouts: () => {
     const { user } = get();
     return (
-      user ? user.workouts.filter((workout) => !workout.completed) : []
+      user
+        ? user.workouts.filter((workout) => !workout.past && !workout.completed)
+        : []
     ) as ScheduledWorkout[];
   },
   getPastWorkouts: () => {
@@ -47,7 +49,7 @@ export const createUserSlice: StateCreator<
     return (
       user
         ? user.workouts
-            .filter((workout) => workout.completed)
+            .filter((workout) => workout.past)
             .sort(
               (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
             )

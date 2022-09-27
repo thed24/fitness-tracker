@@ -27,13 +27,13 @@ export interface ApiExercise {
   otherMuscleGroups: string[];
   mechanics: Mechanics;
   equipment: Equipment;
+  muscleGroupStats: Record<MuscleGroup, number>;
 }
 
 export interface ApiActivity {
   id: number;
   exercise: ApiExercise;
   data: ApiData;
-  muscleGroupStats: Record<MuscleGroup, number>;
 }
 
 export interface ApiWorkout {
@@ -60,12 +60,11 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
     id: workout.id,
     time: workout.time,
     completed: workout.completed,
-    past: workout.past,
+    past: new Date(workout.time) < new Date(),
     name: workout.name,
     activities: workout.activities.map((activity) => ({
       ...activity.exercise,
       ...activity.data,
-      muscleGroupStats: activity.muscleGroupStats,
       id: activity.id
     }))
   };
@@ -99,7 +98,8 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
         detailedMuscleGroup: activity.detailedMuscleGroup,
         otherMuscleGroups: activity.otherMuscleGroups,
         mechanics: activity.mechanics,
-        equipment: activity.equipment
+        equipment: activity.equipment,
+        muscleGroupStats: activity.muscleGroupStats
       };
 
       const data: ApiData =
@@ -126,8 +126,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
       return {
         id: 0,
         exercise,
-        data,
-        muscleGroupStats: activity.muscleGroupStats
+        data
       };
     })
   };

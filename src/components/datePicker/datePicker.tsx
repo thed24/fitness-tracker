@@ -10,12 +10,17 @@ interface Props {
 export function DatePicker({ mode, date, setDate }: Props) {
   const minDate = new Date();
 
+  const handleDateChange = (newDate: Date) => {
+    newDate.setHours(0, 0, 0, 0);
+    setDate(newDate);
+  };
+
   return (
     <DatePickerBase
       style={{ alignSelf: "center" }}
       androidVariant="nativeAndroid"
       date={date}
-      onDateChange={setDate}
+      onDateChange={handleDateChange}
       mode={mode}
       minimumDate={minDate}
     />

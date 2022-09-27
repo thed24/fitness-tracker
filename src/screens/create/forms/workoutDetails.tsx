@@ -18,7 +18,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     type: undefined,
   });
 
-  const { user, weightFormatter, distanceFormatter } = useStore();
+  const { user } = useStore();
 
   if (!user) {
     return <Text>Loading...</Text>;
@@ -148,10 +148,10 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
   };
 
   return (
-    <ScrollView w="90%">
+    <ScrollView w="95%">
       <FormLabel>Activities</FormLabel>
 
-      <Card mb={2} py={-1}>
+      <Card full={false} mb={2} py={-1}>
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
             <ActivityEntry
@@ -170,32 +170,36 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         <ExerciseFilters filters={filters} setFilters={setFilters} />
       </HStack>
 
-      <Autocomplete
-        isDisabled={!exerciseType}
-        w="full"
-        placeholder="Bench press"
-        rounded={8}
-        marginBottom={1}
-        marginLeft="auto"
-        marginRight="auto"
-        data={filteredExercises}
-        keyExtractor={(item) => item.name}
-        value={workoutName}
-        onChange={(value) => {
-          setWorkoutName(value);
-          handleExerciseChange(value);
-        }}
-      />
+      <Box w="95%" mx="auto">
+        <Autocomplete
+          isDisabled={!exerciseType}
+          w="full"
+          placeholder="Bench press"
+          rounded={8}
+          marginBottom={1}
+          marginLeft="auto"
+          marginRight="auto"
+          data={filteredExercises}
+          keyExtractor={(item) => item.name}
+          value={workoutName}
+          onChange={(value) => {
+            if (typeof value === "string") {
+              setWorkoutName(value);
+              handleExerciseChange(value);
+            }
+          }}
+        />
 
-      {getActivitySpecificFields()}
+        {getActivitySpecificFields()}
 
-      <Button
-        disabled={activity === null}
-        onPress={handleAddActivity}
-        size="xl"
-      >
-        Add Activity
-      </Button>
+        <Button
+          disabled={activity === null}
+          onPress={handleAddActivity}
+          size="xl"
+        >
+          Add Activity
+        </Button>
+      </Box>
     </ScrollView>
   );
 }

@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Input,
-  Pressable,
-  Text,
-  useTheme,
-  View,
-} from "native-base";
+import { FlatList, Input, Pressable, Text, useTheme, View } from "native-base";
 import React, { useMemo } from "react";
 import { SafeAreaView } from "react-native";
 
@@ -39,7 +32,18 @@ export function Autocomplete<T>(props: Props<T>) {
     [data, value, keyExtractor]
   );
 
-  const limitedData = useMemo(() => filteredData.slice(0, 5), [filteredData]);
+  const limitedData = useMemo(
+    () =>
+      filteredData
+        .reduce((acc, curr) => {
+          if (!acc.find((item) => keyExtractor(item) === keyExtractor(curr))) {
+            acc.push(curr);
+          }
+          return acc;
+        }, [] as T[])
+        .slice(0, 5),
+    [filteredData]
+  );
 
   return (
     <View {...textProps}>
@@ -57,25 +61,28 @@ export function Autocomplete<T>(props: Props<T>) {
         <SafeAreaView>
           {filteredData.length > 0 && (
             <FlatList
-              style={{ marginLeft: 3 }}
-              data={limitedData}
-              renderItem={({ item }) => (
-                <Pressable
-                  key={`${keyExtractor(item)}-pressable`}
-                  zIndex={1}
-                  onTouchStart={() => onChange(keyExtractor(item))}
-                >
-                  <Text
-                    key={`${keyExtractor(item)}-text`}
-                    fontSize={14}
-                    fontWeight="bold"
-                    color={theme.colors.gray[400]}
-                  >
-                    {keyExtractor(item)}
-                  </Text>
-                </Pressable>
-              )}
               keyExtractor={keyExtractor}
+              style={{ marginLeft: 13 }}
+              data={limitedData}
+              renderItem={({ item }) => {
+                const key = keyExtractor(item);
+                return (
+                  <Pressable
+                    key={`${key}-pressable`}
+                    zIndex={1}
+                    onTouchStart={() => onChange(key)}
+                  >
+                    <Text
+                      key={`${key}-text`}
+                      fontSize={14}
+                      fontWeight="bold"
+                      color={theme.colors.gray[400]}
+                    >
+                      {key}
+                    </Text>
+                  </Pressable>
+                );
+              }}
             />
           )}
         </SafeAreaView>

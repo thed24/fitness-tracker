@@ -17,12 +17,21 @@ export const queryClient = new QueryClient({
           description: error.message,
           duration: 5000,
         });
-      }
-      if (error instanceof AxiosError) {
+      } else if (error instanceof AxiosError) {
         Toast.show({
           title: "Error",
           placement: "top",
-          description: error?.response?.data ?? error.message,
+          description:
+            error?.response?.data ??
+            error.message ??
+            "An unknown error has occured",
+          duration: 5000,
+        });
+      } else {
+        Toast.show({
+          title: "Error",
+          placement: "top",
+          description: "An unknown error has occured",
           duration: 5000,
         });
       }

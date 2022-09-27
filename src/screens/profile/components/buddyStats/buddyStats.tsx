@@ -40,7 +40,7 @@ export function BuddyStats() {
       marginTop={4}
       shadow={2}
     >
-      <Accordion title="Progress">
+      <Accordion title="Stats" secondTitle="Level  1">
       {anatomy.sort((a, b) => a.level < b.level ? 1 : -1).map((bodyPart, i) =>
         createStats(bodyPart.muscleGroup, bodyPart.level, i)
       )}

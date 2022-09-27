@@ -1,4 +1,4 @@
-import { ChevronUpIcon, Heading, Pressable } from "native-base";
+import { ChevronUpIcon, Heading, HStack, Pressable } from "native-base";
 import React, { useState } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -10,9 +10,10 @@ import { Content, Container } from "./accordion.style";
 interface Props {
   children: React.ReactNode;
   title: string;
+  secondTitle?: string;
 }
 
-export function Accordion({ title, children }: Props) {
+export function Accordion({ title, children, secondTitle = undefined }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const fadeAnimation = useSharedValue(0);
@@ -40,7 +41,13 @@ export function Accordion({ title, children }: Props) {
 
   return (
     <Container>
-      <Heading size="md">{title}</Heading>
+      <HStack>
+        <Heading size="md">
+          {title}
+        </Heading>
+        {secondTitle && <Heading fontWeight="medium" ml="auto" mt="auto" size="sm">{secondTitle}</Heading>}
+      </HStack>
+
       <Animated.View style={fadeStyle}>
         <Content>{isOpen && children}</Content>
       </Animated.View>

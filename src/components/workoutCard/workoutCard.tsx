@@ -1,10 +1,9 @@
 import {
-  Badge,
   Box,
   Divider,
   Heading,
+  HStack,
   ScrollView,
-  Spinner,
   Text,
   useTheme,
   View,
@@ -22,7 +21,10 @@ import {
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
+import { titleCase } from "utils";
+import Icon from "react-native-vector-icons/Ionicons";
 import { Card } from "../card/card";
+import { Badge } from "../badge/badge";
 
 interface Props {
   workout: Workout;
@@ -36,18 +38,36 @@ export function WorkoutCard({ workout, footer }: Props) {
   const { mutate } = useDeleteWorkout();
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
-    <Box key={activity.id} rounded="md" bgColor={theme.colors.primary[600]}>
+    <Box key={activity.id} rounded="lg" bgColor={theme.colors.primary[600]}>
       <Text padding="1"> {activity.name} </Text>
-      <Box padding="2" roundedBottom="md" bgColor={theme.colors.primary[400]}>
+      <Box padding="2" bgColor={theme.colors.primary[400]}>
         {children}
       </Box>
+      <Box
+          backgroundColor={theme.colors.primary[100]}
+          roundedBottom="lg"
+          p={1}
+        >
+          <HStack>
+            {Object.entries(activity.muscleGroupStats).map(
+              ([muscleGroup, stats]) => (
+                <Text key={muscleGroup}>
+                  {titleCase(muscleGroup)} +{stats}
+                </Text>
+              )
+            )}
+          </HStack>
+        </Box>
     </Box>
   );
 
   const createStrengthContent = (activity: StrengthExercise & StrengthData) => {
     const text = (
-      <Text>
-        {weightFormatter(`${activity.sets} x ${activity.reps} at ${activity.weight}`, false)}
+      <Text my="auto">
+        {weightFormatter(
+          `${activity.sets} x ${activity.reps} at ${activity.weight}`,
+          false
+        )}
       </Text>
     );
 
@@ -56,9 +76,12 @@ export function WorkoutCard({ workout, footer }: Props) {
 
   const createCardioContent = (activity: CardioExercise & CardioData) => {
     const text = (
-      <Text>
-        {measurementFormatter(`${activity.distance} km in ${activity.duration} minutes`, false)}
-      </Text>
+        <Text>
+          {measurementFormatter(
+            `${activity.distance} km in ${activity.duration} minutes`,
+            false
+          )}
+        </Text>
     );
 
     return createContent(activity, text);
@@ -68,41 +91,40 @@ export function WorkoutCard({ workout, footer }: Props) {
     <View>
       <VStack height="100%">
         <Badge
-          onTouchStart={() => {
+          side="right"
+          loading={deleting}
+          onClick={() => {
             setDeleting(true);
-            mutate({ userId: user?.id ?? -1, workoutId: workout.id })
+            mutate({ userId: user?.id ?? -1, workoutId: workout.id });
           }}
-          bgColor={theme.colors.primary[600]}
-          rounded="full"
-          zIndex={1}
-          variant="solid"
-          alignSelf="flex-end"
-          position="absolute"
-          top="1"
-          right="2"
-          shadow="10"
         >
-          {deleting && <Spinner color={theme.colors.primary[300]} />}
-          {!deleting && <Text color={theme.colors.white}>Remove</Text>}
+          <Icon name="ios-trash-sharp" size={20} color={theme.colors.white} />
         </Badge>
+
+        {workout.past && (
+          <Badge
+            side="left"
+          >
+            {workout.completed && (
+              <Icon name="ios-checkmark-sharp" size={20} color={theme.colors.white} />
+            )}
+            
+            {!workout.completed && (
+              <Icon name="ios-close-sharp" size={20} color={theme.colors.white} />
+            )}
+          </Badge>
+        )}
+
         <Card
           backgroundColor={theme.colors.white}
           marginTop="4"
           height="100%"
           width={300}
         >
-          <Heading
-            justifyContent="center"
-            textAlign="center"
-            marginTop="1"
-          >
+          <Heading justifyContent="center" textAlign="center" marginTop="1">
             {workout.name}
           </Heading>
-          <Text
-            justifyContent="center"
-            textAlign="center"
-            marginBottom="1"
-          >
+          <Text justifyContent="center" textAlign="center" marginBottom="1">
             {dateFormat(new Date(workout.time), "dddd, mmmm dS")}
           </Text>
           <Divider marginTop="2" marginBottom="6" />

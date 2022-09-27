@@ -10,3 +10,4 @@ export { FormLabel } from "./formLabel/formLabel";
 export { Accordion } from "./accordion/accordion";
 export { Carousel } from "./carousel/carousel";
 export { Input } from "./input/input";
+export { Badge } from "./badge/badge";
