@@ -6,20 +6,53 @@ export const createTheme = (darkMode: boolean) =>
       initialColorMode: darkMode ? "dark" : "light"
     },
     colors: {
+      // purple for dark
+      // blue for light
       primary: {
-        50: "#e3f2fd",
-        100: "#bbdefb",
-        200: "#90caf9",
-        300: "#64b5f6",
-        400: "#42a5f5",
-        500: "#2196f3",
-        600: "#1e88e5",
-        700: "#1976d2",
-        800: "#1565c0",
-        900: "#0d47a1"
+        50: darkMode ? "#f3e8ff" : "#e3f2fd",
+        100: darkMode ? "#e0ccff" : "#bbdefb",
+        200: darkMode ? "#ccaaff" : "#90caf9",
+        300: darkMode ? "#b98dff" : "#64b5f6",
+        400: darkMode ? "#a66dff" : "#42a5f5",
+        500: darkMode ? "#934dff" : "#2196f3",
+        600: darkMode ? "#7f2dff" : "#1e88e5",
+        700: darkMode ? "#6b0dff" : "#1976d2",
+        800: darkMode ? "#570dff" : "#1565c0",
+        900: darkMode ? "#430dff" : "#0d47a1"
       },
       gray: {
-        100: "#f5f7f9"
+        100: darkMode ? "#212121" : "#f5f7f9",
+        200: darkMode ? "#2c2c2c" : "#e4e7eb",
+        300: darkMode ? "#3a3a3a" : "#cbd2d9",
+        400: darkMode ? "#4a4a4a" : "#9aa5b1",
+        500: darkMode ? "#5a5a5a" : "#7b8794",
+        600: darkMode ? "#6a6a6a" : "#616e7c",
+        700: darkMode ? "#7a7a7a" : "#52606d",
+        800: darkMode ? "#8a8a8a" : "#3e4c59",
+        900: darkMode ? "#9a9a9a" : "#323f4b"
+      },
+      white: darkMode ? "#cbd2d9" : "#ffffff"
+    },
+    components: {
+      Heading: {
+        baseStyle: (props: any) => ({
+          _light: {
+            color: "white"
+          },
+          _dark: {
+            color: "black"
+          }
+        })
+      },
+      Text: {
+        baseStyle: (props: any) => ({
+          _light: {
+            color: "white"
+          },
+          _dark: {
+            color: "black"
+          }
+        })
       }
     },
     fontConfig: {

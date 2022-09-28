@@ -1,19 +1,17 @@
 import React from "react";
 import { useStore } from "store";
-import { Card, Screen } from "components";
-import {
-  Box,
-  Text,
-  Radio,
-  SectionList,
-  useTheme,
-} from "native-base";
+import { Button, Card, Screen } from "components";
+import { Box, Text, Radio, SectionList, useTheme } from "native-base";
 import { useEditSettings } from "api";
+import { UserSettings } from "types";
 
 export function Settings() {
   const { user } = useStore();
   const theme = useTheme();
-  const { mutate } = useEditSettings();
+  const { mutate, isLoading } = useEditSettings();
+  const [userSettings, setUserSettings] = React.useState<Partial<UserSettings>>(
+    user?.userSettings ?? {}
+  );
 
   const settingsSections = [
     {
@@ -82,6 +80,16 @@ export function Settings() {
     </Card>
   );
 
+  const strFromBool = (bool: boolean | undefined) => {
+    if (bool === true) {
+      return "true";
+    }
+    if (bool === false) {
+      return "false";
+    }
+    return null;
+  };
+
   return (
     <Screen>
       <SectionList
@@ -92,9 +100,7 @@ export function Settings() {
         renderItem={({ item }) =>
           createCard(
             <>
-              <Text mb={2}>
-                {item.title}
-              </Text>
+              <Text mb={2}>{item.title}</Text>
               <Radio.Group
                 name={item.title}
                 direction="row"
@@ -102,19 +108,12 @@ export function Settings() {
                 defaultValue={Object.entries(user.userSettings)
                   .filter(([key, value]) => key === item.key)[0][1]
                   .toString()}
-                onChange={(val) =>
-                  {
-                    mutate({
-                      userId: user!.id,
-                      userSettings: {
-                        weightUnit: null,
-                        measurementUnit: null,
-                        darkMode: null,
-                        [item.key]: val,
-                      },
-                    });
-                  }
-                }
+                onChange={(val) => {
+                  setUserSettings((prev) => ({
+                    ...prev,
+                    [item.key]: val,
+                  }));
+                }}
               >
                 {item.options.map((option) => (
                   <Radio value={option.value} key={option.title}>
@@ -136,6 +135,22 @@ export function Settings() {
           </Box>
         )}
       />
+      <Button
+        isLoading={isLoading}
+        mb="1/4"
+        onPress={() =>
+          mutate({
+              userId: user.id,
+              userSettings: {
+                darkMode: strFromBool(userSettings?.darkMode),
+                measurementUnit: userSettings?.measurementUnit ?? null,
+                weightUnit: userSettings?.weightUnit ?? null,
+              },
+            })
+        }
+      >
+        Save
+      </Button>
     </Screen>
   );
 }

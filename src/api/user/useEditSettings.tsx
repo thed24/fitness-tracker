@@ -3,13 +3,13 @@ import { useStore } from "store";
 import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
-type RawEditSettingsRequest = {
+export type RawEditSettingsRequest = {
   userId: number;
   userSettings: {
     weightUnit: "pounds" | "kilograms" | null;
     measurementUnit: "metric" | "imperial" | null;
     darkMode: "true" | "false" | null;
-  }
+  };
 };
 
 type EditSettingsRequest = {
@@ -24,8 +24,18 @@ export function useEditSettings() {
   return useMutation(
     async (rawRequest: RawEditSettingsRequest) => {
       try {
+        const boolFromStr = (str: string | null) => {
+          if (str === "true") {
+            return true;
+          }
+          if (str === "false") {
+            return false;
+          }
+          return null;
+        };
+
         const request = {
-          darkMode: rawRequest.userSettings.darkMode === "true",
+          darkMode: boolFromStr(rawRequest.userSettings.darkMode),
           measurementUnit: rawRequest.userSettings.measurementUnit,
           weightUnit: rawRequest.userSettings.weightUnit,
         } as EditSettingsRequest;

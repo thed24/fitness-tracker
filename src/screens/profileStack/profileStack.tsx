@@ -53,8 +53,11 @@ export function ProfileStack() {
       screenOptions={{
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
+        headerStyle: {
+          backgroundColor: theme.colors.white,
+        },
         tabBarStyle: {
-          backgroundColor: theme.colors.gray[100],
+          backgroundColor: theme.colors.white,
           borderTopWidth: 0,
           height: 50,
           elevation: 5,

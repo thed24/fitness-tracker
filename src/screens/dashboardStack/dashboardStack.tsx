@@ -31,6 +31,9 @@ export function DashboardStack() {
       initialLayout={{
         width,
       }}
+      style={{
+        backgroundColor: theme.colors.gray[100],
+      }}
       screenOptions={(props) => ({
         swipeEnabled: false,
         tabBarLabelStyle: { fontSize: 12 },
@@ -40,7 +43,7 @@ export function DashboardStack() {
           marginLeft: props.route.name === "History" ? "4%" : "0%",
         },
         tabBarStyle: {
-          backgroundColor: theme.colors.gray[50],
+          backgroundColor: theme.colors.white,
           height: 50,
           elevation: 5,
           marginTop: 15,
