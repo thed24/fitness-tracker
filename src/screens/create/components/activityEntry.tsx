@@ -9,7 +9,10 @@ interface Props {
 }
 
 export function ActivityEntry({ activity, deleteActivity }: Props) {
-  const { weightFormatter, distanceFormatter } = useStore();
+  const { getWeightFormatter, getDistanceFormatter } = useStore();
+
+  const weightFormatter = getWeightFormatter();
+  const distanceFormatter = getDistanceFormatter();
 
   const createChild = (currActivity: Activity) => {
     switch (currActivity.type) {

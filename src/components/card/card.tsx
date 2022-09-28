@@ -19,7 +19,7 @@ export function Card({ children, shadow, full = true, ...props }: Props) {
 
   return (
     <BaseCard
-      bg={theme.colors.white}
+      backgroundColor={theme.colors.white}
       shadow={shadow ?? "none"}
       style={{
         shadowColor: theme.colors.black,
@@ -27,9 +27,9 @@ export function Card({ children, shadow, full = true, ...props }: Props) {
           width: 0,
           height: 2,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        shadowOpacity: 1,
+        shadowRadius: 5.84,
+        elevation: 4,
       }}
       rounded={8}
       {...extraProps}

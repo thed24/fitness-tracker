@@ -8,9 +8,11 @@ export const Dropdown = styled(Select)`
 Dropdown.defaultProps = {
     variant: "unstyled",
     textAlign: "right",
+    py: -2,
+    backgroundColor: "transparent",
     _text: {
         fontSize: "sm",
-        color: "gray.500",
+        color: "white",
         highlight: false,
     },
 };

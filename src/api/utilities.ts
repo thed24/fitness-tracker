@@ -28,7 +28,6 @@ export function updateUser(
   client
     .get(`/users/${currentUser.id}`)
     .then((response: AxiosResponse<RawGetUserResponse>) => {
-      log(response);
       setUser({
         ...ApiUserToUser(response.data.user)
       });

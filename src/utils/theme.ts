@@ -31,13 +31,13 @@ export const createTheme = (darkMode: boolean) =>
         800: darkMode ? "#8a8a8a" : "#3e4c59",
         900: darkMode ? "#9a9a9a" : "#323f4b"
       },
-      white: darkMode ? "#cbd2d9" : "#ffffff"
+      white: darkMode ? "#9a9a9a" : "#ffffff"
     },
     components: {
       Heading: {
         baseStyle: (props: any) => ({
           _light: {
-            color: "white"
+            color: "black"
           },
           _dark: {
             color: "black"
@@ -47,7 +47,7 @@ export const createTheme = (darkMode: boolean) =>
       Text: {
         baseStyle: (props: any) => ({
           _light: {
-            color: "white"
+            color: "black"
           },
           _dark: {
             color: "black"

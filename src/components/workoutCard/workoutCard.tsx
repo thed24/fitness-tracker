@@ -34,8 +34,11 @@ interface Props {
 export function WorkoutCard({ workout, footer }: Props) {
   const theme = useTheme();
   const [deleting, setDeleting] = React.useState(false);
-  const { user, weightFormatter, measurementFormatter } = useStore();
+  const { user, getWeightFormatter, getWeasurementFormatter } = useStore();
   const { mutate } = useDeleteWorkout();
+
+  const weightFormatter = getWeightFormatter();
+  const measurementFormatter = getWeasurementFormatter();
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="lg" bgColor={theme.colors.primary[600]}>

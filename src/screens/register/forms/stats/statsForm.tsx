@@ -5,7 +5,10 @@ import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";
 
 export function StatsForm({ form }: RegisterProps) {
-  const { weightFormatter, measurementFormatter } = useStore();
+  const { getWeasurementFormatter, getWeightFormatter } = useStore();
+
+  const weightFormatter = getWeightFormatter();
+  const measurementFormatter = getWeasurementFormatter();
 
   return (
     <SC.Container>

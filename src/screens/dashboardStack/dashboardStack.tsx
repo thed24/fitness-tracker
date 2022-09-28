@@ -32,7 +32,7 @@ export function DashboardStack() {
         width,
       }}
       style={{
-        backgroundColor: theme.colors.gray[100],
+        backgroundColor: theme.colors.gray[300],
       }}
       screenOptions={(props) => ({
         swipeEnabled: false,

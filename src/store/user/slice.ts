@@ -11,9 +11,12 @@ import { State } from "../store";
 export interface UserSlice {
   user: User | null;
   setUser: (user: User | null) => void;
-  weightFormatter: (word: string, addBrackets?: boolean) => string;
-  distanceFormatter: (word: string, addBrackets?: boolean) => string;
-  measurementFormatter: (word: string, addBrackets?: boolean) => string;
+  getWeightFormatter: () => (word: string, addBrackets?: boolean) => string;
+  getDistanceFormatter: () => (word: string, addBrackets?: boolean) => string;
+  getWeasurementFormatter: () => (
+    word: string,
+    addBrackets?: boolean
+  ) => string;
   getScheduledWorkouts: () => ScheduledWorkout[];
   getPastWorkouts: () => CompletedWorkout[];
   debug: () => void;
@@ -27,15 +30,16 @@ export const createUserSlice: StateCreator<
 > = (set, get) => ({
   user: null,
   setUser: (user: User | null) => set(() => ({ user })),
-  weightFormatter: createWeightFormatter(
-    get()?.user?.userSettings?.weightUnit || "kilograms"
-  ),
-  distanceFormatter: createDistanceFormatter(
-    get()?.user?.userSettings?.measurementUnit || "metric"
-  ),
-  measurementFormatter: createMeasurementFormatter(
-    get()?.user?.userSettings?.measurementUnit || "metric"
-  ),
+  getWeightFormatter: () =>
+    createWeightFormatter(get()?.user?.userSettings?.weightUnit || "kilograms"),
+  getDistanceFormatter: () =>
+    createDistanceFormatter(
+      get()?.user?.userSettings?.measurementUnit || "metric"
+    ),
+  getWeasurementFormatter: () =>
+    createMeasurementFormatter(
+      get()?.user?.userSettings?.measurementUnit || "metric"
+    ),
   getScheduledWorkouts: () => {
     const { user } = get();
     return (

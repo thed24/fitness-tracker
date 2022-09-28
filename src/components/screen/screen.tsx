@@ -17,7 +17,7 @@ export function Screen({
 
   if (loading) {
     return (
-      <SC.Container backgroundColor={theme.colors.gray[100]}>
+      <SC.Container backgroundColor={theme.colors.gray[300]}>
         <HStack marginTop="10" space={2} justifyContent="center">
           <Spinner accessibilityLabel="Loading page" />
           <Heading color={theme.colors.primary[500]} fontSize="md">
@@ -30,13 +30,13 @@ export function Screen({
 
   return scrollable ? (
     <SC.ScrollableContainer
-      backgroundColor={theme.colors.gray[100]}
+      backgroundColor={theme.colors.gray[300]}
       contentContainerStyle={{ alignItems: "center" }}
     >
       {children}
     </SC.ScrollableContainer>
   ) : (
-    <SC.Container backgroundColor={theme.colors.gray[100]}>
+    <SC.Container backgroundColor={theme.colors.gray[300]}>
       {children}
     </SC.Container>
   );

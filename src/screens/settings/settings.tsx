@@ -81,13 +81,10 @@ export function Settings() {
   );
 
   const strFromBool = (bool: boolean | undefined) => {
-    if (bool === true) {
-      return "true";
+    if (bool === undefined) {
+      return null;
     }
-    if (bool === false) {
-      return "false";
-    }
-    return null;
+    return bool.toString() as "true" | "false";
   };
 
   return (
@@ -128,7 +125,7 @@ export function Settings() {
           <Box
             w="100%"
             ml={2}
-            background={theme.colors.gray[100]}
+            background={theme.colors.gray[300]}
             _text={{ fontSize: "md", fontWeight: "bold" }}
           >
             {title}

@@ -35,9 +35,11 @@ export function WorkoutChart() {
     null
   );
 
-  const { user, getPastWorkouts, weightFormatter } = useStore();
+  const { user, getPastWorkouts, getWeightFormatter } = useStore();
   const theme = useTheme();
   const pastWorkouts = getPastWorkouts();
+
+  const weightFormatter = getWeightFormatter();
 
   const { data: workoutData, isLoading: workoutDataLoading } =
     useGetWorkoutData({
