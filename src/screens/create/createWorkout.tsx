@@ -55,7 +55,7 @@ export function CreateWorkout() {
         newTime.setDate(newTime.getDate() + i * 7);
       }
       addWorkout({
-        workout: { ...createWorkoutValues.workout, time: newTime.toISOString() },
+        workout: { ...createWorkoutValues.workout, completed: false, time: newTime.toISOString() },
         userId: user?.id ?? -1,
       });
     }
