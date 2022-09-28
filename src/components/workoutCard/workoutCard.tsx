@@ -104,7 +104,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           <Icon name="ios-trash-sharp" size={20} color={theme.colors.white} />
         </Badge>
 
-        {workout.past && (
+        {workout.past || workout.completed && (
           <Badge
             side="left"
           >

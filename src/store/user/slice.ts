@@ -53,7 +53,7 @@ export const createUserSlice: StateCreator<
     return (
       user
         ? user.workouts
-            .filter((workout) => workout.past)
+            .filter((workout) => workout.past || workout.completed)
             .sort(
               (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
             )
