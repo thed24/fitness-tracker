@@ -2,7 +2,7 @@
   "expo": {
     "name": "fitnesstracker",
     "slug": "fitnesstracker",
-    "version": "alpha-0.0.4",
+    "version": "alpha-0.1.0",
     "platforms": [
       "android"
     ],
