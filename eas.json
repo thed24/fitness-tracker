@@ -21,6 +21,7 @@
     "production": {
       "android": {
         "track": "internal",
+        "releaseStatus": "draft",
         "serviceAccountKeyPath": "pc-api-9217576884676944131-660-611aafa20edf.json"
       }
     }
