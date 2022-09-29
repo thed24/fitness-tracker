@@ -6,16 +6,16 @@ import { handleError, updateUser } from "../utilities";
 export type RawEditSettingsRequest = {
   userId: number;
   userSettings: {
-    weightUnit: "pounds" | "kilograms" | null;
-    measurementUnit: "metric" | "imperial" | null;
-    darkMode: "true" | "false" | null;
+    weightUnit: "pounds" | "kilograms";
+    measurementUnit: "metric" | "imperial";
+    darkMode: "true" | "false";
   };
 };
 
 type EditSettingsRequest = {
-  weightUnit: "pounds" | "kilograms" | null;
-  measurementUnit: "metric" | "imperial" | null;
-  darkMode: boolean | null;
+  weightUnit: "pounds" | "kilograms";
+  measurementUnit: "metric" | "imperial";
+  darkMode: boolean;
 };
 
 export function useEditSettings() {
@@ -24,14 +24,11 @@ export function useEditSettings() {
   return useMutation(
     async (rawRequest: RawEditSettingsRequest) => {
       try {
-        const boolFromStr = (str: string | null) => {
+        const boolFromStr = (str: string) => {
           if (str === "true") {
             return true;
           }
-          if (str === "false") {
-            return false;
-          }
-          return null;
+          return false;
         };
 
         const request = {

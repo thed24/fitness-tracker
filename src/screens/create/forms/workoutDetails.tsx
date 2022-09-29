@@ -148,7 +148,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
   };
 
   return (
-    <ScrollView w="95%">
+    <ScrollView nestedScrollEnabled w="95%">
       <FormLabel>Activities</FormLabel>
 
       <Card full={false} mb={2} py={-1}>

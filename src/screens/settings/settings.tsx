@@ -9,9 +9,11 @@ export function Settings() {
   const { user } = useStore();
   const theme = useTheme();
   const { mutate, isLoading } = useEditSettings();
-  const [userSettings, setUserSettings] = React.useState<Partial<UserSettings>>(
-    user?.userSettings ?? {}
-  );
+  const [userSettings, setUserSettings] = React.useState<UserSettings>(user?.userSettings ?? {
+    darkMode: true,
+    weightUnit: "kilograms",
+    measurementUnit: "metric",
+  });
 
   const settingsSections = [
     {
@@ -80,12 +82,7 @@ export function Settings() {
     </Card>
   );
 
-  const strFromBool = (bool: boolean | undefined) => {
-    if (bool === undefined) {
-      return null;
-    }
-    return bool.toString() as "true" | "false";
-  };
+  const strFromBool = (bool: boolean) => bool.toString() as "true" | "false";
 
   return (
     <Screen>

@@ -1,7 +1,7 @@
-import { Input } from "components";
 import { FormControl, VStack, Text, HStack } from "native-base";
 import React from "react";
 import { FormLabel } from "../formLabel/formLabel";
+import { Input } from "../input/input";
 
 interface Props {
   required?: boolean;
