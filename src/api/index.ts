@@ -7,4 +7,4 @@ export * from "./user/useEditWorkout";
 export * from "./user/useDeleteWorkout";
 export * from "./user/useGetWorkoutData";
 export * from "./user/useGetWorkoutNames";
-export * from "./user/useEditSettings";
+export * from "./user/useEditUser";

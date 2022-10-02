@@ -1,125 +1,129 @@
 import React from "react";
 import { useStore } from "store";
-import { Button, Card, Input, Screen, Avatar, FormLabel } from "components";
-import { Box, Text, Radio, SectionList, useTheme, VStack, Divider } from "native-base";
-import { useEditSettings } from "api";
-import { UserSettings } from "types";
-import Icon from "react-native-vector-icons/Ionicons";
+import { Button, Screen, Avatar, FormLabel } from "components";
+import { Box, SectionList, useTheme, VStack } from "native-base";
+import { RawEditUserRequest, useEditUser } from "api";
 import { SettingSection, settingsSections } from "./settingsSections";
+import { UserSetting } from "./components/userSetting";
+import { UserField } from "./components/userField";
 
 export function Settings() {
-  const { user } = useStore();
+  const { user, getWeightFormatter, getWeasurementFormatter } = useStore();
   const theme = useTheme();
-  const { mutate, isLoading } = useEditSettings();
-  const [userSettings, setUserSettings] = React.useState<UserSettings>(
-    user?.userSettings ?? {
-      darkMode: true,
-      weightUnit: "kilograms",
-      measurementUnit: "metric",
-    }
-  );
+
+  const { mutate, isLoading } = useEditUser();
+  const [userDetails, setUserDetails] = React.useState<RawEditUserRequest>({
+    userId: user?.id ?? 0,
+    username: user?.username ?? "",
+    email: user?.email ?? "",
+    weightUnit: user?.userSettings.weightUnit ?? "pounds",
+    measurementUnit: user?.userSettings.measurementUnit ?? "metric",
+    darkMode: user?.userSettings.darkMode ? "true" : "false",
+    weeklyWorkountAmountGoal: user?.weeklyWorkoutAmountGoal ?? 0,
+    height: user?.height ?? 0,
+    weight: user?.weight ?? 0,
+    age: user?.age ?? 0,
+  });
 
   if (!user) {
     return null;
   }
 
-  const createCard = (children: React.ReactNode) => (
-    <Card
-      w="95%"
-      marginLeft="auto"
-      marginRight="auto"
-      _text={{ fontSize: "md" }}
-      my={2}
-      px={2}
-    >
-      {children}
-    </Card>
-  );
-
   const createSettingSection = (item: SettingSection) => (
-    <>
-      <Text mb={2}>{item.title}</Text>
-      <Radio.Group
-        name={item.title}
-        direction="row"
-        space={4}
-        defaultValue={Object.entries(user.userSettings)
-          .filter(([key, value]) => key === item.key)[0][1]
-          .toString()}
-        onChange={(val) => {
-          setUserSettings((prev) => ({
-            ...prev,
-            [item.key]: val,
-          }));
-        }}
-      >
-        {item.options.map((option) => (
-          <Radio value={option.value} key={option.title}>
-            <Text>{option.title}</Text>
-          </Radio>
-        ))}
-      </Radio.Group>
-    </>
+    <UserSetting
+      item={item}
+      value={Object.entries(user.userSettings)
+        .filter(([key, value]) => key === item.key)[0][1]
+        .toString()}
+      onChange={(val) => {
+        setUserDetails((prev) => ({
+          ...prev,
+          [item.key]: val,
+        }));
+      }}
+    />
   );
 
   return (
     <Screen scrollable>
-      <Avatar my={8} size="2xl" />
+      <Avatar my={4} size="2xl" />
 
-      <VStack mt={2} space={4} alignItems="center">
+      <VStack space={4} alignItems="center">
         <FormLabel fontWeight="bold" mr="auto">
-          Username
+          Profile
         </FormLabel>
-        <Input
-          w="90%"
-          onChangeText={() => null}
+
+        <UserField
+          value={userDetails.username}
           placeholder="Username"
-          value={user.username}
-          type="text"
-          mt={-4}
-          leftElement={
-            <>
-              <Icon
-                name="person"
-                size={24}
-                color={theme.colors.gray[400]}
-                style={{ marginLeft: 10 }}
-              />
-              <Divider orientation="vertical" ml={2} h="3/4" />
-            </>
+          onChange={(text) =>
+            setUserDetails((prev) => ({
+              ...prev,
+              username: text,
+            }))
           }
+          icon="account"
         />
-        <FormLabel fontWeight="bold" mr="auto">
-          Email
-        </FormLabel>
-        <Input
-          w="90%"
-          onChangeText={() => null}
+
+        <UserField
           placeholder="Email"
-          value={user.email}
-          type="text"
-          mt={-4}
-          leftElement={
-            <>
-              <Icon
-                name="mail"
-                size={24}
-                color={theme.colors.gray[400]}
-                style={{ marginLeft: 10 }}
-              />
-              <Divider orientation="vertical" ml={2} h="3/4" />
-            </>
+          value={userDetails.email}
+          onChange={(text) =>
+            setUserDetails((prev) => ({
+              ...prev,
+              email: text,
+            }))
           }
+          icon="email"
+        />
+
+        <UserField
+          placeholder="Height"
+          value={userDetails.height}
+          suffix={userDetails.measurementUnit === "metric" ? "cm" : "in"}
+          onChange={(text) =>
+            setUserDetails((prev) => ({
+              ...prev,
+              height: parseInt(text, 10),
+            }))
+          }
+          icon="ruler"
+        />
+
+        <UserField
+          placeholder="Weight"
+          value={userDetails.weight}
+          suffix={userDetails.weightUnit === "pounds" ? "lbs" : "kg"}
+          onChange={(text) =>
+            setUserDetails((prev) => ({
+              ...prev,
+              weight: parseInt(text, 10),
+            }))
+          }
+          icon="scale"
+        />
+
+        <UserField
+          placeholder="Age"
+          value={userDetails.age}
+          onChange={(text) =>
+            setUserDetails((prev) => ({
+              ...prev,
+              age: parseInt(text, 10),
+            }))
+          }
+          icon="cake"
         />
       </VStack>
 
       <SectionList
-        mt={10}
+        mt={4}
         w="95%"
         h="100%"
+        nestedScrollEnabled
         sections={settingsSections}
         keyExtractor={(item) => item.title}
-        renderItem={({ item }) => createCard(createSettingSection(item))}
+        renderItem={({ item }) => createSettingSection(item)}
         renderSectionHeader={({ section: { title } }) => (
           <Box
             w="100%"
@@ -137,12 +141,8 @@ export function Settings() {
         mt={4}
         onPress={() =>
           mutate({
+            ...userDetails,
             userId: user.id,
-            userSettings: {
-              darkMode: userSettings.darkMode.toString() as "true" | "false",
-              measurementUnit: userSettings.measurementUnit,
-              weightUnit: userSettings.weightUnit,
-            },
           })
         }
       >

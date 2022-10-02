@@ -28,21 +28,6 @@ export function FormInput({
   required = false,
   type = "text",
 }: Props) {
-  let valueAsString;
-
-  if (typeof value === "number" && !Number.isNaN(value)) {
-    valueAsString = value.toString();
-  }
-  if (typeof value === "number" && Number.isNaN(value)) {
-    valueAsString = "";
-  }
-  if (typeof value === "string") {
-    valueAsString = value;
-  }
-  if (typeof value === "undefined") {
-    valueAsString = "";
-  }
-
   return (
     <VStack width="100%">
       <FormControl isRequired={required}>
@@ -58,7 +43,7 @@ export function FormInput({
 
         <Input
           type={type}
-          value={valueAsString}
+          value={value}
           onBlur={onBlur}
           placeholder={placeholder}
           onChangeText={onChangeText}

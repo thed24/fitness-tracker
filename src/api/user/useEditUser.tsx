@@ -3,26 +3,36 @@ import { useStore } from "store";
 import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
-export type RawEditSettingsRequest = {
+export type RawEditUserRequest = {
   userId: number;
-  userSettings: {
-    weightUnit: "pounds" | "kilograms";
-    measurementUnit: "metric" | "imperial";
-    darkMode: "true" | "false";
-  };
-};
-
-type EditSettingsRequest = {
   weightUnit: "pounds" | "kilograms";
   measurementUnit: "metric" | "imperial";
+  darkMode: "true" | "false";
+  username: string;
+  email: string;
+  weeklyWorkountAmountGoal: number;
+  height: number;
+  weight: number;
+  age: number;
+};
+
+type EditUserRequest = {
+  weightUnit: "pounds" | "kilograms";
+  measurementUnit: "metric" | "imperial";
+  username: string;
+  email: string;
+  weeklyWorkountAmountGoal: number;
+  height: number;
+  weight: number;
+  age: number;
   darkMode: boolean;
 };
 
-export function useEditSettings() {
+export function useEditUser() {
   const { user, setUser } = useStore();
 
   return useMutation(
-    async (rawRequest: RawEditSettingsRequest) => {
+    async (rawRequest: RawEditUserRequest) => {
       try {
         const boolFromStr = (str: string) => {
           if (str === "true") {
@@ -32,14 +42,11 @@ export function useEditSettings() {
         };
 
         const request = {
-          darkMode: boolFromStr(rawRequest.userSettings.darkMode),
-          measurementUnit: rawRequest.userSettings.measurementUnit,
-          weightUnit: rawRequest.userSettings.weightUnit,
-        } as EditSettingsRequest;
+          ...rawRequest,
+          darkMode: boolFromStr(rawRequest.darkMode),
+        } as EditUserRequest;
 
-        return (
-          await client.put(`/users/${rawRequest.userId}/settings`, request)
-        ).data;
+        return (await client.put(`/users/${rawRequest.userId}`, request)).data;
       } catch (error) {
         handleError(error);
       }

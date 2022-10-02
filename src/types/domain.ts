@@ -176,6 +176,10 @@ export interface User {
   username: string;
   email: string;
   password: string;
+  height: number;
+  weight: number;
+  age: number;
+  weeklyWorkoutAmountGoal: number;
   workouts: Workout[];
   workoutBuddy: Buddy;
   userSettings: UserSettings;

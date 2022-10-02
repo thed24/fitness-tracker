@@ -1,4 +1,4 @@
-import { ChevronUpIcon, Heading, HStack, Pressable } from "native-base";
+import { ChevronUpIcon, Heading, HStack, Pressable, useTheme } from "native-base";
 import React, { useState } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -15,6 +15,7 @@ interface Props {
 
 export function Accordion({ title, children, secondTitle = undefined }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const theme = useTheme();
 
   const fadeAnimation = useSharedValue(0);
   const fadeStyle = useAnimatedStyle(() => ({
@@ -53,7 +54,7 @@ export function Accordion({ title, children, secondTitle = undefined }: Props) {
       </Animated.View>
       <Animated.View style={rotateStyle}>
         <Pressable onPress={handlePress}>
-          <ChevronUpIcon />
+          <ChevronUpIcon color={theme.colors.gray[500]} size="sm" />
         </Pressable>
       </Animated.View>
     </Container>

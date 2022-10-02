@@ -50,6 +50,10 @@ export interface ApiUser {
   username: string;
   email: string;
   password: string;
+  height: number;
+  weight: number;
+  age: number;
+  weeklyWorkoutAmountGoal: number;
   workouts: ApiWorkout[];
   workoutBuddy: Buddy;
   userSettings: UserSettings;
@@ -78,7 +82,11 @@ export function ApiUserToUser(apiUser: ApiUser): User {
     password: apiUser.password,
     workouts: apiUser.workouts.map(ApiWorkoutToWorkout),
     workoutBuddy: apiUser.workoutBuddy,
-    userSettings: apiUser.userSettings
+    userSettings: apiUser.userSettings,
+    height: apiUser.height,
+    weight: apiUser.weight,
+    age: apiUser.age,
+    weeklyWorkoutAmountGoal: apiUser.weeklyWorkoutAmountGoal
   };
 }
 
@@ -140,6 +148,10 @@ export function UserToApiUser(user: User): ApiUser {
     password: user.password,
     workouts: user.workouts.map(WorkoutToApiWorkout),
     workoutBuddy: user.workoutBuddy,
-    userSettings: user.userSettings
+    userSettings: user.userSettings,
+    height: user.height,
+    weight: user.weight,
+    age: user.age,
+    weeklyWorkoutAmountGoal: user.weeklyWorkoutAmountGoal
   };
 }

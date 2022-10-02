@@ -3,14 +3,14 @@ import { Input as InputBase, useTheme } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 
 interface InputProps {
-  value: string | undefined;
+  value: string | number | undefined;
   onChangeText: (value: string) => void;
   onBlur?: (value: any) => void;
   placeholder: string | undefined;
   type: "text" | "password";
 }
 
-type Props = InputProps & React.ComponentProps<typeof InputBase>;
+type Props = Omit<React.ComponentProps<typeof InputBase>, "value"> & InputProps;
 
 export function Input({
   value,
@@ -22,6 +22,21 @@ export function Input({
 }: Props) {
   const [hidden, setHidden] = React.useState(type === "password");
   const theme = useTheme();
+
+  let valueAsString;
+
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    valueAsString = value.toString();
+  }
+  if (typeof value === "number" && Number.isNaN(value)) {
+    valueAsString = "";
+  }
+  if (typeof value === "string") {
+    valueAsString = value;
+  }
+  if (typeof value === "undefined") {
+    valueAsString = "";
+  }
 
   const rightElement =
     type === "password" ? (
@@ -38,7 +53,7 @@ export function Input({
 
   return (
     <InputBase
-      value={value}
+      value={valueAsString}
       onChangeText={onChangeText}
       borderRadius={10}
       borderWidth={1}
@@ -46,7 +61,20 @@ export function Input({
       type={hidden ? "password" : "text"}
       rightElement={rightElement}
       onBlur={onBlur}
+      caretHidden={false}
       placeholder={placeholder}
+      color={theme.colors.black}
+      _input={{
+        _focus: {
+          borderColor: theme.colors.primary[500],
+        },
+        _hover: {
+          borderColor: theme.colors.primary[500],
+        },
+        _invalid: {
+          borderColor: theme.colors.red[500],
+        },
+      }}
       {...props}
     />
   );
