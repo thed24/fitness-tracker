@@ -179,7 +179,7 @@ export function WorkoutChart() {
   return (
     <Card w="90%" marginBottom={4} marginTop={4}>
       <HStack>
-        <Heading size="md">Workout Chart</Heading>
+        <Heading size="md">Workout Graphs</Heading>
 
         <VStack w="55%" marginLeft={1}>
           <Dropdown
