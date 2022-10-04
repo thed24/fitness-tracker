@@ -35,7 +35,7 @@ export function DashboardStack() {
         backgroundColor: theme.colors.gray[300],
       }}
       screenOptions={(props) => ({
-        swipeEnabled: false,
+        swipeEnabled: true,
         tabBarIndicatorStyle: {
           backgroundColor: theme.colors.primary[500],
           width: props.route.name === "Profile" ? "33%" : "28%",
