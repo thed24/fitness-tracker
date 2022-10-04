@@ -48,73 +48,75 @@ export function Settings() {
     <Screen scrollable>
       <Avatar my={4} size="2xl" />
 
-      <VStack space={4} alignItems="center">
+      <Box>
         <FormLabel fontWeight="bold" mr="auto">
           Profile
         </FormLabel>
 
-        <UserField
-          value={userDetails.username}
-          placeholder="Username"
-          onChange={(text) =>
-            setUserDetails((prev) => ({
-              ...prev,
-              username: text,
-            }))
-          }
-          icon="account"
-        />
+        <VStack w="100%" space={2} alignItems="center">
+          <UserField
+            value={userDetails.username}
+            placeholder="Username"
+            onChange={(text) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                username: text,
+              }))
+            }
+            icon="account"
+          />
 
-        <UserField
-          placeholder="Email"
-          value={userDetails.email}
-          onChange={(text) =>
-            setUserDetails((prev) => ({
-              ...prev,
-              email: text,
-            }))
-          }
-          icon="email"
-        />
+          <UserField
+            placeholder="Email"
+            value={userDetails.email}
+            onChange={(text) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                email: text,
+              }))
+            }
+            icon="email"
+          />
 
-        <UserField
-          placeholder="Height"
-          value={userDetails.height}
-          suffix={userDetails.measurementUnit === "metric" ? "cm" : "in"}
-          onChange={(text) =>
-            setUserDetails((prev) => ({
-              ...prev,
-              height: parseInt(text, 10),
-            }))
-          }
-          icon="ruler"
-        />
+          <UserField
+            placeholder="Height"
+            value={userDetails.height}
+            suffix={userDetails.measurementUnit === "metric" ? "cm" : "in"}
+            onChange={(text) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                height: parseInt(text, 10),
+              }))
+            }
+            icon="ruler"
+          />
 
-        <UserField
-          placeholder="Weight"
-          value={userDetails.weight}
-          suffix={userDetails.weightUnit === "pounds" ? "lbs" : "kg"}
-          onChange={(text) =>
-            setUserDetails((prev) => ({
-              ...prev,
-              weight: parseInt(text, 10),
-            }))
-          }
-          icon="scale"
-        />
+          <UserField
+            placeholder="Weight"
+            value={userDetails.weight}
+            suffix={userDetails.weightUnit === "pounds" ? "lbs" : "kg"}
+            onChange={(text) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                weight: parseInt(text, 10),
+              }))
+            }
+            icon="scale"
+          />
 
-        <UserField
-          placeholder="Age"
-          value={userDetails.age}
-          onChange={(text) =>
-            setUserDetails((prev) => ({
-              ...prev,
-              age: parseInt(text, 10),
-            }))
-          }
-          icon="cake"
-        />
-      </VStack>
+          <UserField
+            placeholder="Age"
+            value={userDetails.age}
+            onChange={(text) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                age: parseInt(text, 10),
+              }))
+            }
+            icon="cake"
+          />
+        </VStack>
+      </Box>
 
       <SectionList
         mt={4}

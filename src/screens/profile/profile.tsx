@@ -4,7 +4,6 @@ import { useStore } from "store";
 import { Screen } from "components";
 import { WorkoutChart } from "./components/workoutChart/workoutChart";
 import { BuddyStats } from "./components/buddyStats/buddyStats";
-import { Achievements } from "./components/achievements/achievements";
 
 export function Profile() {
   const { user } = useStore();
@@ -18,7 +17,6 @@ export function Profile() {
       </Text>
 
       <BuddyStats />
-      <Achievements />
       <WorkoutChart />
     </Screen>
   );

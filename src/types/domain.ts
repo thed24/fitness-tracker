@@ -64,15 +64,20 @@ interface BaseData {
 }
 
 export interface StrengthData extends BaseData {
-  reps: number;
-  sets: number;
-  weight: number;
+  targetReps: number;
+  targetSets: number;
+  targetWeight: number;
+  reps: number | null;
+  sets: number | null;
+  weight: number | null;
   type: "strength";
 }
 
 export interface CardioData extends BaseData {
-  distance: number;
-  duration: number;
+  targetDistance: number;
+  targetDuration: number;
+  distance: number | null;
+  duration: number | null;
   type: "cardio";
 }
 

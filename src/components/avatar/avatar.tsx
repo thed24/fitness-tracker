@@ -14,6 +14,12 @@ export function Avatar({ ...props }: Props) {
       source={{
         uri: "https://pbs.twimg.com/profile_images/1240119990411550720/hBEe3tdn_400x400.png",
       }}
+      style={{
+        backgroundColor: theme.colors.white,
+        borderColor: theme.colors.primary[500],
+        borderWidth: 2,
+      }}
+      textAlign="center"
       borderColor={theme.colors.gray[200]}
       borderWidth={2}
       {...props}

@@ -1,6 +1,6 @@
 import { useStore } from "store";
 import { Activity } from "types";
-import { DeleteIcon, HStack, IconButton, Text } from "native-base";
+import { DeleteIcon, HStack, IconButton, Text, useTheme } from "native-base";
 import React from "react";
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
 
 export function ActivityEntry({ activity, deleteActivity }: Props) {
   const { getWeightFormatter, getDistanceFormatter } = useStore();
+  const theme = useTheme();
 
   const weightFormatter = getWeightFormatter();
   const distanceFormatter = getDistanceFormatter();
@@ -23,8 +24,8 @@ export function ActivityEntry({ activity, deleteActivity }: Props) {
               {currActivity.name.trim()}
             </Text>
             {"\n"}
-            {currActivity.sets}x{currActivity.reps},{" "}
-            {weightFormatter(currActivity.weight.toString(), false)}
+            {currActivity.targetSets}x{currActivity.targetReps},{" "}
+            {weightFormatter(currActivity.targetWeight.toString(), false)}
           </Text>
         );
       case "cardio":
@@ -34,8 +35,8 @@ export function ActivityEntry({ activity, deleteActivity }: Props) {
               {currActivity.name}
             </Text>
             {"\n"}
-            {distanceFormatter(currActivity.distance.toString(), false)} in{" "}
-            {currActivity.duration} minutes
+            {distanceFormatter(currActivity.targetDistance.toString(), false)} in{" "}
+            {currActivity.targetDuration} minutes
           </Text>
         );
       default:
@@ -53,7 +54,7 @@ export function ActivityEntry({ activity, deleteActivity }: Props) {
         icon={
           <DeleteIcon
             key={`${activity.name}-delete-icon`}
-            color="coolGray.600"
+            color={theme.colors.gray[500]}
           />
         }
       />

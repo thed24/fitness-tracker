@@ -1,3 +1,4 @@
+import { useTheme } from "native-base";
 import React from "react";
 import DatePickerBase from "react-native-date-picker";
 
@@ -8,16 +9,18 @@ interface Props {
 }
 
 export function DatePicker({ mode, date, setDate }: Props) {
+  const theme = useTheme();
   const minDate = new Date();
 
   const handleDateChange = (newDate: Date) => {
-    newDate.setHours(0, 0, 0, 0);
+    newDate.setHours(12, 0, 0, 0);
     setDate(newDate);
   };
 
   return (
     <DatePickerBase
       style={{ alignSelf: "center" }}
+      textColor={theme.colors.black}
       androidVariant="nativeAndroid"
       date={date}
       onDateChange={handleDateChange}

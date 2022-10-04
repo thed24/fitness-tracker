@@ -1,4 +1,3 @@
-import { MotiView } from "moti";
 import { Box, useTheme } from "native-base";
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -24,35 +23,27 @@ export function GradientIcon({ name, focused }: Props) {
   };
 
   return (
-    <MotiView
+    <Box
+      bg={{
+        linearGradient: gradient(),
+      }}
       style={{
         position: "absolute",
-        bottom: 17,
+        bottom: 2,
         justifyContent: "center",
         alignItems: "center",
         width: "50%",
         height: 57,
         borderRadius: 100,
       }}
-      animate={{ scale: focused ? 1.2 : 1 }}
-      transition={{ type: "spring" }}
     >
-      <Box
-        bg={{
-          linearGradient: gradient(),
-        }}
-        style={{
-          borderRadius: 100,
-        }}
-      >
-        <Icon
-          name={name}
-          style={{ marginLeft: 2 }}
-          size={50}
-          color="white"
-          selectionColor={color()}
-        />
-      </Box>
-    </MotiView>
+      <Icon
+        name={name}
+        style={{ marginLeft: 2 }}
+        size={50}
+        color="white"
+        selectionColor={color()}
+      />
+    </Box>
   );
 }

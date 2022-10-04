@@ -11,11 +11,16 @@ import { MuscleGroup } from "../types/domain";
 export type ApiData = {
   id: number;
   type: "strength" | "cardio";
-  duration: number;
-  distance: number;
-  reps: number;
-  sets: number;
-  weight: number;
+  duration: number | null;
+  distance: number | null;
+  reps: number | null;
+  sets: number | null;
+  weight: number | null;
+  targetDuration: number;
+  targetDistance: number;
+  targetReps: number;
+  targetSets: number;
+  targetWeight: number;
 };
 
 export interface ApiExercise {
@@ -60,11 +65,14 @@ export interface ApiUser {
 }
 
 export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
+  const time = new Date();
+  time.setHours(0, 0, 0, 0);
+
   return {
     id: workout.id,
     time: workout.time,
     completed: workout.completed,
-    past: new Date(workout.time) < new Date(),
+    past: new Date(workout.time) < time,
     name: workout.name,
     activities: workout.activities.map((activity) => ({
       ...activity.exercise,
@@ -117,6 +125,11 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               reps: activity.reps,
               sets: activity.sets,
               weight: activity.weight,
+              targetReps: activity.targetReps,
+              targetSets: activity.targetSets,
+              targetWeight: activity.targetWeight,
+              targetDistance: 0,
+              targetDuration: 0,
               distance: 0,
               duration: 0,
               type: activity.type
@@ -125,6 +138,11 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               id: 0,
               distance: activity.distance,
               duration: activity.duration,
+              targetDistance: activity.targetDistance,
+              targetDuration: activity.targetDuration,
+              targetReps: 0,
+              targetSets: 0,
+              targetWeight: 0,
               reps: 0,
               sets: 0,
               weight: 0,

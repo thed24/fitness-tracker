@@ -38,7 +38,7 @@ export function Button({
 }: Props) {
   const theme = useTheme();
   const color: ColorType = disabled
-    ? theme.colors.gray[300]
+    ? theme.colors.gray[500]
     : theme.colors.primary[500];
 
   const animatedValue = useSharedValue(1);

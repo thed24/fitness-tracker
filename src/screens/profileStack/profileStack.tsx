@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "native-base";
+import { useTheme, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { DashboardStack } from "../dashboardStack/dashboardStack";
 import { CreateWorkout } from "../create/createWorkout";
@@ -29,19 +29,36 @@ export function ProfileStack() {
         <TabIcon name={icon} focused={focused} />
       );
 
+    const createLabel = (focused: boolean) => (
+      <Text
+        mt={-2}
+        style={{
+          color: focused ? theme.colors.primary[500] : theme.colors.gray[500],
+          fontSize: 12,
+          fontWeight: "bold",
+        }}
+      >
+        {action ? "" : name}
+      </Text>
+    );
+
     return (
       <Tab.Screen
         name={name}
         component={component}
         options={(props) => ({
           headerRight: () => createLogoutButton(props),
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: "bold",
+          },
           tabBarIconStyle: action
             ? {
                 paddingLeft: 5,
                 paddingRight: 5,
               }
             : {},
-          tabBarLabel: action ? "" : name,
+          tabBarLabel: ({ focused }) => createLabel(focused),
           tabBarIcon: ({ focused }) => createIcon(focused),
         })}
       />
@@ -52,21 +69,14 @@ export function ProfileStack() {
     <Tab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
-        tabBarShowLabel: false,
         headerStyle: {
           backgroundColor: theme.colors.white,
         },
         tabBarStyle: {
           backgroundColor: theme.colors.white,
-          borderTopWidth: 0,
           height: 50,
-          elevation: 5,
-          borderRadius: 20,
-          width: "95%",
           alignSelf: "center",
           position: "absolute",
-          bottom: 10,
-          left: 9,
         },
       }}
       initialRouteName="Dashboard"

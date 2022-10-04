@@ -12,7 +12,7 @@ Dropdown.defaultProps = {
     backgroundColor: "transparent",
     _text: {
         fontSize: "sm",
-        color: "white",
+        color: "black",
         highlight: false,
     },
 };

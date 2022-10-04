@@ -12,26 +12,20 @@ type Props = BaseProps & React.ComponentProps<typeof BaseCard>;
 export function Card({ children, shadow, full = true, ...props }: Props) {
   const theme = useTheme();
 
-  const extraProps = full ? { } : {
-    w: "95%",
-    mx: "auto"
-  };
+  const extraProps = full
+    ? {}
+    : {
+        w: "95%",
+        mx: "auto",
+      };
 
   return (
     <BaseCard
       backgroundColor={theme.colors.white}
-      shadow={shadow ?? "none"}
+      shadow="none"
       style={{
-        shadowColor: theme.colors.black,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 5.84,
-        elevation: 4,
+        borderRadius: 10,
       }}
-      rounded={8}
       {...extraProps}
       {...props}
     >
@@ -41,5 +35,5 @@ export function Card({ children, shadow, full = true, ...props }: Props) {
 }
 
 Card.defaultProps = {
-  shadow: 2
+  shadow: 2,
 };

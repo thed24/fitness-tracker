@@ -90,6 +90,8 @@ export function CreateWorkout() {
               width="97%"
               paddingTop={4}
               variant="unstyled"
+              borderWidth={0}
+              backgroundColor="transparent"
               fontWeight="bold"
               fontSize={24}
               placeholder="Workout name"

@@ -57,16 +57,21 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       if (exerciseType === "strength") {
         form.setFieldValue("activity", {
           ...exercise,
-          reps: 0,
-          sets: 0,
-          weight: 0,
+          reps: null,
+          sets: null,
+          weight: null,
+          targetReps: 0,
+          targetSets: 0,
+          targetWeight: 0,
         });
       }
       if (exerciseType === "cardio") {
         form.setFieldValue("activity", {
           ...exercise,
-          distance: 0,
-          duration: 0,
+          distance: null,
+          duration: null,
+          targetDistance: 0,
+          targetDuration: 0,
         });
       }
     }
@@ -105,20 +110,20 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
               <IncrementBar
                 name="Sets"
                 increments={[3, 1, -1, -3]}
-                value={activity.sets}
-                onChange={handleActivityUpdate("sets")}
+                value={activity.targetSets}
+                onChange={handleActivityUpdate("targetSets")}
               />
               <IncrementBar
                 name="Reps"
                 increments={[5, 1, -1, -5]}
-                value={activity.reps}
-                onChange={handleActivityUpdate("reps")}
+                value={activity.targetReps}
+                onChange={handleActivityUpdate("targetReps")}
               />
               <IncrementBar
                 name="Weight"
                 increments={[50, 10, -10, -50]}
-                value={activity.weight}
-                onChange={handleActivityUpdate("weight")}
+                value={activity.targetWeight}
+                onChange={handleActivityUpdate("targetWeight")}
               />
             </Box>
           );
@@ -128,15 +133,15 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
               <IncrementBar
                 name="Distance"
                 increments={[5, 1, -1, -5]}
-                value={activity.duration}
-                onChange={handleActivityUpdate("duration")}
+                value={activity.targetDistance}
+                onChange={handleActivityUpdate("targetDistance")}
               />
 
               <IncrementBar
                 name="Duration (minutes)"
                 increments={[5, 1, -1, -5]}
-                value={activity.duration}
-                onChange={handleActivityUpdate("duration")}
+                value={activity.targetDuration}
+                onChange={handleActivityUpdate("targetDuration")}
               />
             </Box>
           );
@@ -149,8 +154,8 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
 
   return (
     <ScrollView nestedScrollEnabled w="95%">
-      <FormLabel>Activities</FormLabel>
 
+      <FormLabel ml={2}>Activities</FormLabel>
       <Card full={false} mb={2} py={-1}>
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
@@ -166,7 +171,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       </Card>
 
       <HStack>
-        <FormLabel>New Activity</FormLabel>
+        <FormLabel ml={2}>New Activity</FormLabel>
         <ExerciseFilters filters={filters} setFilters={setFilters} />
       </HStack>
 
@@ -174,11 +179,10 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         <Autocomplete
           isDisabled={!exerciseType}
           w="full"
-          placeholder="Bench press"
-          rounded={8}
-          marginBottom={1}
-          marginLeft="auto"
-          marginRight="auto"
+          placeholder={filteredExercises?.length ? "Select an exercise" : "No exercises found"}
+          mb={1}
+          borderWidth={0}
+          mx="auto"
           data={filteredExercises}
           keyExtractor={(item) => item.name}
           value={workoutName}

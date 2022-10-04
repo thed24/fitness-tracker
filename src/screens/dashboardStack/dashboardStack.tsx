@@ -36,7 +36,6 @@ export function DashboardStack() {
       }}
       screenOptions={(props) => ({
         swipeEnabled: false,
-        tabBarLabelStyle: { fontSize: 12 },
         tabBarIndicatorStyle: {
           backgroundColor: theme.colors.primary[500],
           width: props.route.name === "Profile" ? "33%" : "28%",
@@ -44,8 +43,8 @@ export function DashboardStack() {
         },
         tabBarStyle: {
           backgroundColor: theme.colors.white,
+          elevation: 0,
           height: 50,
-          elevation: 5,
           marginTop: 15,
           borderRadius: 20,
           width: "95%",
@@ -56,7 +55,11 @@ export function DashboardStack() {
       initialRouteName="Profile"
     >
       {screens.map((screen) => (
-        <Tab.Screen key={screen.name} name={screen.name} component={screen.component}/>
+        <Tab.Screen
+          key={screen.name}
+          name={screen.name}
+          component={screen.component}
+        />
       ))}
     </Tab.Navigator>
   );

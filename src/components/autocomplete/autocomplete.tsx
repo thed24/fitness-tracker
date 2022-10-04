@@ -1,6 +1,7 @@
-import { FlatList, Input, Pressable, Text, useTheme, View } from "native-base";
+import { FlatList, Input as BaseInput, Pressable, Text, useTheme, View } from "native-base";
 import React, { useMemo } from "react";
 import { SafeAreaView } from "react-native";
+import { Input } from "../input/input";
 
 interface BaseProps<T> {
   data: T[];
@@ -9,7 +10,7 @@ interface BaseProps<T> {
   onChange: (value: string) => void;
 }
 
-type Props<T> = BaseProps<T> & React.ComponentProps<typeof Input>;
+type Props<T> = BaseProps<T> & React.ComponentProps<typeof BaseInput>;
 
 export function Autocomplete<T>(props: Props<T>) {
   const { data, value, onChange, keyExtractor } = props;

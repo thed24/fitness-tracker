@@ -10,14 +10,7 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
-import {
-  Activity,
-  CardioData,
-  CardioExercise,
-  Workout,
-  StrengthData,
-  StrengthExercise,
-} from "types";
+import { Activity, Workout } from "types";
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
@@ -25,6 +18,8 @@ import { titleCase } from "utils";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Card } from "../card/card";
 import { Badge } from "../badge/badge";
+import { StrengthRow } from "./components/strengthRow";
+import { CardioRow } from "./components/cardioRow";
 
 interface Props {
   workout: Workout;
@@ -32,13 +27,11 @@ interface Props {
 }
 
 export function WorkoutCard({ workout, footer }: Props) {
-  const theme = useTheme();
   const [deleting, setDeleting] = React.useState(false);
-  const { user, getWeightFormatter, getWeasurementFormatter } = useStore();
-  const { mutate } = useDeleteWorkout();
+  const { user } = useStore();
+  const { mutate: deleteWorkout } = useDeleteWorkout();
 
-  const weightFormatter = getWeightFormatter();
-  const measurementFormatter = getWeasurementFormatter();
+  const theme = useTheme();
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="lg" bgColor={theme.colors.primary[600]}>
@@ -46,49 +39,19 @@ export function WorkoutCard({ workout, footer }: Props) {
       <Box padding="2" bgColor={theme.colors.primary[400]}>
         {children}
       </Box>
-      <Box
-          backgroundColor={theme.colors.primary[100]}
-          roundedBottom="lg"
-          p={1}
-        >
-          <HStack>
-            {Object.entries(activity.muscleGroupStats).map(
-              ([muscleGroup, stats]) => (
-                <Text key={muscleGroup}>
-                  {titleCase(muscleGroup)} +{stats}
-                </Text>
-              )
-            )}
-          </HStack>
-        </Box>
+      <Box backgroundColor={theme.colors.primary[100]} roundedBottom="lg" p={1}>
+        <HStack>
+          {Object.entries(activity.muscleGroupStats).map(
+            ([muscleGroup, stats]) => (
+              <Text key={muscleGroup}>
+                {titleCase(muscleGroup)} +{stats}
+              </Text>
+            )
+          )}
+        </HStack>
+      </Box>
     </Box>
   );
-
-  const createStrengthContent = (activity: StrengthExercise & StrengthData) => {
-    const text = (
-      <Text my="auto">
-        {weightFormatter(
-          `${activity.sets} x ${activity.reps} at ${activity.weight}`,
-          false
-        )}
-      </Text>
-    );
-
-    return createContent(activity, text);
-  };
-
-  const createCardioContent = (activity: CardioExercise & CardioData) => {
-    const text = (
-        <Text>
-          {measurementFormatter(
-            `${activity.distance} km in ${activity.duration} minutes`,
-            false
-          )}
-        </Text>
-    );
-
-    return createContent(activity, text);
-  };
 
   return (
     <View>
@@ -98,22 +61,28 @@ export function WorkoutCard({ workout, footer }: Props) {
           loading={deleting}
           onClick={() => {
             setDeleting(true);
-            mutate({ userId: user?.id ?? -1, workoutId: workout.id });
+            deleteWorkout({ userId: user?.id ?? -1, workoutId: workout.id });
           }}
         >
           <Icon name="ios-trash-sharp" size={20} color={theme.colors.white} />
         </Badge>
 
-        {workout.past && (
-          <Badge
-            side="left"
-          >
+        {workout.past || (!workout.past && workout.completed) && (
+          <Badge side="left">
             {workout.completed && (
-              <Icon name="ios-checkmark-sharp" size={20} color={theme.colors.white} />
+              <Icon
+                name="ios-checkmark-sharp"
+                size={20}
+                color={theme.colors.white}
+              />
             )}
-            
+
             {!workout.completed && (
-              <Icon name="ios-close-sharp" size={20} color={theme.colors.white} />
+              <Icon
+                name="ios-close-sharp"
+                size={20}
+                color={theme.colors.white}
+              />
             )}
           </Badge>
         )}
@@ -136,9 +105,15 @@ export function WorkoutCard({ workout, footer }: Props) {
               {workout.activities.map((activity) => {
                 switch (activity.type) {
                   case "strength":
-                    return createStrengthContent(activity);
+                    return createContent(
+                      activity,
+                      <StrengthRow activity={activity} workout={workout} />
+                    );
                   case "cardio":
-                    return createCardioContent(activity);
+                    return createContent(
+                      activity,
+                      <CardioRow activity={activity} workout={workout} />
+                    );
                   default:
                     return null;
                 }

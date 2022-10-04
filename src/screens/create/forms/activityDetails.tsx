@@ -15,7 +15,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
         Workout Date
       </Text>
 
-      <Card marginTop={4} marginBottom={4}>
+      <Card mt={4} marginBottom={4}>
         <DatePicker date={date} setDate={setDate} mode="date" />
       </Card>
 
@@ -23,7 +23,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
         Schedule this for {repeat} {repeat === 1 ? "week" : "weeks"}
       </Text>
 
-      <Card marginTop={4} paddingLeft={10} paddingRight={10}>
+      <Card mt={4} px={10}>
         <Slider value={repeat} onChange={setRepeat} maxValue={10} minValue={1} step={1}>
           <Slider.Track>
             <Slider.FilledTrack />
