@@ -153,10 +153,9 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
   };
 
   return (
-    <ScrollView nestedScrollEnabled w="95%">
-
-      <FormLabel ml={2}>Activities</FormLabel>
-      <Card full={false} mb={2} py={-1}>
+    <ScrollView nestedScrollEnabled w="90%">
+      <FormLabel>Activities</FormLabel>
+      <Card mb={2} py={-1}>
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
             <ActivityEntry
@@ -175,7 +174,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         <ExerciseFilters filters={filters} setFilters={setFilters} />
       </HStack>
 
-      <Box w="95%" mx="auto">
+      <Box w="100%" mx="auto">
         <Autocomplete
           isDisabled={!exerciseType}
           w="full"

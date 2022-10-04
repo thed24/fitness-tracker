@@ -99,7 +99,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           <Text justifyContent="center" textAlign="center" marginBottom="1">
             {dateFormat(new Date(workout.time), "dddd, mmmm dS")}
           </Text>
-          <Divider marginTop="2" marginBottom="6" />
+          <Divider marginTop="2" marginBottom="6" bg={theme.colors.gray[200]} />
           <ScrollView>
             <VStack space={2}>
               {workout.activities.map((activity) => {
@@ -122,7 +122,7 @@ export function WorkoutCard({ workout, footer }: Props) {
           </ScrollView>
           {footer && (
             <>
-              <Divider marginTop={4} marginBottom={3} />
+              <Divider marginTop={4} marginBottom={3} bg={theme.colors.gray[200]} />
               {footer}
             </>
           )}

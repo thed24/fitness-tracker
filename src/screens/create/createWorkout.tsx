@@ -88,7 +88,7 @@ export function CreateWorkout() {
           <>
             <Autocomplete
               width="97%"
-              paddingTop={4}
+              paddingTop={3}
               variant="unstyled"
               borderWidth={0}
               backgroundColor="transparent"

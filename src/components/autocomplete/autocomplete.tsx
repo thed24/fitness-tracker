@@ -51,6 +51,7 @@ export function Autocomplete<T>(props: Props<T>) {
       <View>
         <Input
           {...textProps}
+          placeholderTextColor={theme.colors.gray[400]}
           onFocus={() => setShowList(true)}
           onBlur={() => setShowList(false)}
           value={value}

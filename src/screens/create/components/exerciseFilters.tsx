@@ -1,5 +1,5 @@
 import { Button } from "components";
-import { Box, CheckIcon, IconButton, Popover, Select } from "native-base";
+import { Box, CheckIcon, IconButton, Popover, Select, useTheme } from "native-base";
 import React, { useCallback } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Equipments, MuscleGroups, ExerciseTypes } from "types";
@@ -18,6 +18,7 @@ interface Props {
 export function ExerciseFilters({ filters, setFilters }: Props) {
   const [localFilters, setLocalFilters] = React.useState<Filters>(filters);
   const [isOpen, setIsOpen] = React.useState(false);
+  const theme = useTheme();
 
   const popOverChild = useCallback(
     (props: any) => (

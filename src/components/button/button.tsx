@@ -1,7 +1,6 @@
 import React from "react";
 import { Button as BaseButton, useTheme } from "native-base";
 import {
-  ColorSchemeType,
   ColorType,
 } from "native-base/lib/typescript/components/types";
 import Animated, {
@@ -16,7 +15,6 @@ interface NewProps {
   onPress?: (event: any) => void;
   centered?: boolean;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  colorScheme?: ColorSchemeType;
   children: React.ReactNode;
   loading?: boolean;
 }
@@ -28,7 +26,7 @@ const AnimatedButton = Animated.createAnimatedComponent(BaseButton);
 
 export function Button({
   disabled,
-  colorScheme,
+  variant,
   size,
   onPress,
   children,
@@ -77,7 +75,7 @@ export function Button({
   return (
     <AnimatedButton
       isLoading={loading}
-      colorScheme={colorScheme}
+      variant={variant}
       textAlign="center"
       w={width}
       rounded={10}
@@ -86,8 +84,7 @@ export function Button({
       onPress={handleOnPress}
       style={[animatedStyle, nonAnimatedStyle]}
       _text={{
-        color: "white",
-        fontWeight: "semibold",
+        color: theme.colors.white,
       }}
       {...rest}
     >
@@ -98,7 +95,6 @@ export function Button({
 
 Button.defaultProps = {
   disabled: false,
-  colorScheme: "solid",
   centered: false,
   size: "md",
   loading: false,

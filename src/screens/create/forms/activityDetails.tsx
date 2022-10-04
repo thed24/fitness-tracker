@@ -1,4 +1,4 @@
-import { DatePicker, Card } from "components";
+import { DatePicker, Card, FormLabel } from "components";
 import { Box, Slider, Text } from "native-base";
 import React from "react";
 import { CreateWorkoutProps } from "../createWorkout";
@@ -10,12 +10,9 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
     form.setFieldValue("repeat", newRepeat);
 
   return (
-    <Box>
-      <Text fontSize={16} fontWeight="semibold" textAlign="left">
-        Workout Date
-      </Text>
-
-      <Card mt={4} marginBottom={4}>
+    <Box w="90%">
+      <FormLabel>Workout date</FormLabel>
+      <Card mb={4}>
         <DatePicker date={date} setDate={setDate} mode="date" />
       </Card>
 

@@ -146,8 +146,8 @@ android {
         applicationId 'fitness.tracker'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "alpha-0.2.5"
+        versionCode 10
+        versionName "alpha-0.3.5"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
