@@ -157,15 +157,96 @@ export interface BuddyAnatomy {
   muscleGroup: MuscleGroup;
 }
 
+export type StrengthLevelTypes =
+  | "Overall"
+  | "Powerlifting"
+  | "Bodybuilding"
+  | "Weightlifting";
+
+export interface BaseReward {
+  id: number;
+}
+
+export interface Title extends BaseReward {
+  name: string;
+}
+
+export interface Image {
+  id: number;
+  bytes: string;
+  name: string;
+  fileExtension: string;
+}
+
+export interface Badge extends BaseReward {
+  name: string;
+  image: Image;
+}
+
+export interface Experience extends BaseReward {
+  amount: number;
+  strengthLevel: StrengthLevelTypes;
+}
+
+export type Reward = BaseReward | Title | Badge | Experience;
+
+export interface BaseAchievement {
+  id: number;
+  title: string;
+  rewards: Reward[];
+}
+
+export interface WeightAchievement extends BaseAchievement {
+  targetWeight: number;
+  targetMuscleGroup: MuscleGroup;
+  hasTargetMuscleGroup: boolean;
+}
+
+export interface RepsAchievement extends BaseAchievement {
+  targetReps: number;
+  targetMuscleGroup: MuscleGroup;
+  hasTargetMuscleGroup: boolean;
+}
+
+export interface SetsAchievement extends BaseAchievement {
+  targetSets: number;
+  targetMuscleGroup: MuscleGroup;
+  hasTargetMuscleGroup: boolean;
+}
+
+export interface DistanceAchievement extends BaseAchievement {
+  targetDistance: number;
+}
+
+export interface LevelAchievement extends BaseAchievement {
+  targetLevel: number;
+  targetStrengthLevelType: StrengthLevelTypes;
+}
+
+export type Achievement =
+  | WeightAchievement
+  | RepsAchievement
+  | SetsAchievement
+  | DistanceAchievement
+  | LevelAchievement;
+
 export interface BuddyData {
   anatomy: BuddyAnatomy[];
+  streak: number;
   muscleGroupStats: Record<MuscleGroup, number>;
+  levelStats: Record<StrengthLevelTypes, number>;
+  achievements: Achievement[];
 }
 
 export interface Buddy {
   id: number;
   name: string;
   data: BuddyData;
+  level: number;
+  powerliftingLevel: number;
+  bodybuildingLevel: number;
+  weightliftingLevel: number;
+  streak: number;
 }
 
 export type GraphType = "Reps" | "Sets" | "Weight" | "Distance";
@@ -187,5 +268,6 @@ export interface User {
   weeklyWorkoutAmountGoal: number;
   workouts: Workout[];
   workoutBuddy: Buddy;
+  avatar: Image | null;
   userSettings: UserSettings;
 }

@@ -1,11 +1,18 @@
 import React from "react";
-import { FormInput } from "components";
+import { Avatar, FormInput } from "components";
+import { Image } from "types";
 import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";
 
 export function RegisterForm({ form }: RegisterProps) {
+  const handleImageChange = (image: Image) => {
+    form.setFieldValue("avatar", image);
+  };
+
   return (
     <SC.Container>
+      <Avatar size="sm" callback={handleImageChange}/>
+
       <FormInput
         required
         onChangeText={form.handleChange("username")}

@@ -3,6 +3,7 @@ import React from "react";
 import {  NavigationButton, Screen } from "components";
 import { Formik, FormikProps } from "formik";
 import { useRegister } from "api";
+import { Image } from "types";
 import { RegisterForm } from "./forms/details/registerForm";
 import { BuddyForm } from "./forms/buddy/buddyForm";
 import { StatsForm } from "./forms/stats/statsForm";
@@ -22,6 +23,7 @@ export interface RegisterValues {
   benchPressMax: number | null;
   squatMax: number | null;
   deadliftMax: number | null;
+  avatar: Image | null;
 }
 
 export interface RegisterProps {
@@ -50,7 +52,7 @@ function RegisterScreen() {
   };
 
   return (
-    <Screen scrollable loading={isLoading}>
+    <Screen scrollable>
       <Formik
         validationSchema={RegisterSchema}
         validateOnChange
@@ -76,6 +78,7 @@ function RegisterScreen() {
           <>
             {getStep({ form })}
             <NavigationButton
+              loading={isLoading}
               disabled={Object.keys(form.errors).length > 0}
               minSteps={0}
               maxSteps={2}

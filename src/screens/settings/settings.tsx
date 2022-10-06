@@ -3,12 +3,13 @@ import { useStore } from "store";
 import { Button, Screen, Avatar, FormLabel } from "components";
 import { Box, SectionList, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
+import { Image } from 'types';
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
 
 export function Settings() {
-  const { user, getWeightFormatter, getWeasurementFormatter } = useStore();
+  const { user } = useStore();
   const theme = useTheme();
 
   const { mutate, isLoading } = useEditUser();
@@ -23,6 +24,7 @@ export function Settings() {
     height: user?.height ?? 0,
     weight: user?.weight ?? 0,
     age: user?.age ?? 0,
+    avatar: user?.avatar ?? null,
   });
 
   if (!user) {
@@ -46,7 +48,12 @@ export function Settings() {
 
   return (
     <Screen scrollable>
-      <Avatar my={4} size="2xl" />
+      <Avatar size="sm" callback={(image: Image) => {
+        setUserDetails((prev) => ({
+          ...prev,
+          avatar: image,
+        }));
+      }} />
 
       <Box>
         <FormLabel fontWeight="bold" mr="auto">

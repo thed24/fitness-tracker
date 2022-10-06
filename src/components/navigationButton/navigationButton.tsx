@@ -11,6 +11,7 @@ interface Props {
   setIndex: (index: number) => void;
   onSubmit: (event: any) => void;
   size: "sm" | "md" | "lg" | "xl";
+  loading?: boolean;
 }
 
 export function NavigationButton({
@@ -21,6 +22,7 @@ export function NavigationButton({
   setIndex,
   onSubmit,
   size,
+  loading = false,
 }: Props) {
   const onClickNext = (event: GestureResponderEvent) => {
     event.preventDefault();
@@ -72,7 +74,7 @@ export function NavigationButton({
       )}
 
       {currentIndex === maxSteps && (
-        <Button disabled={disabled} size="md" onPress={onSubmit}>
+        <Button disabled={disabled} size="md" onPress={onSubmit} loading={loading}>
           Submit
         </Button>
       )}

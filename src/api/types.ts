@@ -4,7 +4,8 @@ import {
   Workout,
   UserSettings,
   Mechanics,
-  Equipment
+  Equipment,
+  Image
 } from "types";
 import { MuscleGroup } from "../types/domain";
 
@@ -62,6 +63,7 @@ export interface ApiUser {
   workouts: ApiWorkout[];
   workoutBuddy: Buddy;
   userSettings: UserSettings;
+  avatar: Image | null;
 }
 
 export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
@@ -94,7 +96,8 @@ export function ApiUserToUser(apiUser: ApiUser): User {
     height: apiUser.height,
     weight: apiUser.weight,
     age: apiUser.age,
-    weeklyWorkoutAmountGoal: apiUser.weeklyWorkoutAmountGoal
+    weeklyWorkoutAmountGoal: apiUser.weeklyWorkoutAmountGoal,
+    avatar: apiUser.avatar
   };
 }
 
@@ -170,6 +173,7 @@ export function UserToApiUser(user: User): ApiUser {
     height: user.height,
     weight: user.weight,
     age: user.age,
-    weeklyWorkoutAmountGoal: user.weeklyWorkoutAmountGoal
+    weeklyWorkoutAmountGoal: user.weeklyWorkoutAmountGoal,
+    avatar: user.avatar
   };
 }

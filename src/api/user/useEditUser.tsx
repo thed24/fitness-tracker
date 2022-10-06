@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "store";
+import { Image } from "types";
 import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
@@ -14,6 +15,7 @@ export type RawEditUserRequest = {
   height: number;
   weight: number;
   age: number;
+  avatar: Image | null;
 };
 
 type EditUserRequest = {
@@ -26,6 +28,7 @@ type EditUserRequest = {
   weight: number;
   age: number;
   darkMode: boolean;
+  avatar: Image | null;
 };
 
 export function useEditUser() {

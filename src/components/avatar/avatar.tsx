@@ -1,32 +1,86 @@
 import React from "react";
-import { Avatar as AvatarBase, useTheme } from "native-base";
+import { Pressable, Toast, useTheme } from "native-base";
+import { Image } from "react-native";
 import { useStore } from "store";
+import { Image as ImageType } from "types";
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from "expo-image-picker";
 
-type Props = React.ComponentProps<typeof AvatarBase>;
+interface Props {
+  size: "sm" | "md" | "lg" | "xl" | "2xl";
+  callback: (image: ImageType) => void;
+}
 
-export function Avatar({ ...props }: Props) {
+export function Avatar({ size, callback }: Props) {
+  const [permissions, requestPermission] = useMediaLibraryPermissions();
+  const [image, setImage] = React.useState<ImageType | undefined>(undefined);
+
   const theme = useTheme();
   const { user } = useStore();
 
+  const pickImage = () => {
+    if (permissions?.status === "granted") {
+      launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      }).then((result) => {
+        if (!result.cancelled) {
+          const newImage = {
+            id: 0,
+            bytes: result.base64,
+            name: "avatar",
+            fileExtension: result.uri.split(".").pop(),
+          } as ImageType;
+
+          setImage(newImage);
+          callback(newImage);
+        }
+      });
+    } else {
+      requestPermission().then((result) => {
+        if (result.status !== "granted") {
+          Toast.show({
+            title: "Permission to access camera roll is required!",
+            duration: 3000,
+          });
+        }
+      });
+    }
+  };
+
+  const placeholderName = user?.username ?? "User";
+  const avatar = image ?? user?.avatar;
+
+  const width = theme.sizes[size] / 2.5;
+  const height = theme.sizes[size] / 2.5;
+
+  const style = {
+    width,
+    height,
+    borderRadius: width / 2,
+    borderWidth: 2,
+    borderColor: theme.colors.primary[500],
+  };
+
   return (
-    <AvatarBase
-      size="xl"
-      style={{
-        backgroundColor: theme.colors.white,
-        borderColor: theme.colors.primary[500],
-        borderWidth: 2,
-      }}
-      textAlign="center"
-      borderColor={theme.colors.gray[200]}
-      borderWidth={2}
-      _text={{
-        color: theme.colors.primary[500],
-        fontSize: "3xl",
-        fontWeight: "bold",
-      }}
-      {...props}
-    >
-      {user?.username[0]}
-    </AvatarBase>
+    <Pressable onPress={pickImage} mt={4} mb={1}>
+      {avatar ? (
+        <Image
+          style={style}
+          source={{
+            uri: `data:image/${avatar.fileExtension};base64,${avatar.bytes}`,
+          }}
+        />
+      ) : (
+        <Image
+          style={style}
+          source={{
+            uri: `https://ui-avatars.com/api/?name=${placeholderName}&size=300`,
+          }}
+        />
+      )}
+    </Pressable>
   );
 }

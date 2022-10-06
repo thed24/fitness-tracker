@@ -1,16 +1,25 @@
 {
   "expo": {
-    "name": "fitnesstracker",
+    "name": "Pocket Coach",
     "slug": "fitnesstracker",
-    "platforms": [
-      "android"
+    "platforms": ["android"],
+    "icon": "./assets/images/logo.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ],
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "package": "fitness.tracker"
-    },
-    "ios": {
-      "bundleIdentifier": "fitness.tracker"
     },
     "extra": {
       "eas": {
