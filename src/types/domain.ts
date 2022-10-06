@@ -158,7 +158,7 @@ export interface BuddyAnatomy {
 }
 
 export type StrengthLevelTypes =
-  | "Overall"
+  | "Level"
   | "Powerlifting"
   | "Bodybuilding"
   | "Weightlifting";
@@ -242,11 +242,6 @@ export interface Buddy {
   id: number;
   name: string;
   data: BuddyData;
-  level: number;
-  powerliftingLevel: number;
-  bodybuildingLevel: number;
-  weightliftingLevel: number;
-  streak: number;
 }
 
 export type GraphType = "Reps" | "Sets" | "Weight" | "Distance";

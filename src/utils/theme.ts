@@ -6,8 +6,6 @@ export const createTheme = (darkMode: boolean) =>
       initialColorMode: darkMode ? "dark" : "light"
     },
     colors: {
-      // purple for dark
-      // blue for light
       primary: {
         50: darkMode ? "#f3e8ff" : "#e3f2fd",
         100: darkMode ? "#e0ccff" : "#bbdefb",
@@ -31,7 +29,7 @@ export const createTheme = (darkMode: boolean) =>
         800: darkMode ? "#8a8a8a" : "#3e4c59",
         900: darkMode ? "#9a9a9a" : "#323f4b"
       },
-      white: darkMode ? "#9a9a9a" : "#ffffff"
+      white: darkMode ? "#9a9a9a" : "#fafafa"
     },
     components: {
       Heading: {

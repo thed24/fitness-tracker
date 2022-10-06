@@ -75,8 +75,13 @@ export function ProfileStack() {
         tabBarStyle: {
           backgroundColor: theme.colors.white,
           height: 50,
+          width: "95%",
+          alignContent: "center",
           alignSelf: "center",
           position: "absolute",
+          left: 10,
+          bottom: 10,
+          borderRadius: 20,
         },
       }}
       initialRouteName="Dashboard"

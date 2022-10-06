@@ -1,9 +1,10 @@
 import { useEditWorkout } from "api";
-import { Button, Input } from "components";
 import { HStack, Modal, VStack, Text } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { StrengthData, StrengthExercise, Workout } from "types";
+import { Button } from "../../button/button";
+import { Input } from "../../input/input";
 
 interface Props {
   activity: StrengthExercise & StrengthData;

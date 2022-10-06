@@ -67,25 +67,30 @@ export function WorkoutCard({ workout, footer }: Props) {
           <Icon name="ios-trash-sharp" size={20} color={theme.colors.white} />
         </Badge>
 
-        {workout.past || (!workout.past && workout.completed) && (
-          <Badge side="left">
-            {workout.completed && (
-              <Icon
-                name="ios-checkmark-sharp"
-                size={20}
-                color={theme.colors.white}
-              />
-            )}
+        {workout.past ||
+          (!workout.past && workout.completed && (
+            <>
+              {workout.completed && (
+                <Badge side="left">
+                  <Icon
+                    name="ios-checkmark-sharp"
+                    size={20}
+                    color={theme.colors.white}
+                  />
+                </Badge>
+              )}
 
-            {!workout.completed && (
-              <Icon
-                name="ios-close-sharp"
-                size={20}
-                color={theme.colors.white}
-              />
-            )}
-          </Badge>
-        )}
+              {!workout.completed && (
+                <Badge side="left">
+                  <Icon
+                    name="ios-close-sharp"
+                    size={20}
+                    color={theme.colors.white}
+                  />
+                </Badge>
+              )}
+            </>
+          ))}
 
         <Card
           backgroundColor={theme.colors.white}
@@ -122,7 +127,11 @@ export function WorkoutCard({ workout, footer }: Props) {
           </ScrollView>
           {footer && (
             <>
-              <Divider marginTop={4} marginBottom={3} bg={theme.colors.gray[200]} />
+              <Divider
+                marginTop={4}
+                marginBottom={3}
+                bg={theme.colors.gray[200]}
+              />
               {footer}
             </>
           )}
