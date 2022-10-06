@@ -102,6 +102,7 @@ export function CreateWorkout() {
             />
             {getStep({ form })}
             <NavigationButton
+              loading={addLoading}
               disabled={Object.keys(form.errors).length > 0}
               minSteps={0}
               maxSteps={1}
