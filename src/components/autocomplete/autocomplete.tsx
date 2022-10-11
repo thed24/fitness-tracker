@@ -63,8 +63,8 @@ export function Autocomplete<T>(props: Props<T>) {
         <SafeAreaView>
           {filteredData.length > 0 && (
             <FlatList
+              ml={2}
               keyExtractor={keyExtractor}
-              style={{ marginLeft: 13 }}
               data={limitedData}
               renderItem={({ item }) => {
                 const key = keyExtractor(item);

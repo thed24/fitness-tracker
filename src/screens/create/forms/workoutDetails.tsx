@@ -1,8 +1,10 @@
 import { useExercises } from "api";
 import { Autocomplete, Button, Card, FormLabel } from "components";
-import { Box, HStack, ScrollView, Text } from "native-base";
+import { Box, Divider, Text } from "native-base";
 import React from "react";
 import { useStore } from "store";
+import { titleCase } from "../../../utils/formatting";
+import { ActionButton } from "../components/actionButton";
 import { ActivityEntry } from "../components/activityEntry";
 import { ExerciseFilters, Filters } from "../components/exerciseFilters";
 import { IncrementBar } from "../components/incrementBar";
@@ -106,7 +108,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       switch (activity.type) {
         case "strength":
           return (
-            <Box marginBottom={4}>
+            <Box mb={4}>
               <IncrementBar
                 name="Sets"
                 increments={[3, 1, -1, -3]}
@@ -124,12 +126,23 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
                 increments={[50, 10, -10, -50]}
                 value={activity.targetWeight}
                 onChange={handleActivityUpdate("targetWeight")}
+                titleAccessory={
+                  <ActionButton
+                    title="Set as bodyweight"
+                    size="sm"
+                    onPress={() =>
+                      handleActivityUpdate("targetWeight")(
+                        user.weight.toString()
+                      )
+                    }
+                  />
+                }
               />
             </Box>
           );
         case "cardio":
           return (
-            <Box marginBottom={4}>
+            <Box mb={4}>
               <IncrementBar
                 name="Distance"
                 increments={[5, 1, -1, -5]}
@@ -152,10 +165,46 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     return null;
   };
 
+  const summary = React.useMemo(() => {
+    type ExerciseSummary = {
+      [key: string]: number;
+      total: number;
+    };
+
+    const summaries = workout.activities.reduce(
+      (acc, curr) => {
+        const { type } = curr;
+        if (type === "strength") {
+          const { targetSets, targetReps, targetWeight, mainMuscleGroup } = curr;
+          const volume = targetSets * targetReps * targetWeight;
+          return {
+            ...acc,
+            [mainMuscleGroup]: volume + (acc[mainMuscleGroup] || 0),
+            total: volume + acc.total,
+          };
+        }
+        return { ...acc };
+      },
+      { total: 0 } as ExerciseSummary
+    );
+
+    const { total } = summaries;
+    return Object.entries(summaries)
+      .filter(([key]) => key !== "total")
+      .map(([key, value]) => {
+        const percentage = Math.round((value / total) * 100);
+        return `${titleCase(key)}: ${percentage}%`;
+      })
+      .join(", ");
+  }, [workout.activities]);
+
   return (
-    <ScrollView nestedScrollEnabled w="90%">
+    <Box>
       <FormLabel>Activities</FormLabel>
+
       <Card mb={2} py={-1}>
+        <Text mt={2}>{summary}</Text>
+        <Divider mt={2} />
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
             <ActivityEntry
@@ -169,16 +218,16 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
         )}
       </Card>
 
-      <HStack>
-        <FormLabel ml={2}>New Activity</FormLabel>
-        <ExerciseFilters filters={filters} setFilters={setFilters} />
-      </HStack>
-
-      <Box w="100%" mx="auto">
+      <FormLabel ml={2}>New Activity</FormLabel>
+      <Box>
         <Autocomplete
           isDisabled={!exerciseType}
           w="full"
-          placeholder={filteredExercises?.length ? "Select an exercise" : "No exercises found"}
+          placeholder={
+            filteredExercises?.length
+              ? "Select an exercise"
+              : "No exercises found"
+          }
           mb={1}
           borderWidth={0}
           mx="auto"
@@ -192,6 +241,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
             }
           }}
         />
+        <ExerciseFilters filters={filters} setFilters={setFilters} />
 
         {getActivitySpecificFields()}
 
@@ -203,6 +253,6 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
           Add Activity
         </Button>
       </Box>
-    </ScrollView>
+    </Box>
   );
 }

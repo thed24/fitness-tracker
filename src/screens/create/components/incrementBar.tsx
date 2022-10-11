@@ -7,9 +7,10 @@ interface Props {
   value: number;
   onChange: (newValue: string) => void;
   increments: number[];
+  titleAccessory?: React.ReactNode;
 }
 
-export function IncrementBar({ value, onChange, name, increments }: Props) {
+export function IncrementBar({ value, onChange, name, increments, titleAccessory }: Props) {
   const theme = useTheme();
 
   const createIncrementHandler = (increment: number) => () => {
@@ -41,7 +42,10 @@ export function IncrementBar({ value, onChange, name, increments }: Props) {
 
   return (
     <>
-      <FormLabel mt={1}>{name}</FormLabel>
+      <HStack justifyContent="space-between" alignItems="center" mb={1}>
+        <FormLabel mt={1}>{name}</FormLabel>
+        {titleAccessory}
+      </HStack>
       <HStack justifyContent="space-between" alignContent="center">
         {increments
           .filter((i) => i > 0)

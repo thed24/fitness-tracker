@@ -10,7 +10,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
     form.setFieldValue("repeat", newRepeat);
 
   return (
-    <Box w="90%">
+    <Box>
       <FormLabel>Workout date</FormLabel>
       <Card mb={4}>
         <DatePicker date={date} setDate={setDate} mode="date" />

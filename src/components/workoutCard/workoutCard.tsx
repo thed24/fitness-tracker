@@ -35,19 +35,17 @@ export function WorkoutCard({ workout, footer }: Props) {
 
   const createContent = (activity: Activity, children: React.ReactNode) => (
     <Box key={activity.id} rounded="lg" bgColor={theme.colors.primary[600]}>
-      <Text padding="1"> {activity.name} </Text>
-      <Box padding="2" bgColor={theme.colors.primary[400]}>
+      <Text p={1}> {activity.name} </Text>
+      <Box p={2} bgColor={theme.colors.primary[400]}>
         {children}
       </Box>
-      <Box backgroundColor={theme.colors.primary[100]} roundedBottom="lg" p={1}>
+      <Box px={2} py={1} backgroundColor={theme.colors.primary[100]} roundedBottom="lg">
         <HStack>
-          {Object.entries(activity.muscleGroupStats).map(
-            ([muscleGroup, stats]) => (
-              <Text key={muscleGroup}>
-                {titleCase(muscleGroup)} +{stats}
-              </Text>
-            )
-          )}
+          {Object.keys(activity.muscleGroupStats).map((muscleGroup, i) => (
+            <Text key={muscleGroup}>
+              {titleCase(muscleGroup)}{i < Object.keys(activity.muscleGroupStats).length - 1 ? ", " : ""}
+            </Text>
+          ))}
         </HStack>
       </Box>
     </Box>

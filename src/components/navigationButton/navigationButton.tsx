@@ -10,7 +10,7 @@ interface Props {
   disabled: boolean;
   setIndex: (index: number) => void;
   onSubmit: (event: any) => void;
-  size: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl";
   loading?: boolean;
 }
 
@@ -46,19 +46,18 @@ export function NavigationButton({
       width = "86%";
       break;
     case "xl":
-      width = "100%";
+      width = "96%";
       break;
     default:
-      width = "100%";
+      width = "96%";
   }
 
   return (
     <HStack
-      justifyContent="center"
+      justifyContent={currentIndex > minSteps ? "space-between" : "center"}
       space={4}
-      alignItems="center"
-      marginTop={5}
-      marginBottom={20}
+      mt={5}
+      mb={20}
       w={width}
     >
       {currentIndex > minSteps && (

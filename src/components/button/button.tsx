@@ -1,8 +1,6 @@
 import React from "react";
 import { Button as BaseButton, useTheme } from "native-base";
-import {
-  ColorType,
-} from "native-base/lib/typescript/components/types";
+import { ColorType } from "native-base/lib/typescript/components/types";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -44,19 +42,6 @@ export function Button({
     transform: [{ scale: animatedValue.value }],
   }));
 
-  let width;
-  if (size === "xs") {
-    width = "15%";
-  } else if (size === "sm") {
-    width = "25%";
-  } else if (size === "md") {
-    width = "50%";
-  } else if (size === "lg") {
-    width = "80%";
-  } else {
-    width = "100%";
-  }
-
   let nonAnimatedStyle = {};
 
   if (centered) {
@@ -64,6 +49,28 @@ export function Button({
       ...nonAnimatedStyle,
       alignSelf: "center",
     };
+  }
+
+  let width;
+
+  switch (size) {
+    case "xs":
+      width = "15%";
+      break;
+    case "sm":
+      width = "25%";
+      break;
+    case "md":
+      width = "50%";
+      break;
+    case "lg":
+      width = "80%";
+      break;
+    case "xl":
+      width = "100%";
+      break;
+    default:
+      width = "50%";
   }
 
   const handleOnPress = (event: any) => {

@@ -5,7 +5,7 @@ import { Activity, ExerciseType, ScheduledWorkout } from "types";
 import { useAddWorkout, useGetWorkoutNames } from "api";
 import { useStore } from "store";
 import { Formik, FormikProps } from "formik";
-import { Text } from "native-base";
+import { Box, ScrollView, Text } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityDetails } from "./forms/activityDetails";
 import { WorkoutDetails } from "./forms/workoutDetails";
@@ -85,11 +85,11 @@ export function CreateWorkout() {
         onSubmit={handleSave}
       >
         {(form) => (
-          <>
+          <ScrollView nestedScrollEnabled w="100%">
+            <Box w="90%" mx="auto">
             <Autocomplete
-              width="97%"
-              paddingTop={3}
               variant="unstyled"
+              ml={-1.5}
               borderWidth={0}
               backgroundColor="transparent"
               fontWeight="bold"
@@ -109,9 +109,9 @@ export function CreateWorkout() {
               currentIndex={index}
               setIndex={setIndex}
               onSubmit={form.handleSubmit}
-              size="lg"
             />
-          </>
+            </Box>
+          </ScrollView>
         )}
       </Formik>
     </Screen>

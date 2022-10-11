@@ -14,7 +14,7 @@ export function FormLabel({ children, textAlign, color, ...props }: Props) {
     <Text
       color={color}
       textAlign={textAlign}
-      marginBottom={2}
+      mb={2}
       fontSize={16}
       fontWeight="semibold"
       {...props}
