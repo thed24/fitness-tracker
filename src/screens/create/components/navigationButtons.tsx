@@ -64,12 +64,7 @@ export function NavigationButtons({
           <Button variant="outline" size="md" onPress={onCancel}>
             Cancel
           </Button>
-          <Button
-            disabled={disabled}
-            loading={loading}
-            size="md"
-            onPress={onAddActivity}
-          >
+          <Button size="md" onPress={onAddActivity}>
             Add Activity
           </Button>
         </HStack>

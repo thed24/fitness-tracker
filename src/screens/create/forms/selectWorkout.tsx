@@ -79,6 +79,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
       start: [0, 0],
       end: [1, 0],
     };
+
     const exercises = filteredExercises.filter(
       (exercise) =>
         exercise.mainMuscleGroup.toLowerCase() === muscleGroup.toLowerCase() ||
@@ -92,48 +93,45 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     return { name: muscleGroup, exercises, linearGradient };
   });
 
+  const skeletons = Array.from({ length: 10 }, (_, i) => i).map((i) => (
+    <Skeleton
+      rounded={10}
+      startColor={theme.colors.gray[100]}
+      endColor={theme.colors.gray[200]}
+      height={100}
+      my={4}
+    />
+  ));
+
   return (
     <ScrollView nestedScrollEnabled>
       <Box mt={4}>
         <ExerciseFilters filters={filters} setFilters={setFilters} />
-        {isLoading ? (
-          <>
-            <Skeleton
-              rounded={10}
-              startColor={theme.colors.gray[100]}
-              endColor={theme.colors.gray[200]}
-              height={100}
-              my={4}
-            />
-            <Skeleton
-              rounded={10}
-              startColor={theme.colors.gray[100]}
-              endColor={theme.colors.gray[200]}
-              height={100}
-              my={4}
-            />
-          </>
-        ) : (
-          muscleGroups
-            .filter((muscleGroup) => muscleGroup.exercises.length > 0)
-            .map((muscleGroup) => (
-              <Card my={2} key={muscleGroup.name}>
-                <Accordion
-                  title={muscleGroup.name}
-                  secondTitle={`${muscleGroup.exercises.length} exercises`}
-                  key={`${muscleGroup.name}-accordion`}
-                >
-                  <Box key={`${muscleGroup.name}-box`}>
-                    {muscleGroup.exercises.map((exercise) => (
-                      <Text onPress={() => handleExerciseChange(exercise)} color="black" key={exercise.id}>
-                        {exercise.name}
-                      </Text>
-                    ))}
-                  </Box>
-                </Accordion>
-              </Card>
-            ))
-        )}
+        {isLoading
+          ? skeletons
+          : muscleGroups
+              .filter((muscleGroup) => muscleGroup.exercises.length > 0)
+              .map((muscleGroup) => (
+                <Card my={2} key={muscleGroup.name}>
+                  <Accordion
+                    title={muscleGroup.name}
+                    secondTitle={`${muscleGroup.exercises.length} exercises`}
+                    key={`${muscleGroup.name}-accordion`}
+                  >
+                    <Box key={`${muscleGroup.name}-box`}>
+                      {muscleGroup.exercises.map((exercise) => (
+                        <Text
+                          onPress={() => handleExerciseChange(exercise)}
+                          color="black"
+                          key={exercise.id}
+                        >
+                          {exercise.name}
+                        </Text>
+                      ))}
+                    </Box>
+                  </Accordion>
+                </Card>
+              ))}
       </Box>
     </ScrollView>
   );

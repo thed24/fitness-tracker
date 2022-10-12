@@ -9,7 +9,7 @@ export const CreateWorkoutSchema = Yup.object<
     .min(0, "Repeat must be at least 0"),
   date: Yup.date().required("Date is required"),
   workout: Yup.object().shape({
-    name: Yup.string().required("Workout is required"),
+    name: Yup.string().required("Workout is required").notOneOf([""]),
     activities: Yup.array().required("Activities are required")
   })
 });

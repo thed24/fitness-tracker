@@ -78,6 +78,23 @@ export function Button({
     animatedValue.value = withDelay(100, withSpring(1));
   };
 
+  if (rest.variant === "outline") {
+    return (
+      <AnimatedButton
+        {...rest}
+        isLoading={loading}
+        textAlign="center"
+        w={width}
+        rounded={10}
+        disabled={disabled}
+        onPress={handleOnPress}
+        style={[animatedStyle, nonAnimatedStyle]}
+      >
+        {children}
+      </AnimatedButton>
+    );
+  }
+        
   return (
     <AnimatedButton
       isLoading={loading}
@@ -85,7 +102,7 @@ export function Button({
       w={width}
       rounded={10}
       disabled={disabled}
-      color={color}
+      backgroundColor={color}
       borderColor={color}
       onPress={handleOnPress}
       style={[animatedStyle, nonAnimatedStyle]}
