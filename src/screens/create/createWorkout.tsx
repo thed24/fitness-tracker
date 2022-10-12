@@ -1,4 +1,4 @@
-import { Autocomplete, NavigationButton, Screen } from "components";
+import { Autocomplete, Screen } from "components";
 
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
@@ -8,8 +8,10 @@ import { Formik, FormikProps } from "formik";
 import { Box, ScrollView, Text } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityDetails } from "./forms/activityDetails";
-import { WorkoutDetails } from "./forms/workoutDetails";
 import { CreateWorkoutSchema } from "./createWorkoutSchema";
+import { SelectWorkout } from "./forms/selectWorkout";
+import { NavigationButtons } from "./components/navigationButtons";
+import { WorkoutDetails } from "./forms/workoutDetails";
 
 export interface CreateWorkoutValues {
   workout: ScheduledWorkout;
@@ -32,16 +34,17 @@ export function CreateWorkout() {
     order: "Ascending",
   });
 
-  const {
-    isLoading: addLoading,
-    mutate: addWorkout,
-  } = useAddWorkout();
+  const { isLoading: addLoading, mutate: addWorkout } = useAddWorkout();
 
   const getStep = (props: CreateWorkoutProps) => {
     switch (index) {
       case 0:
         return <ActivityDetails form={props.form} />;
       case 1:
+        return (
+          <SelectWorkout form={props.form} incrementIndex={() => setIndex(2)} />
+        );
+      case 2:
         return <WorkoutDetails form={props.form} />;
       default:
         return <Text>Well, this is awkward</Text>;
@@ -55,7 +58,11 @@ export function CreateWorkout() {
         newTime.setDate(newTime.getDate() + i * 7);
       }
       addWorkout({
-        workout: { ...createWorkoutValues.workout, completed: false, time: newTime.toISOString() },
+        workout: {
+          ...createWorkoutValues.workout,
+          completed: false,
+          time: newTime.toISOString(),
+        },
         userId: user?.id ?? -1,
       });
     }
@@ -84,35 +91,55 @@ export function CreateWorkout() {
         }}
         onSubmit={handleSave}
       >
-        {(form) => (
-          <ScrollView nestedScrollEnabled w="100%">
-            <Box w="90%" mx="auto">
-            <Autocomplete
-              variant="unstyled"
-              ml={-1.5}
-              borderWidth={0}
-              backgroundColor="transparent"
-              fontWeight="bold"
-              fontSize={24}
-              placeholder="Workout name"
-              value={form.values.workout.name}
-              data={workoutNames?.workoutNames ?? []}
-              keyExtractor={(item: string) => item}
-              onChange={(name: string) => form.setFieldValue("workout", { ...form.values.workout, name })}
-            />
-            {getStep({ form })}
-            <NavigationButton
-              loading={addLoading}
-              disabled={Object.keys(form.errors).length > 0}
-              minSteps={0}
-              maxSteps={1}
-              currentIndex={index}
-              setIndex={setIndex}
-              onSubmit={form.handleSubmit}
-            />
-            </Box>
-          </ScrollView>
-        )}
+        {(form) => {
+          const handleAddActivity = () => {
+            form.setFieldValue("workout", {
+              ...form.values.workout,
+              activities: [...form.values.workout.activities, form.values.activity],
+            });
+            form.setFieldValue("activity", null);
+            setIndex(0);
+          };
+
+          return (
+            <ScrollView nestedScrollEnabled w="100%">
+              <Box w="90%" mx="auto">
+                {index === 0 && (
+                  <Autocomplete
+                    variant="unstyled"
+                    ml={-1.5}
+                    mt={2}
+                    borderWidth={0}
+                    backgroundColor="transparent"
+                    fontWeight="bold"
+                    fontSize={24}
+                    placeholder="Workout name"
+                    value={form.values.workout.name}
+                    data={workoutNames?.workoutNames ?? []}
+                    keyExtractor={(item: string) => item}
+                    onChange={(name: string) =>
+                      form.setFieldValue("workout", {
+                        ...form.values.workout,
+                        name,
+                      })
+                    }
+                  />
+                )}
+
+                {getStep({ form })}
+
+                <NavigationButtons
+                  loading={addLoading}
+                  disabled={Object.keys(form.errors).length > 0}
+                  currentIndex={index}
+                  setIndex={setIndex}
+                  onAddActivity={handleAddActivity}
+                  onSubmit={form.handleSubmit}
+                />
+              </Box>
+            </ScrollView>
+          );
+        }}
       </Formik>
     </Screen>
   );

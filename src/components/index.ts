@@ -4,7 +4,6 @@ export { Button } from "./button/button";
 export { DatePicker } from "./datePicker/datePicker";
 export { WorkoutCard } from "./workoutCard/workoutCard";
 export { Autocomplete } from "./autocomplete/autocomplete";
-export { NavigationButton } from "./navigationButton/navigationButton";
 export { Card } from "./card/card";
 export { FormLabel } from "./formLabel/formLabel";
 export { Accordion } from "./accordion/accordion";

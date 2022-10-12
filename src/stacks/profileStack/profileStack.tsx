@@ -2,11 +2,11 @@ import React from "react";
 import { useTheme, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { DashboardStack } from "../dashboardStack/dashboardStack";
-import { CreateWorkout } from "../create/createWorkout";
-import { Settings } from "../settings/settings";
 import { GradientIcon } from "./components/gradientIcon";
 import { IoniconsIconsNames, TabIcon } from "./components/tabIcon";
 import { LogoutButton } from "./components/logoutButton";
+import { CreateWorkout } from "../../screens/create/createWorkout";
+import { Settings } from "../../screens/settings/settings";
 
 export type SelectedProfileTab = "schedule" | "history";
 

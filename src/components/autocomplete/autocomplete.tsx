@@ -1,4 +1,11 @@
-import { FlatList, Input as BaseInput, Pressable, Text, useTheme, View } from "native-base";
+import {
+  FlatList,
+  Input as BaseInput,
+  Pressable,
+  Text,
+  useTheme,
+  View,
+} from "native-base";
 import React, { useMemo } from "react";
 import { SafeAreaView } from "react-native";
 import { Input } from "../input/input";
@@ -10,7 +17,8 @@ interface BaseProps<T> {
   onChange: (value: string) => void;
 }
 
-type Props<T> = BaseProps<T> & React.ComponentProps<typeof BaseInput>;
+type Props<T> = BaseProps<T> &
+  Omit<React.ComponentProps<typeof BaseInput>, keyof BaseProps<T>>;
 
 export function Autocomplete<T>(props: Props<T>) {
   const { data, value, onChange, keyExtractor } = props;
@@ -35,14 +43,9 @@ export function Autocomplete<T>(props: Props<T>) {
 
   const limitedData = useMemo(
     () =>
-      filteredData
-        .reduce((acc, curr) => {
-          if (!acc.find((item) => keyExtractor(item) === keyExtractor(curr))) {
-            acc.push(curr);
-          }
-          return acc;
-        }, [] as T[])
-        .slice(0, 5),
+      filteredData.length > 5
+        ? filteredData.slice(0, 5)
+        : filteredData.slice(0, filteredData.length),
     [filteredData]
   );
 

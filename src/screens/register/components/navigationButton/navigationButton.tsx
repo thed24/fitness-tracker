@@ -1,7 +1,7 @@
 import { HStack } from "native-base";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
-import { Button } from "../button/button";
+import { Button } from "../../../../components/button/button";
 
 interface Props {
   minSteps: number;

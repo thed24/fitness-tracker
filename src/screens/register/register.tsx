@@ -1,6 +1,6 @@
 import { Text } from "native-base";
 import React from "react";
-import {  NavigationButton, Screen } from "components";
+import { Screen } from "components";
 import { Formik, FormikProps } from "formik";
 import { useRegister } from "api";
 import { Image } from "types";
@@ -8,6 +8,7 @@ import { RegisterForm } from "./forms/details/registerForm";
 import { BuddyForm } from "./forms/buddy/buddyForm";
 import { StatsForm } from "./forms/stats/statsForm";
 import { RegisterSchema } from "./registerSchema";
+import { NavigationButton } from "./components/navigationButton/navigationButton";
 
 export interface RegisterValues {
   email: string;

@@ -2,9 +2,9 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Dimensions } from "react-native";
 import { useTheme } from "native-base";
-import { History } from "../history/history";
-import { Schedule } from "../schedule/schedule";
-import { Profile } from "../profile/profile";
+import { Profile } from "../../screens/profile/profile";
+import { Schedule } from "../../screens/schedule/schedule";
+import { History } from "../../screens/history/history";
 
 export function DashboardStack() {
   const Tab = createMaterialTopTabNavigator();

@@ -29,7 +29,7 @@ export function Carousel({ renderItem, items, defaultIndex = undefined }: Props)
         defaultIndex={defaultIndex}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.90,
+          parallaxScrollingScale: 0.875,
           parallaxScrollingOffset: 100,
         }}
         onSnapToItem={(index) => setActiveIndex(index)}

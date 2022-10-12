@@ -24,7 +24,6 @@ const AnimatedButton = Animated.createAnimatedComponent(BaseButton);
 
 export function Button({
   disabled,
-  variant,
   size,
   onPress,
   children,
@@ -61,7 +60,7 @@ export function Button({
       width = "25%";
       break;
     case "md":
-      width = "50%";
+      width = "48%";
       break;
     case "lg":
       width = "80%";
@@ -82,17 +81,14 @@ export function Button({
   return (
     <AnimatedButton
       isLoading={loading}
-      variant={variant}
       textAlign="center"
       w={width}
       rounded={10}
       disabled={disabled}
-      bg={color}
+      color={color}
+      borderColor={color}
       onPress={handleOnPress}
       style={[animatedStyle, nonAnimatedStyle]}
-      _text={{
-        color: theme.colors.white,
-      }}
       {...rest}
     >
       {children}
