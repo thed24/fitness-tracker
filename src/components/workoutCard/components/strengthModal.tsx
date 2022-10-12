@@ -39,18 +39,21 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
           <VStack space={2}>
             <Input
               placeholder={`Sets / ${activity.targetSets}`}
+              rightElement={<Button size="sm" onPress={() => setSets(activity.targetSets)}>Fill</Button>}
               type="text"
               value={sets ?? undefined}
               onChangeText={handleChange(setSets)}
             />
             <Input
               placeholder={`Reps / ${activity.targetReps}`}
+              rightElement={<Button size="sm" onPress={() => setReps(activity.targetReps)}>Fill</Button>}
               type="text"
               value={reps ?? undefined}
               onChangeText={handleChange(setReps)}
             />
             <Input
               placeholder={`Weight / ${activity.targetWeight}`}
+              rightElement={<Button size="sm" onPress={() => setWeight(activity.targetWeight)}>Fill</Button>}
               type="text"
               value={weight ?? undefined}
               onChangeText={handleChange(setWeight)}

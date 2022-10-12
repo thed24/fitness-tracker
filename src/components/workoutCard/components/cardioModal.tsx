@@ -1,4 +1,5 @@
 import { useEditWorkout } from "api";
+import { Button } from "components";
 import { HStack, Modal, VStack, Text } from "native-base";
 import React from "react";
 import { useStore } from "store";
@@ -37,12 +38,14 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
           <VStack space={2}>
             <Input
               placeholder="Distance"
+              rightElement={<Button size="sm" onPress={() => setDistance(activity.targetDistance)}>Fill</Button>}
               type="text"
               value={distance ?? undefined}
               onChangeText={handleChange(setDistance)}
             />
             <Input
               placeholder="Duration"
+              rightElement={<Button size="sm" onPress={() => setDuration(activity.targetDuration)}>Fill</Button>}
               type="text"
               value={duration ?? undefined}
               onChangeText={handleChange(setDuration)}
