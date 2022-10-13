@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "airbnb", "prettier"],
+  extends: [
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+    "plugin:react-hooks/recommended",
+  ],
   settings: {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"],
@@ -26,7 +31,13 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint", "import", "prettier", "unused-imports"],
+  plugins: [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "prettier",
+    "unused-imports",
+  ],
   rules: {
     "import/prefer-default-export": "off",
     "linebreak-style": "off",

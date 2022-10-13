@@ -1,9 +1,9 @@
 import React from "react";
 import { useStore } from "store";
 import { Button, Screen, Avatar, FormLabel } from "components";
-import { Box, SectionList, useTheme, VStack } from "native-base";
+import { Box, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
-import { Image } from 'types';
+import { Image } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
@@ -48,15 +48,18 @@ export function Settings() {
 
   return (
     <Screen scrollable>
-      <Avatar size="sm" callback={(image: Image) => {
-        setUserDetails((prev) => ({
-          ...prev,
-          avatar: image,
-        }));
-      }} />
+      <Avatar
+        size="sm"
+        callback={(image: Image) => {
+          setUserDetails((prev) => ({
+            ...prev,
+            avatar: image,
+          }));
+        }}
+      />
 
       <Box>
-        <FormLabel fontWeight="bold" mr="auto">
+        <FormLabel>
           Profile
         </FormLabel>
 
@@ -125,25 +128,11 @@ export function Settings() {
         </VStack>
       </Box>
 
-      <SectionList
-        mt={4}
-        w="95%"
-        h="100%"
-        nestedScrollEnabled
-        sections={settingsSections}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => createSettingSection(item)}
-        renderSectionHeader={({ section: { title } }) => (
-          <Box
-            w="100%"
-            ml={2}
-            background={theme.colors.gray[300]}
-            _text={{ fontSize: "md", fontWeight: "bold" }}
-          >
-            {title}
-          </Box>
-        )}
-      />
+      <Box w="95%" mt={2}>
+        <FormLabel ml={2}>Settings</FormLabel>
+        {settingsSections.data.map((item: SettingSection) => createSettingSection(item))}
+      </Box>
+
       <Button
         isLoading={isLoading}
         mb="1/4"

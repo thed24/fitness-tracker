@@ -7,52 +7,50 @@ export interface SettingSection {
   }[];
 }
 
-export const settingsSections = [
-  {
-    title: "Settings",
-    data: [
-      {
-        title: "Dark Mode",
-        key: "darkMode",
-        options: [
-          {
-            title: "On",
-            value: "true"
-          },
-          {
-            title: "Off",
-            value: "false"
-          }
-        ]
-      },
-      {
-        title: "Weight Unit",
-        key: "weightUnit",
-        options: [
-          {
-            title: "Pounds",
-            value: "pounds"
-          },
-          {
-            title: "Kilograms",
-            value: "kilograms"
-          }
-        ]
-      },
-      {
-        title: "Measurement Unit",
-        key: "measurementUnit",
-        options: [
-          {
-            title: "Metric",
-            value: "metric"
-          },
-          {
-            title: "Imperial",
-            value: "imperial"
-          }
-        ]
-      }
-    ]
-  }
-];
+export const settingsSections = {
+  title: "Settings",
+  data: [
+    {
+      title: "Dark Mode",
+      key: "darkMode",
+      options: [
+        {
+          title: "On",
+          value: "true"
+        },
+        {
+          title: "Off",
+          value: "false"
+        }
+      ]
+    },
+    {
+      title: "Weight Unit",
+      key: "weightUnit",
+      options: [
+        {
+          title: "Pounds",
+          value: "pounds"
+        },
+        {
+          title: "Kilograms",
+          value: "kilograms"
+        }
+      ]
+    },
+    {
+      title: "Measurement Unit",
+      key: "measurementUnit",
+      options: [
+        {
+          title: "Metric",
+          value: "metric"
+        },
+        {
+          title: "Imperial",
+          value: "imperial"
+        }
+      ]
+    }
+  ]
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme, Text } from "native-base";
+import { useTheme } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { DashboardStack } from "../dashboardStack/dashboardStack";
 import { GradientIcon } from "./components/gradientIcon";
@@ -29,19 +29,6 @@ export function ProfileStack() {
         <TabIcon name={icon} focused={focused} />
       );
 
-    const createLabel = (focused: boolean) => (
-      <Text
-        mt={-2}
-        style={{
-          color: focused ? theme.colors.primary[500] : theme.colors.gray[500],
-          fontSize: 12,
-          fontWeight: "bold",
-        }}
-      >
-        {action ? "" : name}
-      </Text>
-    );
-
     return (
       <Tab.Screen
         name={name}
@@ -58,7 +45,7 @@ export function ProfileStack() {
                 paddingRight: 5,
               }
             : {},
-          tabBarLabel: ({ focused }) => createLabel(focused),
+          tabBarLabel: () => "",
           tabBarIcon: ({ focused }) => createIcon(focused),
         })}
       />
@@ -74,14 +61,12 @@ export function ProfileStack() {
         },
         tabBarStyle: {
           backgroundColor: theme.colors.white,
-          height: 50,
-          width: "95%",
           alignContent: "center",
           alignSelf: "center",
           position: "absolute",
-          left: 10,
-          bottom: 10,
-          borderRadius: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          height: 60,
         },
       }}
       initialRouteName="Dashboard"

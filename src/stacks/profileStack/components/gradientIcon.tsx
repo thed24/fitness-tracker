@@ -29,12 +29,11 @@ export function GradientIcon({ name, focused }: Props) {
       }}
       style={{
         position: "absolute",
-        bottom: 2,
         justifyContent: "center",
         alignItems: "center",
-        width: "50%",
-        height: 57,
-        borderRadius: 100,
+        height: 50,
+        width: 50,
+        borderRadius: 75,
       }}
     >
       <Icon

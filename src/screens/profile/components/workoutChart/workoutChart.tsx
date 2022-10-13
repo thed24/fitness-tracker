@@ -26,20 +26,13 @@ import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {
   const [reps, setReps] = React.useState<number>(0);
-  const [workoutType, setWorkoutType] = React.useState<ExerciseType | null>(
-    "strength"
-  );
-  const [workoutGraphType, setWorkoutGraphType] =
-    React.useState<GraphType>("Reps");
-  const [selectedExercise, setSelectedExercise] = React.useState<string | null>(
-    null
-  );
+  const [workoutType, setWorkoutType] = React.useState<ExerciseType | null>("strength");
+  const [workoutGraphType, setWorkoutGraphType] = React.useState<GraphType>("Reps");
+  const [selectedExercise, setSelectedExercise] = React.useState<string | null>(null);
 
-  const { user, getPastWorkouts, getWeightFormatter } = useStore();
+  const { user, getPastWorkouts } = useStore();
   const theme = useTheme();
   const pastWorkouts = getPastWorkouts();
-
-  const weightFormatter = getWeightFormatter();
 
   const { data: workoutData, isLoading: workoutDataLoading } =
     useGetWorkoutData({
@@ -50,28 +43,20 @@ export function WorkoutChart() {
     });
 
   const exerciseNames = useMemo(
-    () =>
-      pastWorkouts
+    () => pastWorkouts
         .flatMap((workout) => workout.activities)
         .map((exercise) => exercise.name)
-        .filter((name, index, self) => self.indexOf(name) === index),
-    [pastWorkouts]
-  );
+        .filter((name, index, self) => self.indexOf(name) === index), [pastWorkouts]);
 
-  const options =
-    workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
-
+  const options = workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
   const repCounts = useMemo(
     () => [
-      ...new Set(
-        pastWorkouts
+      ...new Set(pastWorkouts
           .flatMap((workout) => workout.activities)
-          .filter(
-            (exercise) =>
-              exercise.name === selectedExercise && exercise.type === "strength"
-          )
+          .filter((exercise) => exercise.name === selectedExercise && exercise.type === "strength")
           .map((exercise) => exercise as StrengthExercise & StrengthData)
           .map((exercise) => exercise.reps)
+          .filter((currReps) => currReps) as number[]
       ),
     ],
     [pastWorkouts, selectedExercise]
@@ -83,8 +68,7 @@ export function WorkoutChart() {
     }
 
     if (
-      !workoutData ||
-      pastWorkouts
+      !workoutData || pastWorkouts
         .flatMap((workout) => workout.activities)
         .map((activity) => activity.type === workoutType).length === 0
     ) {
@@ -169,12 +153,7 @@ export function WorkoutChart() {
         />
       </VictoryChart>
     );
-  }, [
-    workoutData,
-    workoutDataLoading,
-    theme.colors.gray,
-    theme.colors.primary,
-  ]);
+  }, [workoutDataLoading, workoutData, pastWorkouts, selectedExercise, theme.colors.primary, workoutType]);
 
   return (
     <Card w="90%" marginBottom={4} marginTop={4}>
