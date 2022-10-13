@@ -1,6 +1,6 @@
 import React from "react";
 import { useTheme } from "native-base";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { DashboardStack } from "../dashboardStack/dashboardStack";
 import { GradientIcon } from "./components/gradientIcon";
 import { IoniconsIconsNames, TabIcon } from "./components/tabIcon";
@@ -11,7 +11,7 @@ import { Settings } from "../../screens/settings/settings";
 export type SelectedProfileTab = "schedule" | "history";
 
 export function ProfileStack() {
-  const Tab = createBottomTabNavigator();
+  const Tab = createMaterialBottomTabNavigator();
   const theme = useTheme();
 
   const createLogoutButton = (props: any) => <LogoutButton {...props} />;
@@ -34,18 +34,7 @@ export function ProfileStack() {
         name={name}
         component={component}
         options={(props) => ({
-          headerRight: () => createLogoutButton(props),
-          tabBarLabelStyle: {
-            fontSize: 12,
-            fontWeight: "bold",
-          },
-          tabBarIconStyle: action
-            ? {
-                paddingLeft: 5,
-                paddingRight: 5,
-              }
-            : {},
-          tabBarLabel: () => "",
+          tabBarLabel: "",
           tabBarIcon: ({ focused }) => createIcon(focused),
         })}
       />
@@ -54,20 +43,14 @@ export function ProfileStack() {
 
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarHideOnKeyboard: true,
-        headerStyle: {
-          backgroundColor: theme.colors.white,
-        },
-        tabBarStyle: {
-          backgroundColor: theme.colors.white,
-          alignContent: "center",
-          alignSelf: "center",
-          position: "absolute",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          height: 60,
-        },
+      keyboardHidesNavigationBar
+      style={{
+        backgroundColor: theme.colors.gray[300],
+      }}
+      barStyle={{
+        backgroundColor: theme.colors.white,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
       }}
       initialRouteName="Dashboard"
     >

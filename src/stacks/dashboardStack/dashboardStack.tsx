@@ -43,13 +43,12 @@ export function DashboardStack() {
         },
         tabBarStyle: {
           backgroundColor: theme.colors.white,
-          elevation: 0,
+          elevation: 5,
           height: 50,
           marginTop: 15,
-          borderRadius: 20,
+          borderRadius: 75,
           width: "95%",
-          alignSelf: "center",
-          justifyContent: "center",
+          marginLeft: "2.5%",
         },
       })}
       initialRouteName="Profile"

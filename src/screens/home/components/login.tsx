@@ -1,8 +1,8 @@
 import { Formik } from "formik";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
-import { FormInput, Button } from "components";
-import { View } from "native-base";
+import { FormInput } from "components";
+import { View, Button } from "native-base";
 import { useLogin } from "api";
 import { LoginSchema } from "./loginSchema";
 import * as SC from "./login.styles";
@@ -67,7 +67,7 @@ export function Login() {
               value={values.password}
               name="Password"
             />
-            <Button mt={4} loading={isLoading} size="xl" onPress={onLoginPress(handleSubmit)}>
+            <Button mt={4} isLoading={isLoading} onPress={onLoginPress(handleSubmit)}>
               Sign In
             </Button>
           </SC.Container>

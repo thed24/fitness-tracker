@@ -86,7 +86,6 @@ function RegisterScreen() {
               currentIndex={index}
               setIndex={setIndex}
               onSubmit={form.handleSubmit}
-              size="md"
             />
           </>
         )}

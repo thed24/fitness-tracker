@@ -17,12 +17,12 @@ export function Carousel({ renderItem, items, defaultIndex = undefined }: Props)
   const [activeIndex, setActiveIndex] = React.useState(items.length - 1);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, marginTop: 35 }}>
+    <GestureHandlerRootView style={{ flex: 1, marginTop: 20 }}>
       <BaseCarousel
         loop={false}
         pagingEnabled
         width={width}
-        height={width * 1.2}
+        height={width * 1.4}
         snapEnabled
         scrollAnimationDuration={1000}
         data={items}

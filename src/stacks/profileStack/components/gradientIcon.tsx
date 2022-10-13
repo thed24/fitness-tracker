@@ -31,17 +31,22 @@ export function GradientIcon({ name, focused }: Props) {
         position: "absolute",
         justifyContent: "center",
         alignItems: "center",
-        height: 50,
-        width: 50,
-        borderRadius: 75,
+        top: -3.5,
+        height: 45,
+        width: 45,
+        borderRadius: 45,
       }}
     >
       <Icon
         name={name}
-        style={{ marginLeft: 2 }}
         size={50}
         color="white"
         selectionColor={color()}
+        style={{
+          position: "absolute",
+          top: -3,
+          left: -1,
+        }}
       />
     </Box>
   );

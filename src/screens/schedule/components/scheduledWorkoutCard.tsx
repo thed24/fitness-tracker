@@ -1,6 +1,7 @@
 import React from "react";
 import { ScheduledWorkout } from "types";
-import { Button, WorkoutCard } from "components";
+import { WorkoutCard } from "components";
+import { Button } from "native-base";
 
 interface Props {
   scheduledWorkout: ScheduledWorkout;
@@ -9,7 +10,7 @@ interface Props {
 
 export function ScheduledWorkoutCard({ scheduledWorkout, onComplete }: Props) {
   const footer = (
-    <Button onPress={() => onComplete()} size="xl">
+    <Button onPress={() => onComplete()}>
       Complete Workout
     </Button>
   );

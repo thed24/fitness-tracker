@@ -1,7 +1,6 @@
-import { Box, HStack } from "native-base";
+import { Box, Button, HStack } from "native-base";
 import React from "react";
 import { GestureResponderEvent } from "react-native";
-import { Button } from "components";
 
 interface Props {
   currentIndex: number;
@@ -38,15 +37,14 @@ export function NavigationButtons({
   return (
     <Box mt={5} mb={20}>
       {currentIndex === 0 && (
-        <HStack space={2} justifyContent="space-between">
-          <Button size="md" onPress={onClickNext}>
+        <HStack justifyContent="center" space={2}>
+          <Button onPress={onClickNext}>
             Add New Workout
           </Button>
           <Button
-            size="md"
             onPress={onSubmit}
             disabled={disabled}
-            loading={loading}
+            isLoading={loading}
           >
             Submit
           </Button>
@@ -54,17 +52,17 @@ export function NavigationButtons({
       )}
 
       {currentIndex === 1 && (
-        <Button size="xl" onPress={onClickPrevious}>
+        <Button onPress={onClickPrevious}>
           Back
         </Button>
       )}
 
       {currentIndex === 2 && (
-        <HStack space={2} justifyContent="space-between">
-          <Button variant="outline" size="md" onPress={onCancel}>
+        <HStack space={2} justifyContent="center">
+          <Button onPress={onCancel}>
             Cancel
           </Button>
-          <Button size="md" onPress={onAddActivity}>
+          <Button onPress={onAddActivity}>
             Add Activity
           </Button>
         </HStack>

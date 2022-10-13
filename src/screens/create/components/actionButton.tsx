@@ -1,5 +1,4 @@
-import { Button } from "components"
-import { Text } from "native-base"
+import { Text, Button } from "native-base"
 import React from "react"
 
 interface BaseProps {

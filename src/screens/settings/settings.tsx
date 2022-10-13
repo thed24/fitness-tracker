@@ -1,7 +1,7 @@
 import React from "react";
 import { useStore } from "store";
-import { Button, Screen, Avatar, FormLabel } from "components";
-import { Box, useTheme, VStack } from "native-base";
+import { Screen, Avatar, FormLabel } from "components";
+import { Box, useTheme, VStack, Button } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
 import { Image } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
@@ -135,8 +135,9 @@ export function Settings() {
 
       <Button
         isLoading={isLoading}
-        mb="1/4"
+        mb={4}
         mt={4}
+        w="90%"
         onPress={() =>
           mutate({
             ...userDetails,
