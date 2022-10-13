@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, Box, Progress, useTheme, HStack } from "native-base";
+import { Text, Card, Box, Progress, useTheme, HStack } from "native-base";
 import { useStore } from "store";
-import { Accordion, Card } from "components";
+import { Accordion } from "components";
 import { titleCase } from "utils";
 
 export function Achievements() {

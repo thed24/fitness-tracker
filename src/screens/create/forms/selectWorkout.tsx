@@ -1,6 +1,6 @@
 import { useExercises } from "api";
-import { Text, ScrollView, useTheme, Box, Skeleton } from "native-base";
-import { Accordion, Card } from "components";
+import { Text, Card, ScrollView, useTheme, Box, Skeleton } from "native-base";
+import { Accordion } from "components";
 import React from "react";
 import { Exercise, MuscleGroups } from "types";
 import { ExerciseFilters, Filters } from "../components/exerciseFilters";

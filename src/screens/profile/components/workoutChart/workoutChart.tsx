@@ -16,12 +16,12 @@ import {
   VStack,
   HStack,
   Center,
+  Card,
 } from "native-base";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 import { useGetWorkoutData } from "api";
 import { useStore } from "store";
 import { ExerciseType, GraphType, StrengthData, StrengthExercise } from "types";
-import { Card } from "components";
 import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {

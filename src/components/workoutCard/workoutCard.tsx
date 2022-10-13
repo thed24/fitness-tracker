@@ -8,6 +8,7 @@ import {
   useTheme,
   View,
   VStack,
+  Card,
 } from "native-base";
 import React from "react";
 import { Activity, Workout } from "types";
@@ -16,7 +17,6 @@ import { useDeleteWorkout } from "api";
 import { useStore } from "store";
 import { titleCase } from "utils";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Card } from "../card/card";
 import { Badge } from "../badge/badge";
 import { StrengthRow } from "./components/strengthRow";
 import { CardioRow } from "./components/cardioRow";

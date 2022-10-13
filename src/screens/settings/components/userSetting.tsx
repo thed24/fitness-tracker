@@ -1,5 +1,4 @@
-import { Card } from "components";
-import { Radio, Text, useTheme } from "native-base";
+import { Radio, Card, Text, useTheme } from "native-base";
 import React from "react";
 import { SettingSection } from "../settingsSections";
 

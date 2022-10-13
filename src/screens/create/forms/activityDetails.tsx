@@ -1,5 +1,5 @@
-import { DatePicker, Card, FormLabel } from "components";
-import { Box, Divider, Slider, Text } from "native-base";
+import { DatePicker, FormLabel } from "components";
+import { Box, Divider, Slider, Text, Card } from "native-base";
 import React from "react";
 import { titleCase } from "utils";
 import { ActivityEntry } from "../components/activityEntry";
