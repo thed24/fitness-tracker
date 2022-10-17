@@ -35,10 +35,7 @@ export function BuddyStats() {
   return (
     <Card
       w="90%"
-      backgroundColor={theme.colors.white}
-      marginBottom={4}
       marginTop={4}
-      shadow={2}
     >
       <Accordion title="Stats" secondTitle="Level 1">
       {anatomy.sort((a, b) => a.level < b.level ? 1 : -1).map((bodyPart, i) =>

@@ -66,27 +66,16 @@ export const createTheme = (darkMode: boolean) => {
       Card: {
         baseStyle: (props: any) =>
           ({
+            rounded: 'lg',
+            shadowOpacity: 0,
+            shadowRadius: 0,
+            elevation: 0,
+            p: 4,
             _light: {
               backgroundColor: 'white',
-              rounded: 'lg',
-              shadow: 2,
-              shadowColor: 'gray.300',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 3,
-              elevation: 2,
-              p: 4,
             },
             _dark: {
               backgroundColor: 'gray.900',
-              rounded: 'lg',
-              shadow: 2,
-              shadowColor: 'gray.300',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 3,
-              elevation: 2,
-              p: 4,
             },
           } as React.ComponentProps<typeof Card>),
       },
@@ -125,6 +114,14 @@ export const createTheme = (darkMode: boolean) => {
             _backdrop: {
               backgroundColor: 'black',
             },
+          } as React.ComponentProps<typeof Modal>),
+      },
+      View: {
+        baseStyle: (props: any) =>
+          ({
+            shadowOpacity: 0,
+            shadowRadius: 0,
+            elevation: 0,
           } as React.ComponentProps<typeof Modal>),
       },
     },

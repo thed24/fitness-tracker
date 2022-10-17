@@ -5,6 +5,7 @@ import { LogBox } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useStore } from "store";
 import { useFonts } from 'expo-font';
+import { Provider as PaperProvider } from 'react-native-paper';
 import APIProvider from "./src/api/apiProvider";
 import { createTheme } from "./src/utils/theme";
 import { MainStack } from "./src/stacks";
@@ -28,7 +29,9 @@ export default function App() {
     <NativeBaseProvider config={nativeBaseConfig} theme={createTheme(user?.userSettings?.darkMode ?? false)}>
       <NavigationContainer>
         <APIProvider>
-          <MainStack />
+          <PaperProvider theme={{ version: 3 }}>
+            <MainStack />
+          </PaperProvider>
         </APIProvider>
       </NavigationContainer>
     </NativeBaseProvider>

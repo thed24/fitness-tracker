@@ -43,7 +43,8 @@ export function DashboardStack() {
         },
         tabBarStyle: {
           backgroundColor: theme.colors.white,
-          elevation: 5,
+          elevation: 0,
+          shadowOpacity: 0,
           height: 50,
           marginTop: 15,
           borderRadius: 75,

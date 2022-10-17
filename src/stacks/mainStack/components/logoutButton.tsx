@@ -12,7 +12,7 @@ export function LogoutButton({ navigation }: NavigationProps) {
   };
 
   return (
-    <Button mr={5} pr={2} bg="transparent" onPress={onLogout}>
+    <Button pr={2} bg="transparent" onPress={onLogout}>
       <Text fontSize="md" fontWeight="bold">Logout</Text>
     </Button>
   );
