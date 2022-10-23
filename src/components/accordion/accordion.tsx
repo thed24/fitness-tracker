@@ -11,11 +11,13 @@ interface Props {
   children: React.ReactNode;
   title: string;
   secondTitle?: string;
+  short?: boolean;
 }
 
-export function Accordion({ title, children, secondTitle = undefined }: Props) {
+export function Accordion({ title, children, short = false, secondTitle = undefined }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
+  const maxHeight = short ? 125 : 200;
 
   const fadeAnimation = useSharedValue(0);
   const fadeStyle = useAnimatedStyle(() => ({
@@ -33,7 +35,7 @@ export function Accordion({ title, children, secondTitle = undefined }: Props) {
   const handlePress = () => {
     setIsOpen(!isOpen);
     rotateAnimation.value = withSpring(isOpen ? 0 : 180);
-    fadeAnimation.value = withSpring(isOpen ? 15 : 250, {
+    fadeAnimation.value = withSpring(isOpen ? 15 : maxHeight, {
       overshootClamping: true,
       damping: 20,
       stiffness: 100,

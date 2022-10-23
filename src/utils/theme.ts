@@ -4,8 +4,9 @@ import {
   Divider,
   extendTheme,
   Heading,
-  Modal,
+  Select,
   Text,
+  View,
 } from 'native-base';
 
 import React from 'react';
@@ -107,7 +108,15 @@ export const createTheme = (darkMode: boolean) => {
             shadowOpacity: 0,
             shadowRadius: 0,
             elevation: 0,
-          } as React.ComponentProps<typeof Modal>),
+          } as React.ComponentProps<typeof View>),
+      },
+      Select: {
+        baseStyle: (props: any) =>
+          ({
+            _text: {
+              color: 'black',
+            },
+          } as React.ComponentProps<typeof Select>),
       },
     },
     fontConfig: {

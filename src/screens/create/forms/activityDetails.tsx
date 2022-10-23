@@ -62,6 +62,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
             <Divider mt={2} />
           </>
         )}
+
         {workout.activities.length > 0 ? (
           workout.activities.map((currentActivity, i) => (
             <ActivityEntry

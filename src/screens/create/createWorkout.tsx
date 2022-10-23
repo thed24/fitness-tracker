@@ -67,7 +67,7 @@ export function CreateWorkout() {
       });
     }
     setIndex(0);
-    navigation.reset({ index: 0, routes: [{ name: "Dashboard" as never }] });
+    navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
   };
 
   return (

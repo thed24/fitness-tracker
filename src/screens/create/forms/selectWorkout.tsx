@@ -1,16 +1,26 @@
-import { useExercises } from "api";
-import { Text, Card, ScrollView, useTheme, Box, Skeleton } from "native-base";
-import { Accordion } from "components";
-import React from "react";
-import { Exercise, MuscleGroups } from "types";
-import { ExerciseFilters, Filters } from "../components/exerciseFilters";
-import { CreateWorkoutProps } from "../createWorkout";
+import { useExercises } from 'api';
+import { Text, Card, ScrollView, useTheme, Box, Skeleton } from 'native-base';
+import { Accordion } from 'components';
+import React from 'react';
+import { Exercise, MuscleGroups } from 'types';
+import { ExerciseFilters, Filters } from '../components/exerciseFilters';
+import { CreateWorkoutProps } from '../createWorkout';
 
 interface BaseProps {
   incrementIndex: () => void;
 }
 
 type Props = BaseProps & CreateWorkoutProps;
+
+interface MuscleGroupData {
+  name: string;
+  exercises: Exercise[];
+  linearGradient: {
+    colors: string[];
+    start: number[];
+    end: number[];
+  };
+}
 
 export function SelectWorkout({ form, incrementIndex }: Props) {
   const [filters, setFilters] = React.useState<Filters>({
@@ -49,8 +59,8 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
 
   const handleExerciseChange = (exercise: Exercise) => {
     if (exercise) {
-      if (form.values.exerciseType === "strength") {
-        form.setFieldValue("activity", {
+      if (form.values.exerciseType === 'strength') {
+        form.setFieldValue('activity', {
           ...exercise,
           reps: null,
           sets: null,
@@ -60,8 +70,8 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
           targetWeight: 0,
         });
       }
-      if (form.values.exerciseType === "cardio") {
-        form.setFieldValue("activity", {
+      if (form.values.exerciseType === 'cardio') {
+        form.setFieldValue('activity', {
           ...exercise,
           distance: null,
           duration: null,
@@ -73,7 +83,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     }
   };
 
-  const muscleGroups = MuscleGroups.map((muscleGroup, i) => {
+  const exercisesFor = (muscleGroup: string): MuscleGroupData => {
     const linearGradient = {
       colors: [theme.colors.primary[300], theme.colors.primary[600]],
       start: [0, 0],
@@ -90,10 +100,37 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
         exercise.detailedMuscleGroup?.toLowerCase() ===
           muscleGroup.toLowerCase()
     );
-    return { name: muscleGroup, exercises, linearGradient };
-  });
 
-  const skeletons = Array.from({ length: 10 }, (_, i) => i).map((i) => (
+    return { name: muscleGroup, exercises, linearGradient };
+  };
+
+  const whereExercisesExist = (muscleGroup: MuscleGroupData) =>
+    muscleGroup.exercises.length > 0;
+
+  const createCard = (muscleGroup: MuscleGroupData) => (
+    <Card my={2} key={`card-${muscleGroup.name}`}>
+      <Accordion
+        title={muscleGroup.name}
+        secondTitle={`${muscleGroup.exercises.length} exercises`}
+        key={`${muscleGroup.name}-accordion`}
+        short
+      >
+        <Box key={`${muscleGroup.name}-box`}>
+          {muscleGroup.exercises.map((exercise) => (
+            <Text
+              onPress={() => handleExerciseChange(exercise)}
+              color="black"
+              key={`${muscleGroup.name}-${exercise.name}`}
+            >
+              {exercise.name}
+            </Text>
+          ))}
+        </Box>
+      </Accordion>
+    </Card>
+  );
+
+  const skeletons = Array.from({ length: 10 }, (_, i) => i).map(() => (
     <Skeleton
       rounded={10}
       startColor={theme.colors.gray[100]}
@@ -109,29 +146,10 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
         <ExerciseFilters filters={filters} setFilters={setFilters} />
         {isLoading
           ? skeletons
-          : muscleGroups
-              .filter((muscleGroup) => muscleGroup.exercises.length > 0)
-              .map((muscleGroup) => (
-                <Card my={2} key={muscleGroup.name}>
-                  <Accordion
-                    title={muscleGroup.name}
-                    secondTitle={`${muscleGroup.exercises.length} exercises`}
-                    key={`${muscleGroup.name}-accordion`}
-                  >
-                    <Box key={`${muscleGroup.name}-box`}>
-                      {muscleGroup.exercises.map((exercise) => (
-                        <Text
-                          onPress={() => handleExerciseChange(exercise)}
-                          color="black"
-                          key={exercise.id}
-                        >
-                          {exercise.name}
-                        </Text>
-                      ))}
-                    </Box>
-                  </Accordion>
-                </Card>
-              ))}
+          : MuscleGroups
+              .map(exercisesFor)
+              .filter(whereExercisesExist)
+              .map(createCard)}
       </Box>
     </ScrollView>
   );
