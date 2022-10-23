@@ -1,12 +1,13 @@
 import {
   Button,
+  Card,
   Divider,
-  Text,
   extendTheme,
   Heading,
-  Card,
   Modal,
+  Text,
 } from 'native-base';
+
 import React from 'react';
 
 export const createTheme = (darkMode: boolean) => {
@@ -99,22 +100,6 @@ export const createTheme = (darkMode: boolean) => {
               backgroundColor: 'gray.400',
             },
           } as React.ComponentProps<typeof Button>),
-      },
-      Modal: {
-        baseStyle: (props: any) =>
-          ({
-            _backdropFade: 0.5,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-            _backdrop: {
-              backgroundColor: 'black',
-            },
-          } as React.ComponentProps<typeof Modal>),
       },
       View: {
         baseStyle: (props: any) =>
