@@ -42,6 +42,7 @@ export function FormInput({
         </HStack>
 
         <Input
+          accessibilityLabel={`${name} input`}
           type={type}
           value={value}
           onBlur={onBlur}

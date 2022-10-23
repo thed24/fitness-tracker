@@ -81,8 +81,6 @@ function RegisterScreen() {
             <NavigationButton
               loading={isLoading}
               disabled={Object.keys(form.errors).length > 0}
-              minSteps={0}
-              maxSteps={2}
               currentIndex={index}
               setIndex={setIndex}
               onSubmit={form.handleSubmit}

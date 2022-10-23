@@ -65,7 +65,7 @@ export function Avatar({ size, callback }: Props) {
   };
 
   return (
-    <Pressable onPress={pickImage} mt={4} mb={1}>
+    <Pressable onPress={pickImage} mt={4} mb={1} accessibilityLabel="Change avatar">
       {avatar ? (
         <Image
           style={style}

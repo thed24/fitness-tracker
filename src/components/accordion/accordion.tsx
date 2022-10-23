@@ -43,7 +43,7 @@ export function Accordion({ title, children, secondTitle = undefined }: Props) {
   return (
     <Container>
       <HStack>
-        <Heading size="md">
+        <Heading accessibilityLabel={title} size="md">
           {title}
         </Heading>
         {secondTitle && <Heading fontWeight="medium" ml="auto" mt="auto" size="sm">{secondTitle}</Heading>}

@@ -67,7 +67,7 @@ export function Login() {
               value={values.password}
               name="Password"
             />
-            <Button mt={4} isLoading={isLoading} onPress={onLoginPress(handleSubmit)}>
+            <Button mt={4} w="100%" isLoading={isLoading} onPress={onLoginPress(handleSubmit)}>
               Sign In
             </Button>
           </SC.Container>

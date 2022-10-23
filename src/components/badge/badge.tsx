@@ -13,6 +13,7 @@ export function Badge({ onClick, loading, children, side }: Props) {
 
   return (
     <BaseBadge
+      accessibilityLabel="badge"
       onTouchStart={onClick}
       bgColor={theme.colors.primary[600]}
       rounded="full"

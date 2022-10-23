@@ -12,6 +12,7 @@ type Props = BaseProps & React.ComponentProps<typeof Text>;
 export function FormLabel({ children, textAlign, color, ...props }: Props) {
   return (
     <Text
+      accessibilityLabel={`${children} label`}
       color={color}
       textAlign={textAlign}
       mb={2}

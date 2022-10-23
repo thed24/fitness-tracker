@@ -1,10 +1,8 @@
-import { HStack, Button } from "native-base";
-import React from "react";
-import { GestureResponderEvent } from "react-native";
+import { Button, HStack } from 'native-base';
+import React from 'react';
+import { GestureResponderEvent } from 'react-native';
 
 interface Props {
-  minSteps: number;
-  maxSteps: number;
   currentIndex: number;
   disabled: boolean;
   setIndex: (index: number) => void;
@@ -13,8 +11,6 @@ interface Props {
 }
 
 export function NavigationButton({
-  minSteps = 0,
-  maxSteps = 1,
   disabled,
   currentIndex,
   setIndex,
@@ -32,29 +28,29 @@ export function NavigationButton({
   };
 
   return (
-    <HStack
-      justifyContent={currentIndex > minSteps ? "space-between" : "center"}
-      space={4}
-      mt={5}
-      mb={20}
-    >
-      {currentIndex > minSteps && (
-        <Button onPress={onClickPrevious}>
-          Back
-        </Button>
-      )}
-
-      {currentIndex < maxSteps && (
-        <Button onPress={onClickNext}>
+    <>
+      {currentIndex === 0 && (
+        <Button w="70%" onPress={onClickNext}>
           Next
         </Button>
       )}
 
-      {currentIndex === maxSteps && (
-        <Button disabled={disabled} onPress={onSubmit} isLoading={loading}>
+      {currentIndex === 1 && (
+        <HStack space={2}>
+          <Button w="34%" onPress={onClickPrevious}>
+            Back
+          </Button>
+          <Button w="34%" onPress={onClickNext}>
+            Next
+          </Button>
+        </HStack>
+      )}
+
+      {currentIndex === 2 && (
+        <Button w="70%" disabled={disabled} onPress={onSubmit} isLoading={loading}>
           Submit
         </Button>
       )}
-    </HStack>
+    </>
   );
 }

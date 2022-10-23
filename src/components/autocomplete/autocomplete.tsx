@@ -54,11 +54,14 @@ export function Autocomplete<T>(props: Props<T>) {
       <View>
         <Input
           {...textProps}
+          placeholder={textProps?.placeholder || "Search"}
+          accessibilityLabel={`${value} input`}
+          type="text"
           placeholderTextColor={theme.colors.gray[400]}
           onFocus={() => setShowList(true)}
           onBlur={() => setShowList(false)}
           value={value}
-          onChange={(e) => onChange(e.nativeEvent.text)}
+          onChangeText={(e) => onChange(e)}
         />
       </View>
 

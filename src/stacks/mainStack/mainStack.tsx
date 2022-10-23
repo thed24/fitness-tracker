@@ -18,9 +18,10 @@ export function MainStack() {
     <Stack.Navigator>
       {user ? (
         <Stack.Screen
-          name="Profile"
+          name="Profile Stack"
           component={ProfileStack}
           options={{
+            headerTitle: "Profile",
             headerShown: true,
             headerRight: createLogoutButton,
             headerShadowVisible: false,

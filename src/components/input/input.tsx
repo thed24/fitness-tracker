@@ -53,6 +53,7 @@ export function Input({
 
   return (
     <InputBase
+      accessibilityLabel={`${value} input`}
       value={valueAsString}
       onChangeText={onChangeText}
       borderRadius={10}

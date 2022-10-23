@@ -13,7 +13,7 @@ export function HomeScreen({ navigation }: NavigationProps) {
     if (user) {
       navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
     }
-  }, [user]);
+  }, [navigation, user]);
 
   return (
     <Screen>

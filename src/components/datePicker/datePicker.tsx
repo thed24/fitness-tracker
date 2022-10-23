@@ -19,6 +19,7 @@ export function DatePicker({ mode, date, setDate }: Props) {
 
   return (
     <DatePickerBase
+      accessibilityLabel="date picker"
       style={{ alignSelf: "center" }}
       textColor={theme.colors.black}
       androidVariant="nativeAndroid"

@@ -36,7 +36,7 @@ export function Carousel({ renderItem, items, defaultIndex = undefined }: Props)
         renderItem={({ item, index }) => renderItem(item, index)}
       />
       <Box marginLeft="auto" marginRight="auto">
-        <View my={1} />
+        <View accessibilityLabel="caraousel" my={1} />
         <PaginationDot
           activeDotColor={theme.colors.primary[500]}
           curPage={activeIndex}

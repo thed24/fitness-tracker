@@ -34,6 +34,7 @@ export function Settings() {
   const createSettingSection = (item: SettingSection) => (
     <UserSetting
       item={item}
+      key={item.key}
       value={Object.entries(user.userSettings)
         .filter(([key, value]) => key === item.key)[0][1]
         .toString()}
