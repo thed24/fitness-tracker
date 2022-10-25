@@ -4,6 +4,7 @@ import { useStore } from "store";
 import { Screen } from "components";
 import { WorkoutChart } from "./components/workoutChart/workoutChart";
 import { BuddyStats } from "./components/buddyStats/buddyStats";
+import { Achievements } from "./components/achievements/achievements";
 
 export function Profile() {
   const { user } = useStore();
@@ -16,8 +17,9 @@ export function Profile() {
         Its time to get your workout on!
       </Text>
 
-      <BuddyStats />
       <WorkoutChart />
+      <BuddyStats />
+      <Achievements />
     </Screen>
   );
 }

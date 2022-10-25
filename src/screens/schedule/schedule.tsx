@@ -31,12 +31,9 @@ export function Schedule() {
     </View>
   );
 
-  const content =
-    scheduledWorkouts.length > 0 ? (
-      <Carousel renderItem={renderItem} items={scheduledWorkouts} />
-    ) : (
-      <Text marginTop={10}> No workouts scheduled </Text>
-    );
+  const content = scheduledWorkouts.length > 0 
+    ? (<Carousel renderItem={renderItem} items={scheduledWorkouts} />) 
+    : (<Text fontSize="md" mt={10}> No workouts scheduled </Text>);
 
   return (
     <Screen loading={editLoading}>

@@ -1,38 +1,38 @@
-export const ExerciseTypes = ["strength", "cardio"];
+export const ExerciseTypes = ['strength', 'cardio'];
 export type ExerciseType = typeof ExerciseTypes[number];
 
 export const MuscleGroups = [
-  "Abs",
-  "Biceps",
-  "Chest",
-  "Forearms",
-  "Glutes",
-  "Traps",
-  "Shoulders",
-  "Lats",
-  "Legs",
-  "Back",
-  "Triceps"
+  'Abs',
+  'Biceps',
+  'Chest',
+  'Forearms',
+  'Glutes',
+  'Traps',
+  'Shoulders',
+  'Lats',
+  'Legs',
+  'Back',
+  'Triceps',
 ];
 export type MuscleGroup = typeof MuscleGroups[number];
 
-export type Mechanics = "Compound" | "Isolation" | "Unknown";
+export type Mechanics = 'Compound' | 'Isolation' | 'Unknown';
 export const Equipments = [
-  "Bands",
-  "Barbell",
-  "Bench",
-  "BodyOnly",
-  "Dumbbell",
-  "ExerciseBall",
-  "EzBar",
-  "FoamRoll",
-  "Kettlebell",
-  "MachineCardio",
-  "MachineStrength",
-  "Other",
-  "PullBar",
-  "WeightPlate",
-  "Unknown"
+  'Bands',
+  'Barbell',
+  'Bench',
+  'BodyOnly',
+  'Dumbbell',
+  'ExerciseBall',
+  'EzBar',
+  'FoamRoll',
+  'Kettlebell',
+  'MachineCardio',
+  'MachineStrength',
+  'Other',
+  'PullBar',
+  'WeightPlate',
+  'Unknown',
 ];
 
 export type Equipment = typeof Equipments[number];
@@ -50,11 +50,11 @@ interface BaseExercise {
 }
 
 export interface StrengthExercise extends BaseExercise {
-  type: "strength";
+  type: 'strength';
 }
 
 export interface CardioExercise extends BaseExercise {
-  type: "cardio";
+  type: 'cardio';
 }
 
 export type Exercise = StrengthExercise | CardioExercise;
@@ -70,7 +70,7 @@ export interface StrengthData extends BaseData {
   reps: number | null;
   sets: number | null;
   weight: number | null;
-  type: "strength";
+  type: 'strength';
 }
 
 export interface CardioData extends BaseData {
@@ -78,7 +78,7 @@ export interface CardioData extends BaseData {
   targetDuration: number;
   distance: number | null;
   duration: number | null;
-  type: "cardio";
+  type: 'cardio';
 }
 
 export type Data = StrengthData | CardioData;
@@ -108,47 +108,47 @@ interface BuddyAnatomyBase {
   muscleGroup: MuscleGroup;
 }
 export interface BuddyAbs extends BuddyAnatomyBase {
-  muscleGroup: "Abs";
+  muscleGroup: 'Abs';
 }
 
 export interface BuddyBiceps extends BuddyAnatomyBase {
-  muscleGroup: "Biceps";
+  muscleGroup: 'Biceps';
 }
 
 export interface BuddyChest extends BuddyAnatomyBase {
-  muscleGroup: "Chest";
+  muscleGroup: 'Chest';
 }
 
 export interface BuddyForearms extends BuddyAnatomyBase {
-  muscleGroup: "Forearms";
+  muscleGroup: 'Forearms';
 }
 
 export interface BuddyGlutes extends BuddyAnatomyBase {
-  muscleGroup: "Glutes";
+  muscleGroup: 'Glutes';
 }
 
 export interface BuddyTraps extends BuddyAnatomyBase {
-  muscleGroup: "Traps";
+  muscleGroup: 'Traps';
 }
 
 export interface BuddyShoulders extends BuddyAnatomyBase {
-  muscleGroup: "Shoulders";
+  muscleGroup: 'Shoulders';
 }
 
 export interface BuddyLats extends BuddyAnatomyBase {
-  muscleGroup: "Lats";
+  muscleGroup: 'Lats';
 }
 
 export interface BuddyLegs extends BuddyAnatomyBase {
-  muscleGroup: "Legs";
+  muscleGroup: 'Legs';
 }
 
 export interface BuddyBack extends BuddyAnatomyBase {
-  muscleGroup: "Back";
+  muscleGroup: 'Back';
 }
 
 export interface BuddyTriceps extends BuddyAnatomyBase {
-  muscleGroup: "Triceps";
+  muscleGroup: 'Triceps';
 }
 
 export interface BuddyAnatomy {
@@ -158,10 +158,10 @@ export interface BuddyAnatomy {
 }
 
 export type StrengthLevelTypes =
-  | "Level"
-  | "Powerlifting"
-  | "Bodybuilding"
-  | "Weightlifting";
+  | 'overall'
+  | 'powerlifting'
+  | 'bodybuilding'
+  | 'weightlifting';
 
 export interface BaseReward {
   id: number;
@@ -244,11 +244,11 @@ export interface Buddy {
   data: BuddyData;
 }
 
-export type GraphType = "Reps" | "Sets" | "Weight" | "Distance";
+export type GraphType = 'Reps' | 'Sets' | 'Weight' | 'Distance';
 
 export interface UserSettings {
-  weightUnit: "pounds" | "kilograms";
-  measurementUnit: "metric" | "imperial";
+  weightUnit: 'pounds' | 'kilograms';
+  measurementUnit: 'metric' | 'imperial';
   darkMode: boolean;
 }
 

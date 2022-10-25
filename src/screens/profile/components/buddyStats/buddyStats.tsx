@@ -31,13 +31,14 @@ export function BuddyStats() {
   );
 
   const { anatomy } = user.workoutBuddy.data;
+  const level = user.workoutBuddy.data.levelStats.overall;
 
   return (
     <Card
       w="90%"
       marginTop={4}
     >
-      <Accordion title="Stats" secondTitle="Level 1">
+      <Accordion title="Stats" secondTitle={`Level ${level}`}>
       {anatomy.sort((a, b) => a.level < b.level ? 1 : -1).map((bodyPart, i) =>
         createStats(bodyPart.muscleGroup, bodyPart.level, i)
       )}

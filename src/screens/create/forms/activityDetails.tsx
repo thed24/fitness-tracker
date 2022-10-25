@@ -2,6 +2,7 @@ import { DatePicker, FormLabel } from "components";
 import { Box, Divider, Slider, Text, Card } from "native-base";
 import React from "react";
 import { titleCase } from "utils";
+import { StrengthData, StrengthExercise } from "../../../types/domain";
 import { ActivityEntry } from "../components/activityEntry";
 import { CreateWorkoutProps } from "../createWorkout";
 
@@ -18,17 +19,28 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
       total: number;
     };
 
+    const calculateStrengthVolume = (exercise: StrengthExercise & StrengthData): number => {
+      const { targetSets, targetReps, targetWeight } = exercise;
+      return targetSets * targetReps * targetWeight;
+    };
+
     const summaries = workout.activities.reduce(
       (acc, curr) => {
-        const { type } = curr;
+        const { type, mainMuscleGroup, otherMuscleGroups, detailedMuscleGroup } = curr;
         if (type === "strength") {
-          const { targetSets, targetReps, targetWeight, mainMuscleGroup } =
-            curr;
-          const volume = targetSets * targetReps * targetWeight;
+          const muscleGroups = otherMuscleGroups.concat(mainMuscleGroup).concat(detailedMuscleGroup ?? "unknown").filter(x => x.toLowerCase() !== "unknown");
+          const volumes = muscleGroups.reduce(
+            (acc2, curr2) => {
+              const volume = calculateStrengthVolume(curr as StrengthExercise & StrengthData);
+              const existingVolume = acc2[curr2] || 0;
+              return { ...acc2, [curr2]: existingVolume + volume };
+            }, { total: 0 } as ExerciseSummary
+          );
+
           return {
             ...acc,
-            [mainMuscleGroup]: volume + (acc[mainMuscleGroup] || 0),
-            total: volume + acc.total,
+            ...volumes,
+            total: acc.total + calculateStrengthVolume(curr),
           };
         }
         return { ...acc };

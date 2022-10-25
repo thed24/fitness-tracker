@@ -35,7 +35,7 @@ export function Carousel({ renderItem, items, defaultIndex = undefined }: Props)
         onSnapToItem={(index) => setActiveIndex(index)}
         renderItem={({ item, index }) => renderItem(item, index)}
       />
-      <Box marginLeft="auto" marginRight="auto">
+      <Box mx="auto">
         <View accessibilityLabel="caraousel" my={1} />
         <PaginationDot
           activeDotColor={theme.colors.primary[500]}

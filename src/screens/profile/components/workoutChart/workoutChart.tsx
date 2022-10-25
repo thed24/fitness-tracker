@@ -156,7 +156,7 @@ export function WorkoutChart() {
   }, [workoutDataLoading, workoutData, pastWorkouts, selectedExercise, theme.colors.primary, workoutType]);
 
   return (
-    <Card w="90%" marginBottom={4} marginTop={4}>
+    <Card w="90%" marginTop={4}>
       <HStack>
         <Heading size="md">Workout Graphs</Heading>
 

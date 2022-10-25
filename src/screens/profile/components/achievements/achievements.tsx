@@ -3,10 +3,12 @@ import { Text, Card, Box, Progress, useTheme, HStack } from "native-base";
 import { useStore } from "store";
 import { Accordion } from "components";
 import { titleCase } from "utils";
+// import { useAchievements } from "api";
 
 export function Achievements() {
   const { user } = useStore();
   const theme = useTheme();
+  // const { data: achievements } = useAchievements();
 
   if (!user) {
     return null;
@@ -55,9 +57,7 @@ export function Achievements() {
     <Card
       w="90%"
       backgroundColor={theme.colors.white}
-      marginBottom={4}
-      marginTop={4}
-      shadow={2}
+      my={4}
     >
       <Accordion title="Achievements">
         {mockAchievements.map((achievement) => (

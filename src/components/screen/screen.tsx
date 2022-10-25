@@ -28,14 +28,16 @@ export function Screen({
     );
   }
 
-  return scrollable ? (
+  return scrollable 
+  ? (
     <SC.ScrollableContainer
       backgroundColor={theme.colors.gray[300]}
       contentContainerStyle={{ alignItems: "center" }}
     >
       {children}
     </SC.ScrollableContainer>
-  ) : (
+  ) 
+  : (
     <SC.Container backgroundColor={theme.colors.gray[300]}>
       {children}
     </SC.Container>
