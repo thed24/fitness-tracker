@@ -35,7 +35,7 @@ export function NavigationButtons({
   };
 
   return (
-    <Box mt={5} mb={20}>
+    <Box mt={5} mb={2}>
       {currentIndex === 0 && (
         <HStack justifyContent="center" space={2}>
           <Button onPress={onClickNext}>
@@ -43,7 +43,7 @@ export function NavigationButtons({
           </Button>
           <Button
             onPress={onSubmit}
-            disabled={disabled}
+            isDisabled={disabled}
             isLoading={loading}
           >
             Submit

@@ -3,6 +3,7 @@ import { Text, Card, ScrollView, useTheme, Box, Skeleton } from 'native-base';
 import { Accordion } from 'components';
 import React from 'react';
 import { Exercise, MuscleGroups } from 'types';
+import { titleCase } from 'utils';
 import { ExerciseFilters, Filters } from '../components/exerciseFilters';
 import { CreateWorkoutProps } from '../createWorkout';
 
@@ -36,22 +37,11 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     if (!data) return [];
 
     return data.filter((exercise) => {
-      if (
-        filters.muscleGroup &&
-        exercise.mainMuscleGroup.toLocaleLowerCase() !==
-          filters.muscleGroup.toLocaleLowerCase()
-      )
+      if (filters.muscleGroup && exercise.mainMuscleGroup.toLocaleLowerCase() !== filters.muscleGroup.toLocaleLowerCase())
         return false;
-      if (
-        filters.equipment &&
-        exercise.equipment.toLocaleLowerCase() !==
-          filters.equipment.toLocaleLowerCase()
-      )
+      if (filters.equipment && exercise.equipment.toLocaleLowerCase() !== filters.equipment.toLocaleLowerCase())
         return false;
-      if (
-        filters.type &&
-        exercise.type.toLocaleLowerCase() !== filters.type.toLocaleLowerCase()
-      )
+      if (filters.type && exercise.type.toLocaleLowerCase() !== filters.type.toLocaleLowerCase())
         return false;
       return true;
     });
@@ -90,27 +80,21 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
       end: [1, 0],
     };
 
-    const exercises = filteredExercises.filter(
-      (exercise) =>
-        exercise.mainMuscleGroup.toLowerCase() === muscleGroup.toLowerCase() ||
-        exercise.otherMuscleGroups.some(
-          (otherMuscleGroup) =>
-            otherMuscleGroup.toLowerCase() === muscleGroup.toLowerCase()
-        ) ||
-        exercise.detailedMuscleGroup?.toLowerCase() ===
-          muscleGroup.toLowerCase()
-    );
+    const exercises = filteredExercises.filter((exercise) => {
+      const compareStrings = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+      const muscleGroups = exercise.otherMuscleGroups.concat(exercise.mainMuscleGroup).concat(exercise.detailedMuscleGroup ?? "Unknown");
+      return muscleGroups.some((curr) => compareStrings(curr, muscleGroup));
+    });
 
     return { name: muscleGroup, exercises, linearGradient };
   };
 
-  const whereExercisesExist = (muscleGroup: MuscleGroupData) =>
-    muscleGroup.exercises.length > 0;
+  const whereExercisesExist = (muscleGroup: MuscleGroupData) => muscleGroup.exercises.length > 0;
 
   const createCard = (muscleGroup: MuscleGroupData) => (
     <Card my={2} key={`card-${muscleGroup.name}`}>
       <Accordion
-        title={muscleGroup.name}
+        title={titleCase(muscleGroup.name)}
         secondTitle={`${muscleGroup.exercises.length} exercises`}
         key={`${muscleGroup.name}-accordion`}
         short
@@ -136,7 +120,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
       startColor={theme.colors.gray[100]}
       endColor={theme.colors.gray[200]}
       height={100}
-      my={4}
+      my={2}
     />
   ));
 

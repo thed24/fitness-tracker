@@ -47,7 +47,12 @@ export function NavigationButton({
       )}
 
       {currentIndex === 2 && (
-        <Button w="70%" disabled={disabled} onPress={onSubmit} isLoading={loading}>
+        <Button
+          w="70%"
+          isDisabled={disabled}
+          onPress={onSubmit}
+          isLoading={loading}
+        >
           Submit
         </Button>
       )}

@@ -1,4 +1,4 @@
-import { FormControl, VStack, Text, HStack } from "native-base";
+import { FormControl, VStack, HStack } from "native-base";
 import React from "react";
 import { FormLabel } from "../formLabel/formLabel";
 import { Input } from "../input/input";
@@ -34,10 +34,10 @@ export function FormInput({
         <HStack>
           {!hideLabel && <FormLabel>{name}</FormLabel>}
           {required && !hideLabel && (
-            <Text textAlign="left" fontSize="xs" color="red.400">
+            <FormLabel variant="error">
               {" "}
               *
-            </Text>
+            </FormLabel>
           )}
         </HStack>
 
@@ -61,9 +61,9 @@ export function FormInput({
         )}
 
         {error && (
-          <Text textAlign="left" fontSize="xs" color="red.400">
+          <FormLabel variant="error">
             {error}
-          </Text>
+          </FormLabel>
         )}
       </FormControl>
     </VStack>

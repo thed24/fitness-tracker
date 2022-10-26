@@ -1,66 +1,64 @@
-import React from "react";
-import { Text, Card, Box, Progress, useTheme, HStack } from "native-base";
-import { useStore } from "store";
-import { Accordion } from "components";
-import { titleCase } from "utils";
-// import { useAchievements } from "api";
+import React from 'react';
+import { Text, Card, Box, Progress, useTheme, HStack } from 'native-base';
+import { useStore } from 'store';
+import { Accordion } from 'components';
+import { titleCase } from 'utils';
+import { useAchievements } from 'api';
+import { Achievement, Reward } from 'types';
 
 export function Achievements() {
   const { user } = useStore();
   const theme = useTheme();
-  // const { data: achievements } = useAchievements();
+  const { data: achievements } = useAchievements();
 
-  if (!user) {
+  if (!user || !achievements) {
     return null;
   }
 
-  const mockAchievements = [
-    {
-      title: "First Workout",
-      description: "You completed your first workout!",
-      progress: 1,
-      total: 1,
-      rewards: [
-        {
-          type: "title",
-          value: "Newbie",
-        },
-      ],
-    },
-    {
-      title: "10 Workouts",
-      description: "You completed 10 workouts!",
-      progress: 1,
-      total: 10,
-      rewards: [
-        {
-          type: "title",
-          value: "Begginner",
-        },
-      ],
-    },
-    {
-      title: "100 Workouts",
-      description: "You completed 100 workouts!",
-      progress: 1,
-      total: 100,
-      rewards: [
-        {
-          type: "title",
-          value: "Consistent",
-        },
-      ],
-    },
-  ];
+  const createReward = (reward: Reward) => {
+    if (reward.rewardType === 'experience') {
+      return (
+        <Text fontSize="sm">
+          <>{reward.amount} {reward.strengthLevel} XP</>
+        </Text>
+      );
+    }
+
+    return (
+      <Text fontSize="sm" color="gray.500">
+        Unkown Reward
+      </Text>
+    );
+  }
+
+  const createAchievement = (achievement: Achievement) => {
+    if (achievement.achievementType === "streak") {
+      return (
+        <>
+          <HStack mt={2}>
+            <Text fontSize="sm">{user.workoutBuddy.data.streak}</Text>
+            <Text fontSize="sm">/{achievement.targetStreak}</Text>
+            <Text ml="auto" fontSize="sm">
+              Unlocks{' '}{achievement.rewards.map(createReward)}
+            </Text>
+          </HStack>
+          <Progress
+            style={{ marginTop: 5 }}
+            value={user.workoutBuddy.data.streak}
+            size="md"
+            max={achievement.targetStreak}
+            borderWidth="2"
+            borderColor={theme.colors.coolGray[600]}
+          />
+        </>
+      );
+    }
+  };
 
   return (
-    <Card
-      w="90%"
-      backgroundColor={theme.colors.white}
-      my={4}
-    >
+    <Card w="90%" backgroundColor={theme.colors.white} my={4}>
       <Accordion title="Achievements">
-        {mockAchievements.map((achievement) => (
+        {achievements.map((achievement) => (
           <Box
             key={achievement.title}
             flexDirection="row"
@@ -69,32 +67,11 @@ export function Achievements() {
             mt={3}
           >
             <Box w="100%">
-              <Text fontSize="md" fontWeight="semibold">
-                {titleCase(achievement.title)}
-              </Text>
+              {titleCase(achievement.title)}
               <Text fontSize="sm" color={theme.colors.gray[500]}>
                 {achievement.description}
               </Text>
-              <HStack mt={2}>
-                <Text fontSize="sm">{achievement.progress}</Text>
-                <Text fontSize="sm">/{achievement.total}</Text>
-                <Text ml="auto" fontSize="sm">
-                  Unlocks,{" "}
-                  {achievement.rewards
-                    .map(
-                      (reward) => `${reward.type} "${reward.value}"`
-                    )
-                    .join(", ")}
-                </Text>
-              </HStack>
-              <Progress
-                style={{ marginTop: 5 }}
-                value={achievement.progress}
-                size="md"
-                max={achievement.total}
-                borderWidth="2"
-                borderColor={theme.colors.coolGray[600]}
-              />
+              {createAchievement(achievement)}
             </Box>
           </Box>
         ))}

@@ -10,7 +10,8 @@ export const MuscleGroups = [
   'Traps',
   'Shoulders',
   'Lats',
-  'Legs',
+  'LowerLegs',
+  'UpperLegs',
   'Back',
   'Triceps',
 ];
@@ -139,8 +140,12 @@ export interface BuddyLats extends BuddyAnatomyBase {
   muscleGroup: 'Lats';
 }
 
-export interface BuddyLegs extends BuddyAnatomyBase {
-  muscleGroup: 'Legs';
+export interface BuddyLowerLegs extends BuddyAnatomyBase {
+  muscleGroup: 'LowerLegs';
+}
+
+export interface BuddyUpperLegs extends BuddyAnatomyBase {
+  muscleGroup: 'UpperLegs';
 }
 
 export interface BuddyBack extends BuddyAnatomyBase {
@@ -163,14 +168,6 @@ export type StrengthLevelTypes =
   | 'bodybuilding'
   | 'weightlifting';
 
-export interface BaseReward {
-  id: number;
-}
-
-export interface Title extends BaseReward {
-  name: string;
-}
-
 export interface Image {
   id: number;
   bytes: string;
@@ -178,49 +175,83 @@ export interface Image {
   fileExtension: string;
 }
 
+export type RewardType = 'badge' | 'title' | 'experience';
+
+export interface BaseReward {
+  id: number;
+  rewardType: RewardType;
+}
+
+export interface Title extends BaseReward {
+  name: string;
+  rewardType: 'title';
+}
+
 export interface Badge extends BaseReward {
   name: string;
   image: Image;
+  rewardType: 'badge';
 }
 
 export interface Experience extends BaseReward {
   amount: number;
   strengthLevel: StrengthLevelTypes;
+  rewardType: 'experience';
 }
 
-export type Reward = BaseReward | Title | Badge | Experience;
+export type Reward = Title | Badge | Experience;
+
+export type AchievementType =
+  | 'streak'
+  | 'level'
+  | 'reps'
+  | 'sets'
+  | 'weight'
+  | 'distance';
 
 export interface BaseAchievement {
   id: number;
   title: string;
+  description: string;
   rewards: Reward[];
+  achievementType: AchievementType;
 }
 
 export interface WeightAchievement extends BaseAchievement {
   targetWeight: number;
   targetMuscleGroup: MuscleGroup;
   hasTargetMuscleGroup: boolean;
+  achievementType: 'weight';
+}
+
+export interface StreakAchievement extends BaseAchievement {
+  targetStreak: number;
+  achievementType: 'streak';
 }
 
 export interface RepsAchievement extends BaseAchievement {
   targetReps: number;
   targetMuscleGroup: MuscleGroup;
   hasTargetMuscleGroup: boolean;
+  achievementType: 'reps';
 }
 
 export interface SetsAchievement extends BaseAchievement {
   targetSets: number;
   targetMuscleGroup: MuscleGroup;
   hasTargetMuscleGroup: boolean;
+  achievementType: 'sets';
 }
 
 export interface DistanceAchievement extends BaseAchievement {
   targetDistance: number;
+  achievementType: 'distance';
 }
 
 export interface LevelAchievement extends BaseAchievement {
   targetLevel: number;
   targetStrengthLevelType: StrengthLevelTypes;
+  achievementType: 'level';
 }
 
 export type Achievement =
@@ -228,7 +259,8 @@ export type Achievement =
   | RepsAchievement
   | SetsAchievement
   | DistanceAchievement
-  | LevelAchievement;
+  | LevelAchievement
+  | StreakAchievement;
 
 export interface BuddyData {
   anatomy: BuddyAnatomy[];

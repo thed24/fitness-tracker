@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  Divider,
-  extendTheme,
-  Heading,
-  Select,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Card, Divider, extendTheme, Select, View } from 'native-base';
 
 import React from 'react';
 
@@ -43,28 +34,6 @@ export const createTheme = (darkMode: boolean) => {
       white: darkMode ? '#9a9a9a' : '#fafafa',
     },
     components: {
-      Heading: {
-        baseStyle: (props: any) =>
-          ({
-            _light: {
-              color: 'black',
-            },
-            _dark: {
-              color: 'black',
-            },
-          } as React.ComponentProps<typeof Heading>),
-      },
-      Text: {
-        baseStyle: (props: any) =>
-          ({
-            _light: {
-              color: 'black',
-            },
-            _dark: {
-              color: 'black',
-            },
-          } as React.ComponentProps<typeof Text>),
-      },
       Card: {
         baseStyle: (props: any) =>
           ({
@@ -96,9 +65,6 @@ export const createTheme = (darkMode: boolean) => {
             },
             _pressed: {
               backgroundColor: 'primary.600',
-            },
-            _disabled: {
-              backgroundColor: 'gray.400',
             },
           } as React.ComponentProps<typeof Button>),
       },

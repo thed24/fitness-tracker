@@ -1,11 +1,11 @@
-import { Autocomplete, Screen } from "components";
+import { Autocomplete, FormLabel, Screen } from "components";
 
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
 import { useAddWorkout, useGetWorkoutNames } from "api";
 import { useStore } from "store";
 import { Formik, FormikProps } from "formik";
-import { Box, ScrollView, Text } from "native-base";
+import { Box, ScrollView, Text, VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityDetails } from "./forms/activityDetails";
 import { CreateWorkoutSchema } from "./createWorkoutSchema";
@@ -74,7 +74,7 @@ export function CreateWorkout() {
     <Screen loading={addLoading}>
       <Formik
         validationSchema={CreateWorkoutSchema}
-        validateOnChange
+        validateOnMount
         initialValues={{
           workout: {
             id: 0,
@@ -100,6 +100,8 @@ export function CreateWorkout() {
             form.setFieldValue("activity", null);
             setIndex(0);
           };
+
+          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""].filter((e) => e !== "");
 
           return (
             <ScrollView nestedScrollEnabled w="100%">
@@ -128,14 +130,19 @@ export function CreateWorkout() {
 
                 {getStep({ form })}
 
-                <NavigationButtons
-                  loading={addLoading}
-                  disabled={Object.keys(form.errors).length > 0}
-                  currentIndex={index}
-                  setIndex={setIndex}
-                  onAddActivity={handleAddActivity}
-                  onSubmit={form.handleSubmit}
-                />
+                <VStack>
+                  <NavigationButtons
+                    loading={addLoading}
+                    disabled={Object.keys(form.errors).length > 0}
+                    currentIndex={index}
+                    setIndex={setIndex}
+                    onAddActivity={handleAddActivity}
+                    onSubmit={form.handleSubmit}
+                  />
+                  {errors.length > 0 && index === 0 && (
+                    <FormLabel textAlign="center" variant="error">{errors.join("\n")}</FormLabel>
+                  )}
+                </VStack>
               </Box>
             </ScrollView>
           );
