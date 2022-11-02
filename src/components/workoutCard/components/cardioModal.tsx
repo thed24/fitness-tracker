@@ -54,10 +54,10 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
         </Modal.Body>
         <Modal.Footer>
           <HStack space={2}>
-            <Modal.CloseButton>
+            <Button onPress={onClose}>
               <Text>Cancel</Text>
-            </Modal.CloseButton>
-            <Modal.CloseButton
+            </Button>
+            <Button
               onPress={() => {
                 editWorkout({
                   userId: user!.id,
@@ -79,7 +79,7 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
               }}
             >
               <Text>Save</Text>
-            </Modal.CloseButton>
+            </Button>
           </HStack>
         </Modal.Footer>
       </Modal.Content>
