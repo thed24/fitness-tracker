@@ -104,7 +104,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
             <Text
               onPress={() => handleExerciseChange(exercise)}
               color="black"
-              key={`${muscleGroup.name}-${exercise.name}`}
+              key={`${muscleGroup.name}-${exercise.id}`}
             >
               {exercise.name}
             </Text>
@@ -114,12 +114,13 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     </Card>
   );
 
-  const skeletons = Array.from({ length: 10 }, (_, i) => i).map(() => (
+  const skeletons = Array.from({ length: 10 }, (_, i) => i).map((i) => (
     <Skeleton
+      key={`skeleton-${i}`}
       rounded={10}
       startColor={theme.colors.gray[100]}
       endColor={theme.colors.gray[200]}
-      height={100}
+      height={82}
       my={2}
     />
   ));

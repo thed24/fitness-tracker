@@ -1,7 +1,6 @@
 import React from "react";
 import { ScheduledWorkout } from "types";
-import { WorkoutCard } from "components";
-import { Button } from "native-base";
+import { Button, WorkoutCard } from "components";
 
 interface Props {
   scheduledWorkout: ScheduledWorkout;

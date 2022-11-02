@@ -1,8 +1,9 @@
 import { useEditWorkout } from "api";
-import { HStack, Modal, VStack, Text, Button } from "native-base";
+import { HStack, Modal, VStack, Text } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { StrengthData, StrengthExercise, Workout } from "types";
+import { Button } from "../../button/button";
 import { Input } from "../../input/input";
 
 interface Props {
@@ -61,7 +62,7 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
         </Modal.Body>
         <Modal.Footer>
           <HStack space={2}>
-            <Button>
+            <Button onPress={onClose}>
               <Text>Cancel</Text>
             </Button>
             <Button

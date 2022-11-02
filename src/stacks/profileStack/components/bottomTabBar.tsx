@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useTheme } from 'native-base';
 import React from 'react';
-import { BottomNavigation } from 'react-native-paper';
+import { BottomNavigation, TouchableRipple } from 'react-native-paper';
 import { CreateWorkout } from '../../../screens/create/createWorkout';
 import { Settings } from '../../../screens/settings/settings';
 import { DashboardStack } from '../../dashboardStack/dashboardStack';
@@ -49,8 +49,15 @@ export function BottomTabBar() {
       activeColor={theme.colors.primary[500]}
       inactiveColor={theme.colors.gray[500]}
       keyboardHidesNavigationBar
+      labeled={false}
+      renderTouchable={({ children, ...rest }) => (
+        <TouchableRipple {...rest} style={{ flex: 1, marginTop: -13 }}>
+          {children}
+        </TouchableRipple>
+      )}
       barStyle={{
         backgroundColor: theme.colors.white,
+        height: 50,
       }}
     />
   );

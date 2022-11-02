@@ -16,8 +16,8 @@ export function History() {
   );
 
   const content = pastWorkouts.length > 0 
-  ? (<Carousel renderItem={renderItem} items={pastWorkouts} defaultIndex={pastWorkouts.length - 1} />) 
-  : (<Text fontSize="md" mt={10}> No past workouts exist </Text>);
+    ? (<Carousel renderItem={renderItem} items={pastWorkouts} defaultIndex={pastWorkouts.length - 1} />) 
+    : (<Text fontSize="md" mt={10}> No past workouts exist </Text>);
 
   return (
     <Screen>

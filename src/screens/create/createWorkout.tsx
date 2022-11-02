@@ -74,7 +74,8 @@ export function CreateWorkout() {
     <Screen loading={addLoading}>
       <Formik
         validationSchema={CreateWorkoutSchema}
-        validateOnMount
+        initialErrors={{ workout: { name: "Enter a workout name" } }}
+        validateOnChange
         initialValues={{
           workout: {
             id: 0,
@@ -101,7 +102,8 @@ export function CreateWorkout() {
             setIndex(0);
           };
 
-          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""].filter((e) => e !== "");
+          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""]
+                         .filter((e) => e !== "");
 
           return (
             <ScrollView nestedScrollEnabled w="100%">

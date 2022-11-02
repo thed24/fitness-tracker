@@ -1,13 +1,13 @@
-import { Box, Button, HStack } from "native-base";
-import React from "react";
-import { GestureResponderEvent } from "react-native";
+import { Button } from "components";
+import { Box, HStack } from "native-base";
+import React, { useCallback } from "react";
 
 interface Props {
   currentIndex: number;
   disabled: boolean;
   setIndex: (index: number) => void;
-  onSubmit: (event: any) => void;
-  onAddActivity: (event: GestureResponderEvent) => void;
+  onSubmit: () => void;
+  onAddActivity: () => void;
   loading?: boolean;
 }
 
@@ -19,27 +19,24 @@ export function NavigationButtons({
   onAddActivity,
   loading = false,
 }: Props) {
-  const onClickNext = (event: GestureResponderEvent) => {
-    event.preventDefault();
+  const onClickNext = useCallback(() => {
     setIndex(currentIndex + 1);
-  };
+  }, [currentIndex, setIndex]);
 
-  const onClickPrevious = (event: GestureResponderEvent) => {
-    event.preventDefault();
+  const onClickPrevious = useCallback(() => {
     setIndex(currentIndex - 1);
-  };
+  }, [currentIndex, setIndex]);
 
-  const onCancel = (event: GestureResponderEvent) => {
-    event.preventDefault();
+  const onCancel = useCallback(() => {
     setIndex(0);
-  };
+  }, [setIndex]);
 
   return (
     <Box mt={5} mb={2}>
       {currentIndex === 0 && (
         <HStack justifyContent="center" space={2}>
           <Button onPress={onClickNext}>
-            Add New Workout
+            Add New Activity
           </Button>
           <Button
             onPress={onSubmit}

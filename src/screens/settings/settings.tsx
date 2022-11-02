@@ -1,7 +1,7 @@
 import React from "react";
 import { useStore } from "store";
-import { Screen, Avatar, FormLabel } from "components";
-import { Box, useTheme, VStack, Button } from "native-base";
+import { Screen, Avatar, FormLabel, Button } from "components";
+import { Box, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
 import { Image } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
@@ -35,8 +35,8 @@ export function Settings() {
     <UserSetting
       item={item}
       key={item.key}
-      value={Object.entries(user.userSettings)
-        .filter(([key, value]) => key === item.key)[0][1]
+      value={(Object.entries(userDetails)
+        .filter(([key, value]) => key === item.key)?.[0][1] ?? "")
         .toString()}
       onChange={(val) => {
         setUserDetails((prev) => ({
@@ -131,14 +131,11 @@ export function Settings() {
 
       <Box w="95%" mt={2}>
         <FormLabel ml={2}>Settings</FormLabel>
-        {settingsSections.data.map((item: SettingSection) => createSettingSection(item))}
+        {settingsSections.data.map(createSettingSection)}
       </Box>
 
       <Button
         isLoading={isLoading}
-        mb={4}
-        mt={4}
-        w="90%"
         onPress={() =>
           mutate({
             ...userDetails,

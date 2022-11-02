@@ -6,16 +6,17 @@ interface Props {
   loading?: boolean;
   side: "left" | "right";
   children: React.ReactNode;
+  background?: boolean;
 }
 
-export function Badge({ onClick, loading, children, side }: Props) {
+export function Badge({ onClick, loading, children, side, background = true }: Props) {
   const theme = useTheme();
 
   return (
     <BaseBadge
       accessibilityLabel="badge"
       onTouchStart={onClick}
-      bgColor={theme.colors.primary[600]}
+      bgColor={background ? theme.colors.primary[600] : "transparent"}
       rounded="full"
       zIndex={1}
       variant="solid"

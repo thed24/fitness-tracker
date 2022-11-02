@@ -19,13 +19,8 @@ export function BuddyStats() {
       </Text>
       <Progress
         key={`${name}-${index}-progress`}
-        borderWidth="2"
-        borderColor={theme.colors.coolGray[600]}
-        bg={theme.colors.coolGray[400]}
         value={state}
         max={10}
-        mx={4}
-        size="md"
       />
     </Box>
   );

@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Text } from "native-base";
+import { Text } from "native-base";
 import { useStore } from "store";
 import { NavigationProps } from "types";
+import { Button } from "components";
 
 export function LogoutButton({ navigation }: NavigationProps) {
   const { setUser } = useStore();
@@ -12,7 +13,7 @@ export function LogoutButton({ navigation }: NavigationProps) {
   };
 
   return (
-    <Button variant="link" mr={1} onPress={onLogout}>
+    <Button variant="link" onPress={onLogout}>
       <Text fontSize="md" fontWeight="bold">Logout</Text>
     </Button>
   );

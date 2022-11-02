@@ -5,10 +5,9 @@ import {
   Text,
   useTheme,
   View,
-} from "native-base";
-import React, { useMemo } from "react";
-import { SafeAreaView } from "react-native";
-import { Input } from "../input/input";
+} from 'native-base';
+import React, { useMemo } from 'react';
+import { Input } from '../input/input';
 
 interface BaseProps<T> {
   data: T[];
@@ -54,7 +53,7 @@ export function Autocomplete<T>(props: Props<T>) {
       <View>
         <Input
           {...textProps}
-          placeholder={textProps?.placeholder || "Search"}
+          placeholder={textProps?.placeholder || 'Search'}
           accessibilityLabel={`${value} input`}
           type="text"
           placeholderTextColor={theme.colors.gray[400]}
@@ -65,35 +64,32 @@ export function Autocomplete<T>(props: Props<T>) {
         />
       </View>
 
-      {showList && (
-        <SafeAreaView>
-          {filteredData.length > 0 && (
-            <FlatList
-              ml={2}
-              keyExtractor={keyExtractor}
-              data={limitedData}
-              renderItem={({ item }) => {
-                const key = keyExtractor(item);
-                return (
-                  <Pressable
-                    key={`${key}-pressable`}
-                    zIndex={1}
-                    onTouchStart={() => onChange(key)}
-                  >
-                    <Text
-                      key={`${key}-text`}
-                      fontSize={14}
-                      fontWeight="bold"
-                      color={theme.colors.gray[400]}
-                    >
-                      {key}
-                    </Text>
-                  </Pressable>
-                );
-              }}
-            />
-          )}
-        </SafeAreaView>
+      {showList && filteredData.length > 0 && (
+        <FlatList
+          ml={2}
+          keyExtractor={keyExtractor}
+          data={limitedData}
+          scrollEnabled={false}
+          renderItem={({ item }) => {
+            const key = keyExtractor(item);
+            return (
+              <Pressable
+                key={`${key}-pressable`}
+                zIndex={1}
+                onTouchStart={() => onChange(key)}
+              >
+                <Text
+                  key={`${key}-text`}
+                  fontSize={14}
+                  fontWeight="bold"
+                  color={theme.colors.gray[400]}
+                >
+                  {key}
+                </Text>
+              </Pressable>
+            );
+          }}
+        />
       )}
     </View>
   );

@@ -1,6 +1,6 @@
-import { FormLabel, Input } from 'components';
-import { HStack, Button, useTheme } from 'native-base';
-import React from 'react';
+import { Button, FormLabel, Input } from 'components';
+import { HStack } from 'native-base';
+import React, { useCallback, useMemo } from 'react';
 
 interface Props {
   name: string;
@@ -10,32 +10,28 @@ interface Props {
   titleAccessory?: React.ReactNode;
 }
 
-export function IncrementBar({
+function IncrementBarInternal({
   value,
   onChange,
   name,
   increments,
   titleAccessory,
 }: Props) {
-  const theme = useTheme();
+  const createButton = useCallback((increment: number) => {
+    const incrementHandler = () => onChange((value + increment).toString());
+    const text = increment > 0 ? `+${increment}` : `-${-increment}`;
 
-  const createIncrementHandler = (increment: number) => () => {
-    onChange((value + increment).toString());
-  };
-
-  const createButton = (increment: number) => (
-    <Button
-      key={increment}
-      w="20%"
-      onPress={createIncrementHandler(increment)}
-      backgroundColor={theme.colors.white}
-      borderColor={theme.colors.gray[300]}
-      borderWidth={1}
-      textAlign="center"
-      _text={{ color: theme.colors.gray[500] }}
-    >
-      {increment > 0 ? `+\n${increment}` : `-\n${-increment}`}
-    </Button>
+    return (
+      <Button
+        key={increment}
+        variant="secondary"
+        onPress={incrementHandler}
+      >
+        {text}
+      </Button>
+    );
+  },
+    [onChange, value],
   );
 
   const handleInputChange = (newValue: string) => {
@@ -46,16 +42,17 @@ export function IncrementBar({
     }
   };
 
+  const positiveIncrements = useMemo(() => increments.filter((i) => i > 0).map(createButton), [createButton, increments]);
+  const negativeIncrements = useMemo(() => increments.filter((i) => i < 0).map(createButton), [createButton, increments]);
+
   return (
     <>
-      <HStack justifyContent="space-between" alignItems="center" mb={1}>
+      <HStack justifyContent="space-between" mb={1}>
         <FormLabel mt={1}>{name}</FormLabel>
         {titleAccessory}
       </HStack>
       <HStack justifyContent="space-between" alignContent="center">
-        {increments
-          .filter((i) => i > 0)
-          .map((increment) => createButton(increment))}
+        {positiveIncrements}
         <Input
           w={16}
           textDecorationLine="underline"
@@ -65,10 +62,10 @@ export function IncrementBar({
           type="text"
           textAlign="center"
         />
-        {increments
-          .filter((i) => i < 0)
-          .map((increment) => createButton(increment))}
+        {negativeIncrements}
       </HStack>
     </>
   );
 }
+
+export const IncrementBar = React.memo(IncrementBarInternal);

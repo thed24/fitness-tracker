@@ -1,8 +1,16 @@
-import { Button, Card, Divider, extendTheme, Select, View } from 'native-base';
-
+import {
+  Progress,
+  Button,
+  Card,
+  Divider,
+  extendTheme,
+  Select,
+  View,
+} from 'native-base';
 import React from 'react';
+import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
 
-export const createTheme = (darkMode: boolean) => {
+export const createNativeTheme = (darkMode: boolean) => {
   const theme = extendTheme({
     config: {
       initialColorMode: darkMode ? 'dark' : 'light',
@@ -84,6 +92,34 @@ export const createTheme = (darkMode: boolean) => {
             },
           } as React.ComponentProps<typeof Select>),
       },
+      Progress: {
+        baseStyle: (props: any) =>
+          ({
+            mt: 3,
+            size: 'xl',
+            rounded: 'full',
+            _light: {
+              backgroundColor: 'gray.300',
+            },
+            _dark: {
+              backgroundColor: 'gray.700',
+            },
+          } as React.ComponentProps<typeof Progress>),
+      },
+      Text: {
+        baseStyle: {
+          _dark: {
+            color: '#fafafa',
+          },
+        },
+      },
+      Heading: {
+        baseStyle: {
+          _dark: {
+            color: '#fafafa',
+          },
+        },
+      },
     },
     fontConfig: {
       Roboto: {
@@ -133,3 +169,35 @@ export const createTheme = (darkMode: boolean) => {
   });
   return theme;
 };
+
+export const createPaperTheme = (darkMode: boolean) => ({
+  ...DefaultTheme,
+  roundness: 10,
+  version: 3,
+  dark: darkMode,
+  mode: 'adaptive',
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#2196f3',
+    accent: '#f1c40f',
+  },
+  fonts: {
+    ...DefaultTheme.fonts,
+    regular: {
+      fontFamily: 'JakartaSans',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'JakartaSans',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'JakartaSans',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'JakartaSans',
+      fontWeight: 'normal',
+    },
+  },
+});

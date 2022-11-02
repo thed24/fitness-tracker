@@ -25,7 +25,7 @@ export function FormLabel({
       content = (
         <Text
           accessibilityLabel={`${children} label`}
-          color={color}
+          // color={color}
           textAlign={textAlign}
           mb={2}
           fontSize={16}

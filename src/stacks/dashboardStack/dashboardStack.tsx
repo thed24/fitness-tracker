@@ -37,7 +37,7 @@ export function DashboardStack() {
       screenOptions={(props) => ({
         swipeEnabled: false,
         tabBarIndicatorStyle: {
-          backgroundColor: theme.colors.primary[500],
+          backgroundColor: "transparent",
           width: props.route.name === "Profile" ? "33%" : "28%",
           marginLeft: props.route.name === "History" ? "4%" : "0%",
         },
