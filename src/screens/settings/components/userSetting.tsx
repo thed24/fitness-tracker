@@ -11,6 +11,7 @@ interface Props {
 
 export function UserSetting({ item, onChange, value }: Props) {
   const theme = useTheme();
+  const key = (opt: { title: string, value: string }) => `${item.key}-${opt.value}-${value}`;
 
   return (
     <Card
@@ -24,9 +25,9 @@ export function UserSetting({ item, onChange, value }: Props) {
       <Text mb={2}>{item.title}</Text>
       <RadioButton.Group onValueChange={onChange} value={value}>
         {item.options.map((option) => (
-          <HStack textAlign="center">
-            <RadioButton color={theme.colors.primary[600]} value={option.value} key={option.title} />
-            <Text mt="1.5">{option.title}</Text>
+          <HStack key={`${key(option)}-stack`} textAlign="center">
+            <RadioButton key={`${key(option)}-radio`} color={theme.colors.primary[600]} value={option.value}/>
+            <Text key={`${key(option)}-text`} mt="1.5">{option.title}</Text>
           </HStack>
         ))}
         </RadioButton.Group>
