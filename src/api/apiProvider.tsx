@@ -7,6 +7,10 @@ import {
 import { Toast } from "native-base";
 import { AxiosError } from "axios";
 
+type ErrorResponse = {
+  errors: string[];
+}
+
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
@@ -17,12 +21,12 @@ export const queryClient = new QueryClient({
           description: error.message,
           duration: 5000,
         });
-      } else if (error instanceof AxiosError) {
+      } else if (error instanceof AxiosError<ErrorResponse>) {
         Toast.show({
           title: "Error",
           placement: "top",
           description:
-            error?.response?.data ??
+            (error?.response?.data as ErrorResponse)?.errors?.join(", ") ??
             error.message ??
             "An unknown error has occured",
           duration: 5000,

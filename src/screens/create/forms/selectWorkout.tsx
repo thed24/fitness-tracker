@@ -49,7 +49,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
 
   const handleExerciseChange = (exercise: Exercise) => {
     if (exercise) {
-      if (form.values.exerciseType === 'strength') {
+      if (exercise.type === 'strength') {
         form.setFieldValue('activity', {
           ...exercise,
           reps: null,
@@ -60,7 +60,7 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
           targetWeight: 0,
         });
       }
-      if (form.values.exerciseType === 'cardio') {
+      if (exercise.type === 'cardio') {
         form.setFieldValue('activity', {
           ...exercise,
           distance: null,

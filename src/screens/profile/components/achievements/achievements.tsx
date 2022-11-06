@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Card, Box, Progress, useTheme, HStack, Spinner } from 'native-base';
 import { useStore } from 'store';
-import { Accordion } from 'components';
+import { Accordion, Button } from 'components';
 import { titleCase } from 'utils';
-import { useAchievements } from 'api';
-import { Achievement, Reward, StrengthData, StrengthExercise, User } from 'types';
+import { useRecordAchievement, useUserAchievements } from 'api';
+import { Reward, User, UserAchievement } from 'types';
+import { RewardsModal } from './components/rewardsModal';
 
 export function Achievements() {
-  const { user, getPastWorkouts } = useStore();
+  const { user } = useStore();
   const theme = useTheme();
-  const { data: achievements } = useAchievements();
+  const { data: achievements } = useUserAchievements({ userId: user?.id ?? 0 });
+  const { mutate: recordAchievement, data: recordResponse, isLoading: recordingAchievement } = useRecordAchievement();
+  const [rewards, setRewards] = React.useState<Reward[]>([]);
 
-  const workouts = getPastWorkouts();
+  useEffect(() => {
+    if (recordResponse) {
+      setRewards(recordResponse.rewards);
+    }
+  }, [recordResponse]);
 
   const createReward = (reward: Reward) => {
     if (reward.rewardType === 'experience') {
@@ -31,58 +38,53 @@ export function Achievements() {
     );
   };
 
-  const createAchievement = (currentUser: User, achievement: Achievement) => {
-    if (achievement.achievementType === 'streak') {
+  const createAchievement = (currentUser: User, userAchievement: UserAchievement) => {
+    if (userAchievement.achievementType === 'streak') {
       return (
         <>
-          <HStack key={`${achievement.title}-streak-stack`}>
+          <HStack key={`${userAchievement.title}-streak-stack`}>
             <Text
-              key={`${achievement.title}-streak-title`}
+              key={`${userAchievement.title}-streak-title`}
               fontSize="sm"
             >
-              {currentUser.workoutBuddy.data.streak}
+              {userAchievement.progress}
             </Text>
             <Text
-              key={`${achievement.title}-streak-subtitle`}
+              key={`${userAchievement.title}-streak-subtitle`}
               fontSize="sm"
             >
-              /{achievement.targetStreak}
+              /{userAchievement.targetStreak}
             </Text>
             <Text 
-              key={`${achievement.title}-streak-subbertitle`}
+              key={`${userAchievement.title}-streak-subbertitle`}
               ml="auto" 
               fontSize="sm"
             >
-              Unlocks {achievement.rewards.map(createReward)}
+              Unlocks {userAchievement.rewards.map(createReward)}
             </Text>
           </HStack>
           <Progress
-            key={`${achievement.title}-streak-progress`}
+            key={`${userAchievement.title}-streak-progress`}
             value={currentUser.workoutBuddy.data.streak}
-            max={achievement.targetStreak}
+            max={userAchievement.targetStreak}
           />
         </>
       );
     }
 
-    if (achievement.achievementType === 'weight') {
-      const weightForMusclegroup = workouts
-        .filter((w) => w.activities.map((a) => a.mainMuscleGroup === achievement.targetMuscleGroup))
-        .flatMap((w) => w.activities.map((a) => a as StrengthExercise & StrengthData))
-        .reduce((acc, curr) => acc + (curr?.weight ? curr.weight : 0), 0);
-
+    if (userAchievement.achievementType === 'weight') {
       return (
         <>
-          <HStack key={`${achievement.title}-weight-stack`}>
-            <Text key={`${achievement.title}-weight-title`} fontSize="sm">{`${weightForMusclegroup}/${achievement.targetWeight} for ${achievement.targetMuscleGroup}`}</Text>
-            <Text key={`${achievement.title}-weight-`} fontSize="sm" ml="auto">
-              Unlocks {achievement.rewards.map(createReward)}
+          <HStack key={`${userAchievement.title}-weight-stack`}>
+            <Text key={`${userAchievement.title}-weight-title`} fontSize="sm">{`${userAchievement.progress}/${userAchievement.targetWeight} for ${userAchievement.targetMuscleGroup}`}</Text>
+            <Text key={`${userAchievement.title}-weight-`} fontSize="sm" ml="auto">
+              Unlocks {userAchievement.rewards.map(createReward)}
             </Text>
           </HStack>
           <Progress
-            key={`${achievement.title}-weight-progress`}
-            value={weightForMusclegroup}
-            max={achievement.targetWeight}
+            key={`${userAchievement.title}-weight-progress`}
+            value={userAchievement.progress}
+            max={userAchievement.targetWeight}
           />
         </>
       );
@@ -98,18 +100,29 @@ export function Achievements() {
   }
 
   return (
-    <Card w="90%" backgroundColor={theme.colors.white} my={4}>
-      <Accordion title="Achievements">
-        {achievements.map((achievement) => (
-          <Box key={`${achievement.title}-box`} my={4}>
-            <HStack key={`${achievement.title}-stack`} space={4}>
-              <Text key={`${achievement.title}-title`}>{titleCase(achievement.title)}</Text>
-              <Text key={`${achievement.title}-description`} w="65%" textAlign="right" ml="auto" fontSize="sm" color={theme.colors.gray[500]}> {achievement.description} </Text>
-            </HStack>
-            {createAchievement(user, achievement)}
-          </Box>
-        ))}
-      </Accordion>
-    </Card>
+    <>
+      <RewardsModal rewards={rewards} onClose={() => setRewards([])} />
+      <Card w="90%" backgroundColor={theme.colors.white} my={4}>
+        <Accordion title="Achievements">
+          {achievements.map((achievement) => (
+            <Box key={`${achievement.title}-box`} my={4}>
+              <HStack key={`${achievement.title}-stack`} space={4}>
+                <Text key={`${achievement.title}-title`}>{titleCase(achievement.title)}</Text>
+                <Text key={`${achievement.title}-description`} w="65%" textAlign="right" ml="auto" fontSize="sm" color={theme.colors.gray[500]}> {achievement.description} </Text>
+              </HStack>
+              {createAchievement(user, achievement)}
+              {achievement.isCompleted && 
+                <Button 
+                  style={{ marginTop: 10 }} 
+                  onPress={() => recordAchievement({ userId: user.id, achievementId: achievement.id })} 
+                  isLoading={recordingAchievement} key={`${achievement.title}-button`}> 
+                    Claim 
+                  </Button>
+              }
+            </Box>
+          ))}
+        </Accordion>
+      </Card>
+    </>
   );
 }

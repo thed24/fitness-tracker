@@ -14,7 +14,10 @@ import { CreateWorkoutProps } from '../createWorkout';
 
 export function WorkoutDetails({ form }: CreateWorkoutProps) {
   const { activity } = form.values;
-  const { user } = useStore();
+  const { user, getDistanceFormatter, getWeightFormatter } = useStore();
+
+  const distanceFormatter = getDistanceFormatter();
+  const weightFormatter = getWeightFormatter();
 
   const activitySpecificFields = useMemo(() => {
     const handleActivityUpdate = (field: string) => (value: string) => {
@@ -32,14 +35,14 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
     ) => (
       <Box mb={4}>
         <IncrementBar
-          name="Distance"
+          name={distanceFormatter('Distance')}
           increments={[5, 1, -1, -5]}
           value={cardioActivity.targetDistance}
           onChange={handleActivityUpdate('targetDistance')}
         />
 
         <IncrementBar
-          name="Duration (minutes)"
+          name="Duration"
           increments={[5, 1, -1, -5]}
           value={cardioActivity.targetDuration}
           onChange={handleActivityUpdate('targetDuration')}
@@ -64,14 +67,13 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
           onChange={handleActivityUpdate('targetReps')}
         />
         <IncrementBar
-          name="Weight"
+          name={weightFormatter('Weight')}
           increments={[50, 10, -10, -50]}
           value={strengthActivity.targetWeight}
           onChange={handleActivityUpdate('targetWeight')}
           titleAccessory={
             <ActionButton
               title="Set as bodyweight"
-              size="sm"
               onPress={() =>
                 handleActivityUpdate('targetWeight')(
                   user?.weight?.toString() ?? '0'

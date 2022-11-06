@@ -1,7 +1,7 @@
-import { HStack, useTheme, Text } from "native-base";
+import { HStack, useTheme, Text, View, ChevronRightIcon } from "native-base";
 import React from "react";
 import { useStore } from "store";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CardioData, CardioExercise, Workout } from "types";
 import { CardioModal } from "./cardioModal";
 
@@ -14,8 +14,8 @@ export function CardioRow({ activity, workout }: Props) {
   const theme = useTheme();
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const { getWeasurementFormatter } = useStore();
-  const measurementFormatter = getWeasurementFormatter();
+  const { getDistanceFormatter } = useStore();
+  const distanceFormatter = getDistanceFormatter();
 
   return (
     <>
@@ -25,32 +25,38 @@ export function CardioRow({ activity, workout }: Props) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
-      <Text my="auto">
-        Goal:{" "}
-        {measurementFormatter(
-          `${activity.targetDistance} / ${activity.targetDuration}`,
-          false
-        )}
-      </Text>
+
       <HStack>
-        <Text my="auto">
-          Result:{" "}
+        <Text fontSize={16} fontWeight="bold"> Goal </Text>
+        <Text>
+          {distanceFormatter(
+            `${activity.targetDistance} in ${activity.targetDuration}`,
+            false
+          )}
+        </Text>
+        <View ml="auto" mt={2}>
+          <ChevronRightIcon />
+        </View>
+      </HStack>
+
+      <HStack>
+      <Text fontSize={16} fontWeight="bold"> Result </Text>
+        <Text>
           {activity.distance || activity.duration
-            ? measurementFormatter(
-                `${activity.distance} / ${activity.duration}`,
+            ? distanceFormatter(
+                `${activity.distance} in ${activity.duration}`,
                 false
               )
             : "Uncompleted"}
         </Text>
+
         {!workout.completed && (
           <Icon
-            style={{ marginLeft: "auto" }}
-            name="ios-build-sharp"
-            onPress={() => {
-              setIsOpen(true);
-            }}
+            name="square-edit-outline"
+            onPress={() => { setIsOpen(true); }}
             size={20}
-            color={theme.colors.gray[700]}
+            style={{ marginTop: 2, marginLeft: 5 }}
+            color={theme.colors.primary[500]}
           />
         )}
       </HStack>

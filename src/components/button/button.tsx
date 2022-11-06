@@ -21,20 +21,21 @@ export function Button({
 }: Props) {
   const theme = useTheme();
 
-  const colors = {
-    primary: {
-      backgroundColor: theme.colors.primary[500],
-      color: theme.colors.white,
-    },
-    secondary: {
-      backgroundColor: theme.colors.white,
-      color: theme.colors.black,
-    },
-    link: {
-      backgroundColor: 'transparent',
-      color: theme.colors.primary[500],
-    },
-  };
+  let mode = 'contained' as "text" | "contained" | "outlined" | "elevated" | "contained-tonal";
+
+  switch (variant) {
+    case 'primary':
+      mode = 'contained';
+      break;
+    case 'secondary':
+      mode = 'outlined';
+      break;
+    case 'link':
+      mode = 'text';
+      break;
+    default:
+      break;
+  }
 
   return (
     <ButtonBase
@@ -43,11 +44,10 @@ export function Button({
         height: 45,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor: variant === 'link' ? undefined : theme.colors.primary[500],
         ...style,
       }}
-      mode="contained"
-      buttonColor={colors[variant].backgroundColor}
-      textColor={colors[variant].color}
+      mode={mode}
       disabled={isLoading || isDisabled}
       loading={isLoading}
       onPress={onPress}

@@ -5,6 +5,7 @@ export const MuscleGroups = [
   'Abs',
   'Biceps',
   'Chest',
+  'Cardio',
   'Forearms',
   'Glutes',
   'Traps',
@@ -262,6 +263,11 @@ export type Achievement =
   | LevelAchievement
   | StreakAchievement;
 
+export type UserAchievement = Achievement & {
+  isCompleted: boolean;
+  progress: number;
+};
+
 export interface BuddyData {
   anatomy: BuddyAnatomy[];
   streak: number;
@@ -297,4 +303,8 @@ export interface User {
   workoutBuddy: Buddy;
   avatar: Image | null;
   userSettings: UserSettings;
+  inventory: Reward[];
+  claimedAchievements: number[];
+  title: Title | null;
+  badge: Badge | null;
 }

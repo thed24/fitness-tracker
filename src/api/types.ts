@@ -5,13 +5,13 @@ import {
   UserSettings,
   Mechanics,
   Equipment,
-  Image
-} from "types";
-import { MuscleGroup } from "../types/domain";
+  Image,
+} from 'types';
+import { Badge, MuscleGroup, Reward, Title } from '../types/domain';
 
 export type ApiData = {
   id: number;
-  type: "strength" | "cardio";
+  type: 'strength' | 'cardio';
   duration: number | null;
   distance: number | null;
   reps: number | null;
@@ -27,7 +27,7 @@ export type ApiData = {
 export interface ApiExercise {
   id: number;
   name: string;
-  type: "strength" | "cardio";
+  type: 'strength' | 'cardio';
   mainMuscleGroup: string;
   detailedMuscleGroup: string | null;
   otherMuscleGroups: string[];
@@ -64,6 +64,10 @@ export interface ApiUser {
   workoutBuddy: Buddy;
   userSettings: UserSettings;
   avatar: Image | null;
+  inventory: Reward[];
+  claimedAchievements: number[];
+  title: Title | null;
+  badge: Badge | null;
 }
 
 export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
@@ -79,8 +83,8 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
     activities: workout.activities.map((activity) => ({
       ...activity.exercise,
       ...activity.data,
-      id: activity.id
-    }))
+      id: activity.id,
+    })),
   };
 }
 
@@ -97,7 +101,11 @@ export function ApiUserToUser(apiUser: ApiUser): User {
     weight: apiUser.weight,
     age: apiUser.age,
     weeklyWorkoutAmountGoal: apiUser.weeklyWorkoutAmountGoal,
-    avatar: apiUser.avatar
+    avatar: apiUser.avatar,
+    inventory: apiUser.inventory,
+    claimedAchievements: apiUser.claimedAchievements,
+    title: apiUser.title,
+    badge: apiUser.badge,
   };
 }
 
@@ -118,11 +126,11 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
         otherMuscleGroups: activity.otherMuscleGroups,
         mechanics: activity.mechanics,
         equipment: activity.equipment,
-        muscleGroupStats: activity.muscleGroupStats
+        muscleGroupStats: activity.muscleGroupStats,
       };
 
       const data: ApiData =
-        activity.type === "strength"
+        activity.type === 'strength'
           ? {
               id: 0,
               reps: activity.reps,
@@ -135,7 +143,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               targetDuration: 0,
               distance: 0,
               duration: 0,
-              type: activity.type
+              type: activity.type,
             }
           : {
               id: 0,
@@ -149,15 +157,15 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               reps: 0,
               sets: 0,
               weight: 0,
-              type: activity.type
+              type: activity.type,
             };
 
       return {
         id: 0,
         exercise,
-        data
+        data,
       };
-    })
+    }),
   };
 }
 
@@ -174,6 +182,10 @@ export function UserToApiUser(user: User): ApiUser {
     weight: user.weight,
     age: user.age,
     weeklyWorkoutAmountGoal: user.weeklyWorkoutAmountGoal,
-    avatar: user.avatar
+    avatar: user.avatar,
+    inventory: user.inventory,
+    claimedAchievements: user.claimedAchievements,
+    title: user.title,
+    badge: user.badge,
   };
 }

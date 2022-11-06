@@ -1,5 +1,5 @@
 import { useEditWorkout } from "api";
-import { HStack, Modal, VStack, Text } from "native-base";
+import { HStack, Modal, VStack } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { CardioData, CardioExercise, Workout } from "types";
@@ -38,14 +38,14 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
           <VStack space={2}>
             <Input
               placeholder="Distance"
-              rightElement={<Button onPress={() => setDistance(activity.targetDistance)}>Fill</Button>}
+              rightElement={<Button variant="link" onPress={() => setDistance(activity.targetDistance)}>Fill</Button>}
               type="text"
               value={distance ?? undefined}
               onChangeText={handleChange(setDistance)}
             />
             <Input
               placeholder="Duration"
-              rightElement={<Button onPress={() => setDuration(activity.targetDuration)}>Fill</Button>}
+              rightElement={<Button variant="link" onPress={() => setDuration(activity.targetDuration)}>Fill</Button>}
               type="text"
               value={duration ?? undefined}
               onChangeText={handleChange(setDuration)}
@@ -54,8 +54,8 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
         </Modal.Body>
         <Modal.Footer>
           <HStack space={2}>
-            <Button onPress={onClose}>
-              <Text>Cancel</Text>
+            <Button variant="secondary" onPress={onClose}>
+              Cancel
             </Button>
             <Button
               onPress={() => {
@@ -78,7 +78,7 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
                 onClose();
               }}
             >
-              <Text>Save</Text>
+              Save
             </Button>
           </HStack>
         </Modal.Footer>

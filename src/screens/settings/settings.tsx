@@ -1,9 +1,9 @@
 import React from "react";
 import { useStore } from "store";
 import { Screen, Avatar, FormLabel, Button } from "components";
-import { Box, useTheme, VStack } from "native-base";
+import { Box, Select, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
-import { Image } from "types";
+import { Badge, Image, Title } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
@@ -25,6 +25,8 @@ export function Settings() {
     weight: user?.weight ?? 0,
     age: user?.age ?? 0,
     avatar: user?.avatar ?? null,
+    title: user?.title ?? null,
+    badge: user?.badge ?? null,
   });
 
   if (!user) {
@@ -51,6 +53,7 @@ export function Settings() {
     <Screen scrollable>
       <Avatar
         size="sm"
+        badge={userDetails.badge ?? undefined}
         callback={(image: Image) => {
           setUserDetails((prev) => ({
             ...prev,
@@ -126,6 +129,62 @@ export function Settings() {
             }
             icon="cake"
           />
+
+          <Select 
+            w="90%" 
+            rounded={10} 
+            variant="filled" 
+            placeholder="Select a title"
+            selectedValue={userDetails.title?.id.toString()}
+            onValueChange={(val) => {
+              setUserDetails((prev) => ({
+                ...prev,
+                title: user.inventory.find((item) => item.id.toString() === val) as Title | null,
+              }));
+            }}
+          >
+            <Select.Item label="None" value="null" />
+            {user.inventory.map((item) => {
+              if (item.rewardType === "title") {
+                return (
+                  <Select.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id.toString()}
+                  />
+                );
+              }
+              return null;
+            })}
+          </Select>
+
+          <Select 
+            w="90%" 
+            rounded={10} 
+            variant="filled" 
+            placeholder="Select a badge"
+            selectedValue={userDetails.badge?.id.toString()}
+            onValueChange={(val) => {
+              setUserDetails((prev) => ({
+                ...prev,
+                badge: user.inventory.find((item) => item.id.toString() === val) as Badge | null,
+              }));
+            }}
+          >
+            <Select.Item label="None" value="null" />
+            {user.inventory.map((item) => {
+              if (item.rewardType === "badge") {
+                return (
+                  <Select.Item
+                    key={item.id}
+                    label={item.name}
+                    value={item.id.toString()}
+                  />
+                );
+              }
+              return null;
+            })}
+          </Select>
         </VStack>
       </Box>
 

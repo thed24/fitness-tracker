@@ -1,5 +1,5 @@
 import { useEditWorkout } from "api";
-import { HStack, Modal, VStack, Text } from "native-base";
+import { HStack, Modal, VStack } from "native-base";
 import React from "react";
 import { useStore } from "store";
 import { StrengthData, StrengthExercise, Workout } from "types";
@@ -39,21 +39,21 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
           <VStack space={2}>
             <Input
               placeholder={`Sets / ${activity.targetSets}`}
-              rightElement={<Button onPress={() => setSets(activity.targetSets)}>Fill</Button>}
+              rightElement={<Button variant="link" onPress={() => setSets(activity.targetSets)}>Fill</Button>}
               type="text"
               value={sets ?? undefined}
               onChangeText={handleChange(setSets)}
             />
             <Input
               placeholder={`Reps / ${activity.targetReps}`}
-              rightElement={<Button onPress={() => setReps(activity.targetReps)}>Fill</Button>}
+              rightElement={<Button variant="link" onPress={() => setReps(activity.targetReps)}>Fill</Button>}
               type="text"
               value={reps ?? undefined}
               onChangeText={handleChange(setReps)}
             />
             <Input
               placeholder={`Weight / ${activity.targetWeight}`}
-              rightElement={<Button onPress={() => setWeight(activity.targetWeight)}>Fill</Button>}
+              rightElement={<Button variant="link" onPress={() => setWeight(activity.targetWeight)}>Fill</Button>}
               type="text"
               value={weight ?? undefined}
               onChangeText={handleChange(setWeight)}
@@ -62,8 +62,8 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
         </Modal.Body>
         <Modal.Footer>
           <HStack space={2}>
-            <Button onPress={onClose}>
-              <Text>Cancel</Text>
+            <Button variant="secondary" onPress={onClose}>
+              Cancel
             </Button>
             <Button
               isLoading={isLoading}
@@ -88,7 +88,7 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
                 onClose();
               }}
             >
-              <Text>Save</Text>
+              Save
             </Button>
           </HStack>
         </Modal.Footer>

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "store";
-import { Image } from "types";
+import { Badge, Image, Title } from "types";
 import { client } from "../client";
 import { handleError, updateUser } from "../utilities";
 
@@ -16,13 +16,14 @@ export type RawEditUserRequest = {
   weight: number;
   age: number;
   avatar: Image | null;
+  title: Title | null;
+  badge: Badge | null;
 };
 
 type EditUserRequest = {
   weightUnit: "pounds" | "kilograms";
   measurementUnit: "metric" | "imperial";
   username: string;
-  email: string;
   weeklyWorkountAmountGoal: number;
   height: number;
   weight: number;

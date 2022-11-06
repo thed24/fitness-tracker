@@ -2,7 +2,6 @@ import {
   Box,
   Divider,
   Heading,
-  HStack,
   ScrollView,
   Text,
   useTheme,
@@ -15,8 +14,8 @@ import { Activity, Workout } from "types";
 import dateFormat from "dateformat";
 import { useDeleteWorkout } from "api";
 import { useStore } from "store";
-import { titleCase } from "utils";
 import Icon from "react-native-vector-icons/Ionicons";
+import { titleCase } from "utils";
 import { Badge } from "../badge/badge";
 import { StrengthRow } from "./components/strengthRow";
 import { CardioRow } from "./components/cardioRow";
@@ -33,23 +32,19 @@ export function WorkoutCard({ workout, footer }: Props) {
 
   const theme = useTheme();
 
-  const createContent = (activity: Activity, children: React.ReactNode) => (
-    <Box rounded={12} key={activity.id} bgColor={theme.colors.primary[600]}>
-      <Text mt={2} textAlign="center" fontSize={18} fontWeight="bold"> {activity.name} </Text>
-      {children}
-      <HStack>
-        <Box my={2} p={1} bg={theme.colors.primary[200]} w="100%">
-          {Object.keys(activity.muscleGroupStats).map((muscleGroup, i) => (
-              <Text key={`${muscleGroup}-${activity.id}`} textAlign="center">{titleCase(muscleGroup)}{i < Object.keys(activity.muscleGroupStats).length - 1 ? ", " : ""}</Text>
-          ))}
-        </Box>
-      </HStack>
-    </Box>
-  );
+  const createContent = (activity: Activity, children: React.ReactNode) => {
+    const muscles = Object.keys(activity.muscleGroupStats).map((muscleGroup) => titleCase(muscleGroup));
+    return (
+      <Box key={activity.id}>
+        <Text mt={2} textAlign="left" fontSize={18} fontWeight="bold"> {activity.name} | {muscles} </Text>
+        {children}
+      </Box>
+    );
+  };
 
   return (
     <View>
-      <VStack height="100%">
+      <VStack height="85%">
         <Badge
           side="left"
           loading={deleting}
@@ -88,8 +83,8 @@ export function WorkoutCard({ workout, footer }: Props) {
         <Card
           accessibilityLabel="workout-card"
           backgroundColor={theme.colors.white}
-          height="100%"
-          width={300}
+          height="90%"
+          width={350}
         >
           <Heading justifyContent="center" textAlign="center" marginTop="1">
             {workout.name}
