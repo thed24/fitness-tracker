@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Pressable, Toast, useTheme } from 'native-base';
+import { Pressable, useTheme } from 'native-base';
 import { Image } from 'react-native';
 import { useStore } from 'store';
 import { Badge, Image as ImageType } from 'types';
@@ -8,6 +8,7 @@ import {
   MediaTypeOptions,
   useMediaLibraryPermissions,
 } from 'expo-image-picker';
+import Toast from 'react-native-toast-message';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -64,8 +65,7 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
         requestPermission().then((result) => {
           if (result.status !== 'granted') {
             Toast.show({
-              title: 'Permission to access camera roll is required!',
-              duration: 3000,
+              text1: 'Permission to access camera roll is required!',
             });
           }
         });
@@ -78,6 +78,7 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       tempImage = (
         <Image
           style={style}
+          accessibilityLabel={`Avatar for ${placeholderName}`}
           source={{
             uri: `data:image/${avatar.fileExtension};base64,${avatar.bytes}`,
           }}
@@ -87,6 +88,7 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       tempImage = (
         <Image
           style={style}
+          accessibilityLabel={`Avatar for ${placeholderName}`}
           source={{
             uri: `https://ui-avatars.com/api/?name=${placeholderName}&size=300`,
           }}
@@ -126,13 +128,14 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       <Pressable zIndex={1} bgColor="transparent" onPress={() => {}}>
         <Image
           style={style}
+          accessibilityLabel={`Badge for ${placeholderName}`}
           source={{
             uri: `data:image/${userBadge.image.fileExtension};base64,${userBadge.image.bytes}`
           }}
         />
       </Pressable>
     );
-  }, [theme.colors.primary, userBadge, width]);
+  }, [placeholderName, theme.colors.primary, userBadge, width]);
 
   return (
     <>

@@ -7,7 +7,7 @@ interface Props {
   onPress: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
-  variant?: 'primary' | 'secondary' | 'link';
+  variant?: 'primary' | 'secondary' | 'link' | 'ghost';
   style?: React.ComponentProps<typeof ButtonBase>['style'];
 }
 
@@ -32,6 +32,9 @@ export function Button({
       break;
     case 'link':
       mode = 'text';
+      break;
+    case 'ghost':
+      mode = 'contained';
       break;
     default:
       break;

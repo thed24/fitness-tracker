@@ -4,8 +4,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { Toast } from "native-base";
 import { AxiosError } from "axios";
+import Toast from 'react-native-toast-message';
 
 type ErrorResponse = {
   errors: string[];
@@ -16,27 +16,21 @@ export const queryClient = new QueryClient({
     onError: (error, query) => {
       if (error instanceof Error) {
         Toast.show({
-          title: "Error",
-          placement: "top",
-          description: error.message,
-          duration: 5000,
+          type: 'error',
+          text1: error.message,
         });
       } else if (error instanceof AxiosError<ErrorResponse>) {
         Toast.show({
-          title: "Error",
-          placement: "top",
-          description:
+          type: "error",
+          text1:
             (error?.response?.data as ErrorResponse)?.errors?.join(", ") ??
             error.message ??
             "An unknown error has occured",
-          duration: 5000,
         });
       } else {
         Toast.show({
-          title: "Error",
-          placement: "top",
-          description: "An unknown error has occured",
-          duration: 5000,
+          type: "error",
+          text1: "An unknown error has occured",
         });
       }
     },

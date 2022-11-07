@@ -1,12 +1,13 @@
 import React from "react";
 import { useStore } from "store";
 import { Screen, Avatar, FormLabel, Button } from "components";
-import { Box, Select, useTheme, VStack } from "native-base";
+import { Box, HStack, Select, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
 import { Badge, Image, Title } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
+import { LogoutButton } from "./components/logoutButton";
 
 export function Settings() {
   const { user } = useStore();
@@ -193,17 +194,20 @@ export function Settings() {
         {settingsSections.data.map(createSettingSection)}
       </Box>
 
-      <Button
-        isLoading={isLoading}
-        onPress={() =>
-          mutate({
-            ...userDetails,
-            userId: user.id,
-          })
-        }
-      >
-        Save
-      </Button>
+      <HStack space={2} mb={2}>
+        <LogoutButton />
+        <Button
+          isLoading={isLoading}
+          onPress={() =>
+            mutate({
+              ...userDetails,
+              userId: user.id,
+            })
+          }
+        >
+          Save
+        </Button>
+      </HStack>
     </Screen>
   );
 }

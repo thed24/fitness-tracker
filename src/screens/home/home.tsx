@@ -19,7 +19,7 @@ export function HomeScreen({ navigation }: NavigationProps) {
     <Screen>
       <Heading mt={10}> Welcome to Pocket Coach! </Heading>
       <Text> Sign in or register below to get started! </Text>
-      <Image w="3/4" h="2/5" source={require("../../../assets/images/otherlogo.png")} style={{ backgroundColor: 'transparent' }} />
+      <Image alt="Sign Up Logo" w="3/4" h="2/5" source={require("../../../assets/images/otherlogo.png")} style={{ backgroundColor: 'transparent' }} />
       <Login />
       <Pressable onPress={() => navigation.navigate("Register")}>
         <Text>

@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React from "react";
-import { GestureResponderEvent } from "react-native";
 import { Button, FormInput } from "components";
 import { View } from "native-base";
 import { useLogin } from "api";
@@ -18,12 +17,6 @@ export function Login() {
   const onSubmit = ({ email, password }: LoginValues) => {
     mutate({ email, password });
   };
-
-  const onLoginPress =
-    (callback: (e?: any) => void) => (event: GestureResponderEvent) => {
-      event.preventDefault();
-      callback();
-    };
 
   return (
     <View w="100%">
@@ -67,7 +60,7 @@ export function Login() {
               value={values.password}
               name="Password"
             />
-            <Button isLoading={isLoading} onPress={() => onLoginPress(handleSubmit)}>
+            <Button isLoading={isLoading} onPress={handleSubmit}>
               Sign In
             </Button>
           </SC.Container>

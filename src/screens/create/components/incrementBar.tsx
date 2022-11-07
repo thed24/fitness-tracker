@@ -24,7 +24,7 @@ function IncrementBarInternal({
     return (
       <Button
         key={increment}
-        variant="secondary"
+        variant="primary"
         onPress={incrementHandler}
       >
         {text}
