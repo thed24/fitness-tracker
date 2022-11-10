@@ -102,7 +102,7 @@ export function Achievements() {
   return (
     <>
       <RewardsModal rewards={rewards} onClose={() => setRewards([])} />
-      <Card w="90%" backgroundColor={theme.colors.white} my={4}>
+      <Card w="90%" my={4}>
         <Accordion title="Achievements">
           {achievements.map((achievement) => (
             <Box key={`${achievement.title}-box`} my={4}>

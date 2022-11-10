@@ -82,7 +82,6 @@ export function WorkoutCard({ workout, footer }: Props) {
 
         <Card
           accessibilityLabel="workout-card"
-          backgroundColor={theme.colors.white}
           height="90%"
           width={350}
         >

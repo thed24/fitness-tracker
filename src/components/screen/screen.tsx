@@ -1,4 +1,4 @@
-import { Heading, HStack, Spinner, useTheme } from "native-base";
+import { Heading, HStack, Spinner, useColorModeValue, useTheme } from "native-base";
 import React, { ReactNode } from "react";
 import * as SC from "./screen.style";
 
@@ -14,10 +14,11 @@ export function Screen({
   loading = false,
 }: Props) {
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.gray[300], theme.colors.gray[700]);
 
   if (loading) {
     return (
-      <SC.Container backgroundColor={theme.colors.gray[300]}>
+      <SC.Container backgroundColor={bg}>
         <HStack mt={10} space={2} justifyContent="center">
           <Spinner accessibilityLabel="Loading page" />
           <Heading color={theme.colors.primary[500]} fontSize="md">
@@ -31,14 +32,14 @@ export function Screen({
   return scrollable 
   ? (
     <SC.ScrollableContainer
-      backgroundColor={theme.colors.gray[300]}
+      backgroundColor={bg}
       contentContainerStyle={{ alignItems: "center" }}
     >
       {children}
     </SC.ScrollableContainer>
   ) 
   : (
-    <SC.Container backgroundColor={theme.colors.gray[300]}>
+    <SC.Container backgroundColor={bg}>
       {children}
     </SC.Container>
   );

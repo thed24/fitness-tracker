@@ -1,6 +1,6 @@
 /* eslint-disable react/function-component-definition */
 /* eslint-disable react/no-unstable-nested-components */
-import { useTheme } from 'native-base';
+import { useColorModeValue, useTheme } from 'native-base';
 import React from 'react';
 import { BottomNavigation, TouchableRipple } from 'react-native-paper';
 import { CreateWorkout } from '../../../screens/create/createWorkout';
@@ -13,6 +13,8 @@ const SettingsRoute = () => <Settings />;
 
 export function BottomTabBar() {
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
+
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {
@@ -56,7 +58,7 @@ export function BottomTabBar() {
         </TouchableRipple>
       )}
       barStyle={{
-        backgroundColor: theme.colors.white,
+        backgroundColor: bg,
         height: 50,
       }}
     />

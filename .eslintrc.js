@@ -54,5 +54,6 @@ module.exports = {
     "consistent-return": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
+    "react/function-component-definition": "off",
   },
 };

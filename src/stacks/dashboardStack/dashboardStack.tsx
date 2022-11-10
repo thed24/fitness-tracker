@@ -1,7 +1,7 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Dimensions } from "react-native";
-import { useTheme } from "native-base";
+import { useColorModeValue, useTheme } from "native-base";
 import { Profile } from "../../screens/profile/profile";
 import { Schedule } from "../../screens/schedule/schedule";
 import { History } from "../../screens/history/history";
@@ -10,6 +10,8 @@ export function DashboardStack() {
   const Tab = createMaterialTopTabNavigator();
   const { width } = Dimensions.get("window");
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.gray[300], theme.colors.gray[700]);
+  const popout = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 
   const screens = [
     {
@@ -17,7 +19,7 @@ export function DashboardStack() {
       component: History,
     },
     {
-      name: "Profile",
+      name: "Stats",
       component: Profile,
     },
     {
@@ -32,17 +34,17 @@ export function DashboardStack() {
         width,
       }}
       style={{
-        backgroundColor: theme.colors.gray[300],
+        backgroundColor: bg,
       }}
       screenOptions={(props) => ({
         swipeEnabled: false,
         tabBarIndicatorStyle: {
-          backgroundColor: "transparent",
+          backgroundColor: theme.colors.primary[500],
           width: props.route.name === "Profile" ? "33%" : "28%",
           marginLeft: props.route.name === "History" ? "4%" : "0%",
         },
         tabBarStyle: {
-          backgroundColor: theme.colors.white,
+          backgroundColor: popout,
           elevation: 0,
           shadowOpacity: 0,
           height: 50,
@@ -52,7 +54,7 @@ export function DashboardStack() {
           marginLeft: "2.5%",
         },
       })}
-      initialRouteName="Profile"
+      initialRouteName="Stats"
     >
       {screens.map((screen) => (
         <Tab.Screen

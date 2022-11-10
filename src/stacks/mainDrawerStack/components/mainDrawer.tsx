@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
 import { useStore } from 'store';
-import { HStack, Text, useTheme, VStack } from 'native-base';
+import { HStack, Text, useColorModeValue, useTheme, VStack } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export function MainDrawer({
@@ -16,6 +16,7 @@ export function MainDrawer({
 }: DrawerContentComponentProps) {
   const { setUser, user } = useStore();
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.gray[300], theme.colors.gray[700]);
 
   const userName = user === null ? 'Guest' : `${user.username}`;
   const title = user?.title?.name;
@@ -40,8 +41,11 @@ export function MainDrawer({
     [theme.colors.primary, userName, title]
   );
 
+
   return (
-    <DrawerContentScrollView>
+    <DrawerContentScrollView style={{
+      backgroundColor: bg,
+    }}>
       <DrawerItem label="" onPress={() => null} icon={headerIcon} />
 
       <DrawerItemList

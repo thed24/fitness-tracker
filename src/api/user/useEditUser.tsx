@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "store";
-import { Badge, Image, Title } from "types";
+import { Badge, Image, Title, UserSettings } from "types";
 import { client } from "../client";
-import { handleError, updateUser } from "../utilities";
+import { handleError } from "../utilities";
 
 export type RawEditUserRequest = {
   userId: number;
@@ -32,6 +32,10 @@ type EditUserRequest = {
   avatar: Image | null;
 };
 
+type EditUserResponse = {
+  userSettings: UserSettings;
+}
+
 export function useEditUser() {
   const { user, setUser } = useStore();
 
@@ -50,17 +54,17 @@ export function useEditUser() {
           darkMode: boolFromStr(rawRequest.darkMode),
         } as EditUserRequest;
 
-        return (await client.put(`/users/${rawRequest.userId}`, request)).data;
+        return (await client.put<EditUserResponse>(`/users/${rawRequest.userId}`, request)).data;
       } catch (error) {
         handleError(error);
       }
     },
     {
-      onSuccess() {
-        if (user) {
-          updateUser(user, setUser);
+      onSuccess(data, variables, context) {
+        if (data && user) {
+          setUser({ ...user, userSettings: data.userSettings });
         }
       },
     }
-  );
+  )
 }

@@ -1,36 +1,42 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useStore } from "store";
 import { Screen, Avatar, FormLabel, Button } from "components";
-import { Box, HStack, Select, useTheme, VStack } from "native-base";
+import { Box, Select, useColorModeValue, useTheme, VStack } from "native-base";
 import { RawEditUserRequest, useEditUser } from "api";
 import { Badge, Image, Title } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
-import { LogoutButton } from "./components/logoutButton";
 
-export function Settings() {
+function SettingsInternal() {
   const { user } = useStore();
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 
-  const { mutate, isLoading } = useEditUser();
-  const [userDetails, setUserDetails] = React.useState<RawEditUserRequest>({
-    userId: user?.id ?? 0,
-    username: user?.username ?? "",
-    email: user?.email ?? "",
-    weightUnit: user?.userSettings.weightUnit ?? "pounds",
-    measurementUnit: user?.userSettings.measurementUnit ?? "metric",
-    darkMode: user?.userSettings.darkMode ? "true" : "false",
-    weeklyWorkountAmountGoal: user?.weeklyWorkoutAmountGoal ?? 0,
-    height: user?.height ?? 0,
-    weight: user?.weight ?? 0,
-    age: user?.age ?? 0,
-    avatar: user?.avatar ?? null,
-    title: user?.title ?? null,
-    badge: user?.badge ?? null,
-  });
+  const initialState = useMemo(() => ({
+      userId: user?.id ?? 0,
+      username: user?.username ?? "",
+      email: user?.email ?? "",
+      weightUnit: user?.userSettings.weightUnit ?? "pounds",
+      measurementUnit: user?.userSettings.measurementUnit ?? "metric",
+      darkMode: user?.userSettings.darkMode ? "true" : "false",
+      weeklyWorkountAmountGoal: user?.weeklyWorkoutAmountGoal ?? 0,
+      height: user?.height ?? 0,
+      weight: user?.weight ?? 0,
+      age: user?.age ?? 0,
+      avatar: user?.avatar ?? null,
+      title: user?.title ?? null,
+      badge: user?.badge ?? null,
+  } as RawEditUserRequest), [user]);
 
-  if (!user) {
+  const { mutateAsync, isLoading } = useEditUser();
+  const [userDetails, setUserDetails] = useState<RawEditUserRequest>(initialState);
+
+  useEffect(() => {
+    setUserDetails(initialState);
+  }, [initialState]);
+
+  if (!user || !userDetails) {
     return null;
   }
 
@@ -41,11 +47,8 @@ export function Settings() {
       value={(Object.entries(userDetails)
         .filter(([key, value]) => key === item.key)?.[0][1] ?? "")
         .toString()}
-      onChange={(val) => {
-        setUserDetails((prev) => ({
-          ...prev,
-          [item.key]: val,
-        }));
+      onChange={async (val) => {
+        await mutateAsync({...userDetails, [item.key]: val});
       }}
     />
   );
@@ -134,6 +137,7 @@ export function Settings() {
           <Select 
             w="90%" 
             rounded={10} 
+            backgroundColor={bg}
             variant="filled" 
             placeholder="Select a title"
             selectedValue={userDetails.title?.id.toString()}
@@ -161,7 +165,8 @@ export function Settings() {
 
           <Select 
             w="90%" 
-            rounded={10} 
+            rounded={10}
+            backgroundColor={bg}
             variant="filled" 
             placeholder="Select a badge"
             selectedValue={userDetails.badge?.id.toString()}
@@ -189,25 +194,25 @@ export function Settings() {
         </VStack>
       </Box>
 
+      <Button
+        style={{ width: "90%", marginTop: 10 }}
+        isLoading={isLoading}
+        onPress={() =>
+          mutateAsync({
+            ...userDetails,
+            userId: user.id,
+          })
+        }
+      >
+        Save
+      </Button>
+
       <Box w="95%" mt={2}>
         <FormLabel ml={2}>Settings</FormLabel>
         {settingsSections.data.map(createSettingSection)}
       </Box>
-
-      <HStack space={2} mb={2}>
-        <LogoutButton />
-        <Button
-          isLoading={isLoading}
-          onPress={() =>
-            mutate({
-              ...userDetails,
-              userId: user.id,
-            })
-          }
-        >
-          Save
-        </Button>
-      </HStack>
     </Screen>
   );
 }
+
+export const Settings = React.memo(SettingsInternal);

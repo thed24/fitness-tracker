@@ -1,5 +1,5 @@
 import React from "react";
-import { Input as InputBase, useTheme } from "native-base";
+import { Input as InputBase, useColorModeValue, useTheme } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 
 interface InputProps {
@@ -22,6 +22,7 @@ export function Input({
 }: Props) {
   const [hidden, setHidden] = React.useState(type === "password");
   const theme = useTheme();
+  const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 
   let valueAsString;
 
@@ -58,12 +59,12 @@ export function Input({
       onChangeText={onChangeText}
       borderRadius={10}
       borderWidth={1}
-      backgroundColor="white"
       type={hidden ? "password" : "text"}
       rightElement={rightElement}
       onBlur={onBlur}
       caretHidden={false}
       placeholder={placeholder}
+      backgroundColor={bg}
       color={theme.colors.black}
       _input={{
         _focus: {

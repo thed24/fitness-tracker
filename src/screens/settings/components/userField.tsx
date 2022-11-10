@@ -5,6 +5,7 @@ import {
   InputGroup,
   InputRightAddon,
   Stack,
+  useColorModeValue,
   useTheme,
 } from "native-base";
 import React from "react";
@@ -27,6 +28,7 @@ export function UserField({
 }: Props) {
   const theme = useTheme();
   const [focused, setFocused] = React.useState(false);
+  const text = useColorModeValue(theme.colors.black, theme.colors.white);
 
   const addSuffix = (child: React.ReactNode) => (
     <Stack w="89%" alignItems="center">
@@ -46,7 +48,7 @@ export function UserField({
       type="text"
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-      color={focused ? theme.colors.primary[500] : theme.colors.black}
+      color={focused ? theme.colors.primary[500] : text}
       leftElement={
         <>
           <Icon

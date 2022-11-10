@@ -3,11 +3,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { LogBox } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useStore } from 'store';
 import { useFonts } from 'expo-font';
 import { Provider as PaperProvider } from 'react-native-paper';
 import APIProvider from './src/api/apiProvider';
-import { createNativeTheme, createPaperTheme } from './src/utils/theme';
+import { nativeTheme, paperTheme } from './src/utils/theme';
 import { MainStack } from './src/stacks';
 
 LogBox.ignoreLogs(['Require cycle: node_modules/victory']);
@@ -27,13 +26,8 @@ export default function App() {
     JakartaSansItalic: require('./assets/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf'),
   });
 
-  const { user } = useStore();
-  const isDarkMode = user?.userSettings?.darkMode ?? false;
-  const nativeBaseTheme = createNativeTheme(isDarkMode);
-  const paperTheme = createPaperTheme(isDarkMode);
-
   return (
-    <NativeBaseProvider config={nativeBaseConfig} theme={nativeBaseTheme}>
+    <NativeBaseProvider config={nativeBaseConfig} theme={nativeTheme}>
       <NavigationContainer>
         <APIProvider>
           <PaperProvider theme={paperTheme}>

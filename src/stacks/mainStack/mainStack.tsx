@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useStore } from 'store';
-import { useTheme } from 'native-base';
+import { useColorMode } from 'native-base';
 import { HomeScreen } from '../../screens/home/home';
 import { RegisterScreen } from '../../screens/register/register';
 import { MainDrawerStack } from '../mainDrawerStack/mainDrawerStack';
@@ -10,17 +10,21 @@ const Stack = createNativeStackNavigator();
 
 export function MainStack() {
   const { user } = useStore();
-  const theme = useTheme();
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    const darkMode = user?.userSettings?.darkMode ?? false;
+    setColorMode(darkMode ? 'dark' : 'light');
+  }, [setColorMode, user?.userSettings?.darkMode]);
 
   return (
     <Stack.Navigator>
       {user ? (
         <Stack.Group>
           <Stack.Screen
-            name="Drawer Stack"
+            name="Drawer"
             component={MainDrawerStack}
             options={{
-              headerStyle: { backgroundColor: theme.colors.white },
               headerShown: false,
             }}
           />
