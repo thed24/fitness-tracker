@@ -73,10 +73,10 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     return (
       <FlashList
         data={muscleGroup.exercises}
+        estimatedFirstItemOffset={200}
         renderItem={({ item: exercise }) => (
-          <HStack key={`${muscleGroup.name}-${exercise.id}`}>
+          <HStack>
             <Text
-              key={`${muscleGroup.name}-${exercise.id}-text`}
               maxW="80%"
               onPress={() => handleExerciseChange(exercise)}
               color="black"
@@ -88,14 +88,13 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
               w={50}
               h={50}
               ml="auto"
-              key={`${muscleGroup.name}-${exercise.id}-image`}
               alt={exercise.name}
               source={{
                 uri: `data:image/${exercise.muscleGroupImage.fileExtension};base64,${exercise.muscleGroupImage.bytes}`,
               }} />
           </HStack>
         )}
-        estimatedItemSize={muscleGroup.exercises.length} />
+        estimatedItemSize={49} />
     );
   }, [form, incrementIndex]);
 

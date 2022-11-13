@@ -50,7 +50,7 @@ export function CardioRow({ activity, workout }: Props) {
             : "Uncompleted"}
         </Text>
 
-        {!workout.completed && (
+        {(!workout.completed && !workout.past) && (
           <Icon
             name="square-edit-outline"
             onPress={() => { setIsOpen(true); }}

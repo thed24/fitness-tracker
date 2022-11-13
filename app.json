@@ -3,7 +3,6 @@
     "name": "Pocket Coach",
     "slug": "fitnesstracker",
     "platforms": ["android"],
-    "icon": "./assets/images/logo.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",

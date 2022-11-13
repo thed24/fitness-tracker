@@ -33,7 +33,7 @@ export function MainDrawer({
 
     return (
       <HStack>
-        <Icon style={{ marginVertical: "auto", marginRight: 9 }} name="user-circle" size={30} color={theme.colors.primary[500]} />
+        <Icon style={{ marginTop: "auto", marginBottom: "auto", marginRight: 10 }} name="user-circle" size={30} color={theme.colors.primary[500]} />
         {text}
       </HStack>
     );

@@ -57,6 +57,7 @@ function SettingsInternal() {
     <Screen scrollable>
       <Avatar
         size="sm"
+        editable
         badge={userDetails.badge ?? undefined}
         callback={(image: Image) => {
           setUserDetails((prev) => ({

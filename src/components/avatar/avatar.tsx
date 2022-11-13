@@ -77,7 +77,7 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       tempImage = (
         <Image
           style={style}
-          accessibilityLabel={`Avatar for ${placeholderName}`}
+          alt={`Avatar for ${placeholderName}`}
           source={{
             uri: `data:image/${avatar.fileExtension};base64,${avatar.bytes}`,
           }}
