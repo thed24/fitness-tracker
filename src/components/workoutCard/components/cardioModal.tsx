@@ -1,6 +1,6 @@
 import { useEditWorkout } from "api";
 import { HStack, Modal, VStack } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "store";
 import { CardioData, CardioExercise, Workout } from "types";
 import { Input } from "../../input/input";
@@ -15,8 +15,8 @@ interface Props {
 
 export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
   const { user } = useStore();
-  const [distance, setDistance] = React.useState(activity.distance);
-  const [duration, setDuration] = React.useState(activity.duration);
+  const [distance, setDistance] = useState(activity.distance);
+  const [duration, setDuration] = useState(activity.duration);
 
   const { mutate: editWorkout } = useEditWorkout();
 

@@ -1,5 +1,5 @@
 import { HStack, useTheme, Text, ChevronRightIcon, View } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { StrengthData, StrengthExercise, Workout } from "types";
@@ -12,7 +12,7 @@ interface Props {
 
 export function StrengthRow({ activity, workout }: Props) {
   const theme = useTheme();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { getWeightFormatter } = useStore();
   const weightFormatter = getWeightFormatter();
@@ -29,10 +29,7 @@ export function StrengthRow({ activity, workout }: Props) {
       <HStack>
           <Text fontSize={16} fontWeight="bold"> Goal </Text>
           <Text>
-            {weightFormatter(
-              `${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`,
-              false
-            )}
+            {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
           </Text>
           <View ml="auto" mt={2}>
             <ChevronRightIcon />
@@ -43,10 +40,7 @@ export function StrengthRow({ activity, workout }: Props) {
       <Text fontSize={16} fontWeight="bold"> Result </Text>
         <Text>
           {activity.sets || activity.reps || activity.weight
-            ? weightFormatter(
-                `${activity.sets} x ${activity.reps} at ${activity.weight}`,
-                false
-              )
+            ? weightFormatter(`${activity.sets} x ${activity.reps} at ${activity.weight}`, false)
             : "Uncompleted"}
         </Text>
 

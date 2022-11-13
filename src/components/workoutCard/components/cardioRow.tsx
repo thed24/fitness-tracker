@@ -1,5 +1,5 @@
 import { HStack, useTheme, Text, View, ChevronRightIcon } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CardioData, CardioExercise, Workout } from "types";
@@ -12,7 +12,7 @@ interface Props {
 
 export function CardioRow({ activity, workout }: Props) {
   const theme = useTheme();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { getDistanceFormatter } = useStore();
   const distanceFormatter = getDistanceFormatter();

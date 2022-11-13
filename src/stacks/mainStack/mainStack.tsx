@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useStore } from 'store';
 import { useColorMode } from 'native-base';
+import { useGetUser } from 'api';
 import { HomeScreen } from '../../screens/home/home';
 import { RegisterScreen } from '../../screens/register/register';
 import { MainDrawerStack } from '../mainDrawerStack/mainDrawerStack';
@@ -11,6 +12,7 @@ const Stack = createNativeStackNavigator();
 export function MainStack() {
   const { user } = useStore();
   const { setColorMode } = useColorMode();
+  useGetUser({ userId: user!.id });
 
   useEffect(() => {
     const darkMode = user?.userSettings?.darkMode ?? false;

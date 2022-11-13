@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   useTheme,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 interface Props {
@@ -27,7 +27,7 @@ export function UserField({
   suffix = undefined,
 }: Props) {
   const theme = useTheme();
-  const [focused, setFocused] = React.useState(false);
+  const [focused, setFocused] = useState(false);
   const text = useColorModeValue(theme.colors.black, theme.colors.white);
 
   const addSuffix = (child: React.ReactNode) => (

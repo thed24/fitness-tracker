@@ -1,6 +1,6 @@
 import { DatePicker, FormLabel } from "components";
 import { Box, Divider, Slider, Text, Card } from "native-base";
-import React from "react";
+import React, { useMemo } from "react";
 import { titleCase } from "utils";
 import { StrengthData, StrengthExercise } from "../../../types/domain";
 import { ActivityEntry } from "../components/activityEntry";
@@ -13,7 +13,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
 
   const { workout } = form.values;
 
-  const summary = React.useMemo(() => {
+  const summary = useMemo(() => {
     type ExerciseSummary = {
       [key: string]: number;
       total: number;

@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
-import { Pressable, useTheme } from 'native-base';
-import { Image } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Pressable, Image, useTheme } from 'native-base';
 import { useStore } from 'store';
 import { Badge, Image as ImageType } from 'types';
 import {
@@ -19,7 +18,7 @@ interface Props {
 
 export function Avatar({ size, callback, badge, editable = false }: Props) {
   const [permissions, requestPermission] = useMediaLibraryPermissions();
-  const [image, setImage] = React.useState<ImageType | undefined>(undefined);
+  const [image, setImage] = useState<ImageType | undefined>(undefined);
 
   const theme = useTheme();
   const { user } = useStore();
@@ -88,7 +87,7 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       tempImage = (
         <Image
           style={style}
-          accessibilityLabel={`Avatar for ${placeholderName}`}
+          alt={`Avatar for ${placeholderName}`}
           source={{
             uri: `https://ui-avatars.com/api/?name=${placeholderName}&size=300`,
           }}
@@ -116,7 +115,6 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
     const style = {
       width: 50,
       height: 50,
-      position: 'absolute',
       top: 10,
       right: -75,
       borderRadius: width / 2,
@@ -128,7 +126,8 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       <Pressable zIndex={1} bgColor="transparent" onPress={() => {}}>
         <Image
           style={style}
-          accessibilityLabel={`Badge for ${placeholderName}`}
+          position="absolute"
+          alt={`Badge for ${placeholderName}`}
           source={{
             uri: `data:image/${userBadge.image.fileExtension};base64,${userBadge.image.bytes}`
           }}

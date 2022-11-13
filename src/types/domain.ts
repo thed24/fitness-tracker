@@ -39,6 +39,13 @@ export const Equipments = [
 
 export type Equipment = typeof Equipments[number];
 
+export interface Image {
+  id: number;
+  bytes: string;
+  name: string;
+  fileExtension: string;
+}
+
 interface BaseExercise {
   id: number;
   name: string;
@@ -48,6 +55,7 @@ interface BaseExercise {
   otherMuscleGroups: MuscleGroup[];
   mechanics: Mechanics;
   equipment: Equipment;
+  muscleGroupImage: Image;
   muscleGroupStats: Record<MuscleGroup, number>;
 }
 
@@ -168,13 +176,6 @@ export type StrengthLevelTypes =
   | 'powerlifting'
   | 'bodybuilding'
   | 'weightlifting';
-
-export interface Image {
-  id: number;
-  bytes: string;
-  name: string;
-  fileExtension: string;
-}
 
 export type RewardType = 'badge' | 'title' | 'experience';
 

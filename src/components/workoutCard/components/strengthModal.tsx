@@ -1,6 +1,6 @@
 import { useEditWorkout } from "api";
 import { HStack, Modal, VStack } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "store";
 import { StrengthData, StrengthExercise, Workout } from "types";
 import { Button } from "../../button/button";
@@ -15,9 +15,9 @@ interface Props {
 
 export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
   const { user } = useStore();
-  const [sets, setSets] = React.useState(activity.sets);
-  const [reps, setReps] = React.useState(activity.reps);
-  const [weight, setWeight] = React.useState(activity.weight);
+  const [sets, setSets] = useState(activity.sets);
+  const [reps, setReps] = useState(activity.reps);
+  const [weight, setWeight] = useState(activity.weight);
 
   const { mutateAsync: editWorkout, isLoading } = useEditWorkout();
 

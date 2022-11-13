@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Card, Box, Progress, useTheme, HStack, Spinner } from 'native-base';
 import { useStore } from 'store';
 import { Accordion, Button } from 'components';
@@ -12,7 +12,7 @@ export function Achievements() {
   const theme = useTheme();
   const { data: achievements } = useUserAchievements({ userId: user?.id ?? 0 });
   const { mutate: recordAchievement, data: recordResponse, isLoading: recordingAchievement } = useRecordAchievement();
-  const [rewards, setRewards] = React.useState<Reward[]>([]);
+  const [rewards, setRewards] = useState<Reward[]>([]);
 
   useEffect(() => {
     if (recordResponse) {
@@ -23,18 +23,18 @@ export function Achievements() {
   const createReward = (reward: Reward) => {
     if (reward.rewardType === 'experience') {
       return (
-        <Text key={`${reward.id}`} fontSize="sm"><> {reward.amount} {reward.strengthLevel} XP </></Text>
+        <Text key={`${reward.id}-exp`} fontSize="sm"><> {reward.amount} {reward.strengthLevel} XP </></Text>
       );
     }
 
     if (reward.rewardType === 'title') {
       return (
-        <Text key={`${reward.id}`} fontSize="sm"><> title, &quot;{titleCase(reward.name)}&quot; </></Text>
+        <Text key={`${reward.id}-title`} fontSize="sm"><> title, &quot;{titleCase(reward.name)}&quot; </></Text>
       );
     }
 
     return (
-      <Text key={`${reward.id}`} fontSize="sm" color="gray.500"> Unkown Reward </Text>
+      <Text key={`${reward.id}-unknown`} fontSize="sm" color="gray.500"> Unkown Reward </Text>
     );
   };
 
@@ -77,7 +77,7 @@ export function Achievements() {
         <>
           <HStack key={`${userAchievement.title}-weight-stack`}>
             <Text key={`${userAchievement.title}-weight-title`} fontSize="sm">{`${userAchievement.progress}/${userAchievement.targetWeight} for ${userAchievement.targetMuscleGroup}`}</Text>
-            <Text key={`${userAchievement.title}-weight-`} fontSize="sm" ml="auto">
+            <Text key={`${userAchievement.title}-weight-description`} fontSize="sm" ml="auto">
               Unlocks {userAchievement.rewards.map(createReward)}
             </Text>
           </HStack>

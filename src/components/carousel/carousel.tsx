@@ -1,5 +1,5 @@
 import { useTheme } from "native-base";
-import React, { JSXElementConstructor, ReactElement } from "react";
+import React, { JSXElementConstructor, ReactElement, useState } from "react";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BaseCarousel from "react-native-reanimated-carousel";
@@ -13,7 +13,7 @@ interface Props {
 export function Carousel({ renderItem, items, defaultIndex = undefined }: Props) {
   const theme = useTheme();
   const { width, height } = Dimensions.get("window");
-  const [activeIndex, setActiveIndex] = React.useState(items.length - 1);
+  const [activeIndex, setActiveIndex] = useState(items.length - 1);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

@@ -1,5 +1,5 @@
 import { Text } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { Screen } from "components";
 import { Formik, FormikProps } from "formik";
 import { useRegister } from "api";
@@ -33,7 +33,7 @@ export interface RegisterProps {
 
 function RegisterScreen() {
   const { isLoading, mutate } = useRegister();
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
 
   const onSubmit = (registrationDetails: RegisterValues) => {
     mutate({ ...registrationDetails });

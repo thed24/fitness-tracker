@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "store";
-import { Badge, Image, Title, UserSettings } from "types";
+import { Badge, Image, Title, User } from "types";
 import { client } from "../client";
-import { handleError } from "../utilities";
+import { handleError, updateUser } from "../utilities";
 
 export type RawEditUserRequest = {
   userId: number;
@@ -33,7 +33,7 @@ type EditUserRequest = {
 };
 
 type EditUserResponse = {
-  userSettings: UserSettings;
+  user: User;
 }
 
 export function useEditUser() {
@@ -60,9 +60,9 @@ export function useEditUser() {
       }
     },
     {
-      onSuccess(data, variables, context) {
-        if (data && user) {
-          setUser({ ...user, userSettings: data.userSettings });
+      onSuccess(response) {
+        if (response?.user) {
+          updateUser(response.user, setUser);
         }
       },
     }

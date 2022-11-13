@@ -14,7 +14,7 @@ interface Props {
   short?: boolean;
 }
 
-export function Accordion({ title, children, short = false, secondTitle = undefined }: Props) {
+function InternalAccordion({ title, children, short = false, secondTitle = undefined }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
   const maxHeight = short ? 125 : 200;
@@ -62,3 +62,5 @@ export function Accordion({ title, children, short = false, secondTitle = undefi
     </Container>
   );
 }
+
+export const Accordion = React.memo(InternalAccordion);

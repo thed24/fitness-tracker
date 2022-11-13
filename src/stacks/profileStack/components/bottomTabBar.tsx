@@ -1,7 +1,7 @@
 /* eslint-disable react/function-component-definition */
 /* eslint-disable react/no-unstable-nested-components */
 import { useColorModeValue, useTheme } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { BottomNavigation, TouchableRipple } from 'react-native-paper';
 import { CreateWorkout } from '../../../screens/create/createWorkout';
 import { Settings } from '../../../screens/settings/settings';
@@ -15,8 +15,8 @@ export function BottomTabBar() {
   const theme = useTheme();
   const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     {
       key: 'dashboard',
       title: 'Dashboard',

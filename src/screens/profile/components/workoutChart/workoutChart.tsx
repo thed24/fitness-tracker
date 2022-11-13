@@ -6,7 +6,7 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer,
 } from "victory-native";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Spinner,
   useTheme,
@@ -25,10 +25,10 @@ import { ExerciseType, GraphType, StrengthData, StrengthExercise } from "types";
 import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {
-  const [reps, setReps] = React.useState<number>(0);
-  const [workoutType, setWorkoutType] = React.useState<ExerciseType | null>("strength");
-  const [workoutGraphType, setWorkoutGraphType] = React.useState<GraphType>("Reps");
-  const [selectedExercise, setSelectedExercise] = React.useState<string | null>(null);
+  const [reps, setReps] = useState<number>(0);
+  const [workoutType, setWorkoutType] = useState<ExerciseType | null>("strength");
+  const [workoutGraphType, setWorkoutGraphType] = useState<GraphType>("Reps");
+  const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
 
   const { user, getPastWorkouts } = useStore();
   const theme = useTheme();
@@ -184,7 +184,7 @@ export function WorkoutChart() {
             placeholder="Select an exercise"
           >
             {exerciseNames.map((name) => (
-              <Select.Item key={name} label={name} value={name} />
+              <Select.Item key={`${name}-exercise-item`} label={name} value={name} />
             ))}
           </Dropdown>
 
@@ -200,7 +200,7 @@ export function WorkoutChart() {
             placeholder="Select unit type"
           >
             {options.map((name) => (
-              <Select.Item key={name} label={name} value={name} />
+              <Select.Item key={`${name}-unit-item`} label={name} value={name} />
             ))}
           </Dropdown>
 
@@ -214,7 +214,7 @@ export function WorkoutChart() {
               >
                 {repCounts.map((count) => (
                   <Select.Item
-                    key={count}
+                  key={`${count}-reps-item`}
                     label={count.toString()}
                     value={count.toString()}
                   />

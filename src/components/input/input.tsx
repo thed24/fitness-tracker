@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input as InputBase, useColorModeValue, useTheme } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -20,7 +20,7 @@ export function Input({
   onBlur = () => {},
   ...props
 }: Props) {
-  const [hidden, setHidden] = React.useState(type === "password");
+  const [hidden, setHidden] = useState(type === "password");
   const theme = useTheme();
   const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 

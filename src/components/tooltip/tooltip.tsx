@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Pressable, Tooltip as TooltipBase, useTheme } from "native-base";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 export function Tooltip({ children, label }: Props) {
   const theme = useTheme();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handlePress = () => {
     setIsOpen(!isOpen);

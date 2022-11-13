@@ -16,7 +16,7 @@ export function MainDrawer({
 }: DrawerContentComponentProps) {
   const { setUser, user } = useStore();
   const theme = useTheme();
-  const bg = useColorModeValue(theme.colors.gray[300], theme.colors.gray[700]);
+  const bg = useColorModeValue(theme.colors.white, theme.colors.gray[700]);
 
   const userName = user === null ? 'Guest' : `${user.username}`;
   const title = user?.title?.name;
