@@ -74,8 +74,7 @@ export function CreateWorkout() {
     <Screen loading={addLoading}>
       <Formik
         validationSchema={CreateWorkoutSchema}
-        initialErrors={{ workout: { name: "Enter a workout name" } }}
-        validateOnChange
+        validateOnMount
         initialValues={{
           workout: {
             id: 0,

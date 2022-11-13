@@ -1,17 +1,26 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { ApiError, User } from "types";
-import { log } from "utils";
-import { client } from "./client";
-import { ApiUser, ApiUserToUser } from "./types";
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import Toast from 'react-native-toast-message';
+import { ApiError, User } from 'types';
+import { log } from 'utils';
+import { client } from './client';
+import { ApiUser, ApiUserToUser } from './types';
 
 export function handleError(err: unknown) {
-  log(err, "error");
-
   if (axios.isAxiosError(err)) {
     const error = err as AxiosError<ApiError>;
-    throw error?.response?.data
-      ? new Error(error.response.data.errors.join("\n"))
-      : new Error(error.message);
+    const errorMessage = error?.response?.data
+      ? error.response.data.errors.join('\n')
+      : error.message;
+
+    log(errorMessage, 'error');
+
+    Toast.show({
+      type: 'error',
+      text1: 'An error has occured',
+      text2: errorMessage,
+    });
+
+    throw new Error(errorMessage);
   }
 
   throw err;
@@ -29,7 +38,7 @@ export function updateUser(
     .get(`/users/${currentUser.id}`)
     .then((response: AxiosResponse<RawGetUserResponse>) => {
       setUser({
-        ...ApiUserToUser(response.data.user)
+        ...ApiUserToUser(response.data.user),
       });
     })
     .catch((error) => {

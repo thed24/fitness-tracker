@@ -67,19 +67,18 @@ export function Autocomplete<T>(props: Props<T>) {
       {showList && filteredData.length > 0 && (
         <FlashList
           keyExtractor={keyExtractor}
+          estimatedItemSize={60}
           data={limitedData}
           scrollEnabled={false}
-          style={{ marginLeft: 2 }}
           renderItem={({ item }) => {
             const key = keyExtractor(item);
             return (
               <Pressable
-                key={`${key}-pressable`}
                 zIndex={1}
+                ml={2}
                 onTouchStart={() => onChange(key)}
               >
                 <Text
-                  key={`${key}-text`}
                   fontSize={14}
                   fontWeight="bold"
                   color={theme.colors.gray[400]}
