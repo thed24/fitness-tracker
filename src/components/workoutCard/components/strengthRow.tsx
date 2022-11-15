@@ -1,8 +1,9 @@
 import { HStack, useTheme, Text, ChevronRightIcon, View } from "native-base";
 import React, { useState } from "react";
-import { useStore } from "store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { StrengthData, StrengthExercise, Workout } from "types";
+import { getWeightFormatter } from "utils";
+import { useGetUser } from "api";
 import { StrengthModal } from "./strengthModal";
 
 interface Props {
@@ -14,8 +15,8 @@ export function StrengthRow({ activity, workout }: Props) {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { getWeightFormatter } = useStore();
-  const weightFormatter = getWeightFormatter();
+  const { data: user } = useGetUser();
+  const weightFormatter = getWeightFormatter(user);
 
   return (
     <>

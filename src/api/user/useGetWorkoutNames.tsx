@@ -16,7 +16,7 @@ export function useGetWorkoutNames({
   order,
 }: GetWorkoutData): UseQueryResult<GetWorkoutDataResponse, unknown> {
   return useQuery(
-    ["orders", userId, order],
+    ["workoutNames", userId, order],
     async () => {
       try {
         return (

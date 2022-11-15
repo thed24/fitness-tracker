@@ -1,13 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, Image, useTheme } from 'native-base';
-import { useStore } from 'store';
 import { Badge, Image as ImageType } from 'types';
-import {
-  launchImageLibraryAsync,
-  MediaTypeOptions,
-  useMediaLibraryPermissions,
-} from 'expo-image-picker';
-import Toast from 'react-native-toast-message';
+import { useGetUser } from 'api';
+import { ImagePicker } from '../imagePicker/imagePicker';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -17,11 +12,10 @@ interface Props {
 }
 
 export function Avatar({ size, callback, badge, editable = false }: Props) {
-  const [permissions, requestPermission] = useMediaLibraryPermissions();
   const [image, setImage] = useState<ImageType | undefined>(undefined);
-
   const theme = useTheme();
-  const { user } = useStore();
+
+  const { data: user } = useGetUser();
 
   const placeholderName = user?.username ?? 'User';
   const avatar = image ?? user?.avatar;
@@ -37,38 +31,6 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
       borderRadius: width / 2,
       borderWidth: 2,
       borderColor: theme.colors.primary[500],
-    };
-
-    const pickImage = () => {
-      if (permissions?.status === 'granted') {
-        launchImageLibraryAsync({
-          mediaTypes: MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-          base64: true,
-        }).then((result) => {
-          if (!result.cancelled) {
-            const newImage = {
-              id: 0,
-              bytes: result.base64,
-              name: 'avatar',
-              fileExtension: result.uri.split('.').pop(),
-            } as ImageType;
-
-            setImage(newImage);
-            callback(newImage);
-          }
-        });
-      } else {
-        requestPermission().then((result) => {
-          if (result.status !== 'granted') {
-            Toast.show({
-              text1: 'Permission to access camera roll is required!',
-            });
-          }
-        });
-      }
     };
 
     let tempImage = null;
@@ -96,16 +58,17 @@ export function Avatar({ size, callback, badge, editable = false }: Props) {
     }
 
     return (
-      <Pressable
-        onPress={editable ? pickImage : null}
+      <ImagePicker
+        disabled={!editable}
         mt={4}
         mb={1}
+        callbacks={[callback, setImage]}
         accessibilityLabel="Change avatar"
       >
         {tempImage}
-      </Pressable>
+      </ImagePicker>
     );
-  }, [avatar, callback, editable, height, permissions?.status, placeholderName, requestPermission, theme.colors.primary, width]);
+  }, [avatar, callback, editable, height, placeholderName, theme.colors.primary, width]);
 
   const badgeImage = useMemo(() => {
     if (!userBadge) {

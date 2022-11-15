@@ -1,14 +1,15 @@
+import { useGetUser } from "api";
 import { FormInput } from "components";
 import React from "react";
-import { useStore } from "store";
+import { getWeasurementFormatter, getWeightFormatter } from "utils";
 import { RegisterProps } from "../../register";
 import * as SC from "../../register.styles";
 
 export function StatsForm({ form }: RegisterProps) {
-  const { getWeasurementFormatter, getWeightFormatter } = useStore();
+  const { data: user } = useGetUser();
 
-  const weightFormatter = getWeightFormatter();
-  const measurementFormatter = getWeasurementFormatter();
+  const weightFormatter = getWeightFormatter(user);
+  const measurementFormatter = getWeasurementFormatter(user);
 
   return (
     <SC.Container>

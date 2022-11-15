@@ -1,7 +1,8 @@
-import { useStore } from "store";
 import { Activity } from "types";
 import { DeleteIcon, HStack, IconButton, Text, useTheme } from "native-base";
 import React from "react";
+import { useGetUser } from "api";
+import { getDistanceFormatter, getWeightFormatter } from "utils";
 
 interface Props {
   activity: Activity;
@@ -9,11 +10,11 @@ interface Props {
 }
 
 export function ActivityEntry({ activity, deleteActivity }: Props) {
-  const { getWeightFormatter, getDistanceFormatter } = useStore();
+  const { data: user } = useGetUser();
   const theme = useTheme();
 
-  const weightFormatter = getWeightFormatter();
-  const distanceFormatter = getDistanceFormatter();
+  const weightFormatter = getWeightFormatter(user);
+  const distanceFormatter = getDistanceFormatter(user);
 
   const createChild = (currActivity: Activity) => {
     switch (currActivity.type) {

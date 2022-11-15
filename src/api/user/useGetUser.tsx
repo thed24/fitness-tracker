@@ -1,39 +1,26 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { useStore } from "store";
-import { User } from "types";
-import { client } from "../client";
-import { handleError, updateUser } from "../utilities";
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useStore } from 'store';
+import { User } from 'types';
+import { client } from '../client';
+import { ApiUser, ApiUserToUser } from '../types';
 
-type GetUserRequest = {
-  userId: number;
+type GetUserRawResponse = {
+  user: ApiUser;
 };
 
-type GetUserResponse = {
-  user: User;
-};
+type GetUserResponse = User;
 
-export function useGetUser({
-  userId,
-}: GetUserRequest): UseQueryResult<GetUserResponse, unknown> {
-  const { setUser } = useStore();
+export function useGetUser(): UseQueryResult<GetUserResponse, unknown> {
+  const { userId, setUserId } = useStore();
 
-  return useQuery(
-    ["userId", userId],
-    async () => {
-      try {
-        return (
-          await client.get(`/users/${userId}`)
-        ).data;
-      } catch (error) {
-        handleError(error);
+  return useQuery(['user', userId], async () => {
+      if (!userId) {
+        return undefined;
       }
-    },
-    {
-      onSuccess(response) {
-        if (response.user) {
-          updateUser(response.user, setUser);
-        }
-      },
+
+      const { data } = await client.get<GetUserRawResponse>(`/users/${userId}`);
+      setUserId(data.user.id);
+      return ApiUserToUser(data.user);
     }
   );
 }

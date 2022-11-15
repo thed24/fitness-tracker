@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { useStore } from "store";
 import { Badge, Image, Title, User } from "types";
+import { queryClient } from "../apiProvider";
 import { client } from "../client";
-import { handleError, updateUser } from "../utilities";
 
 export type RawEditUserRequest = {
   userId: number;
@@ -37,33 +36,26 @@ type EditUserResponse = {
 }
 
 export function useEditUser() {
-  const { user, setUser } = useStore();
-
   return useMutation(
     async (rawRequest: RawEditUserRequest) => {
-      try {
-        const boolFromStr = (str: string) => {
-          if (str === "true") {
-            return true;
-          }
-          return false;
-        };
+      const boolFromStr = (str: string) => {
+        if (str === "true") {
+          return true;
+        }
+        return false;
+      };
 
-        const request = {
-          ...rawRequest,
-          darkMode: boolFromStr(rawRequest.darkMode),
-        } as EditUserRequest;
+      const request = {
+        ...rawRequest,
+        darkMode: boolFromStr(rawRequest.darkMode),
+      } as EditUserRequest;
 
-        return (await client.put<EditUserResponse>(`/users/${rawRequest.userId}`, request)).data;
-      } catch (error) {
-        handleError(error);
-      }
+      const { data } = await client.put<EditUserResponse>(`/users/${rawRequest.userId}`, request);
+      return data.user;
     },
     {
       onSuccess(response) {
-        if (response?.user) {
-          updateUser(response.user, setUser);
-        }
+        queryClient.setQueryData(["user"], response);
       },
     }
   )

@@ -71,6 +71,8 @@ export type Exercise = StrengthExercise | CardioExercise;
 
 interface BaseData {
   type: ExerciseType;
+  notes: string | null;
+  image: Image | null;
 }
 
 export interface StrengthData extends BaseData {

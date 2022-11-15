@@ -22,6 +22,8 @@ export type ApiData = {
   targetReps: number;
   targetSets: number;
   targetWeight: number;
+  notes: string | null;
+  image: Image | null;
 };
 
 export interface ApiExercise {
@@ -29,6 +31,7 @@ export interface ApiExercise {
   name: string;
   type: 'strength' | 'cardio';
   mainMuscleGroup: string;
+  muscleGroupImage: Image;
   detailedMuscleGroup: string | null;
   otherMuscleGroups: string[];
   mechanics: Mechanics;
@@ -118,9 +121,10 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
     name: workout.name,
     activities: workout.activities.map((activity) => {
       const exercise: ApiExercise = {
-        id: 0,
+        id: activity.id,
         name: activity.name,
         type: activity.type,
+        muscleGroupImage: activity.muscleGroupImage,
         mainMuscleGroup: activity.mainMuscleGroup,
         detailedMuscleGroup: activity.detailedMuscleGroup,
         otherMuscleGroups: activity.otherMuscleGroups,
@@ -143,6 +147,8 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               targetDuration: 0,
               distance: 0,
               duration: 0,
+              notes: activity.notes,
+              image: activity.image,
               type: activity.type,
             }
           : {
@@ -157,6 +163,8 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               reps: 0,
               sets: 0,
               weight: 0,
+              notes: activity.notes,
+              image: activity.image,
               type: activity.type,
             };
 

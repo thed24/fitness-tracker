@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useStore } from 'store';
 import { useColorMode } from 'native-base';
 import { useGetUser } from 'api';
 import { HomeScreen } from '../../screens/home/home';
@@ -10,14 +9,17 @@ import { MainDrawerStack } from '../mainDrawerStack/mainDrawerStack';
 const Stack = createNativeStackNavigator();
 
 export function MainStack() {
-  const { user } = useStore();
+  const { data: user, isLoading: loadingUser } = useGetUser();
   const { setColorMode } = useColorMode();
-  useGetUser({ userId: user!.id });
 
   useEffect(() => {
     const darkMode = user?.userSettings?.darkMode ?? false;
     setColorMode(darkMode ? 'dark' : 'light');
   }, [setColorMode, user?.userSettings?.darkMode]);
+
+  if (loadingUser) {
+    return null;
+  }
 
   return (
     <Stack.Navigator>

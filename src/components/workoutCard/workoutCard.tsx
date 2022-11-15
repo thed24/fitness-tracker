@@ -12,8 +12,7 @@ import {
 import React, { useMemo, useState } from 'react';
 import { Activity, Workout } from 'types';
 import dateFormat from 'dateformat';
-import { useDeleteWorkout } from 'api';
-import { useStore } from 'store';
+import { useDeleteWorkout, useGetUser } from 'api';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { titleCase } from 'utils';
 import { Badge } from '../badge/badge';
@@ -27,9 +26,9 @@ interface Props {
 
 export function WorkoutCard({ workout, footer }: Props) {
   const [deleting, setDeleting] = useState(false);
-  const { user } = useStore();
-  const { mutate: deleteWorkout } = useDeleteWorkout();
 
+  const { data: user } = useGetUser();
+  const { mutate: deleteWorkout } = useDeleteWorkout();
   const theme = useTheme();
 
   const createContent = (activity: Activity, children: React.ReactNode) => {

@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { ScheduledWorkout } from "types";
-import { useStore } from "store";
 import { client } from "../client";
-import { handleError, updateUser } from "../utilities";
+import { handleError } from "../utilities";
 import { WorkoutToApiWorkout } from "../types";
+import { queryClient } from "../apiProvider";
 
 type AddWorkoutRequest = {
   userId: number;
@@ -11,8 +11,6 @@ type AddWorkoutRequest = {
 };
 
 export function useAddWorkout() {
-  const { user, setUser } = useStore();
-
   return useMutation(
     async (rawRequest: AddWorkoutRequest) => {
       try {
@@ -27,9 +25,10 @@ export function useAddWorkout() {
     },
     {
       onSuccess() {
-        if (user) {
-          updateUser(user, setUser);
-        }
+        queryClient.invalidateQueries(["user"]);
+        queryClient.invalidateQueries(["workoutData"]);
+        queryClient.invalidateQueries(["workoutNames"]);
+        queryClient.invalidateQueries(["userAchievements"]);
       },
     }
   );

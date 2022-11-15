@@ -28,19 +28,27 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
       (acc, curr) => {
         const { type, mainMuscleGroup, otherMuscleGroups, detailedMuscleGroup } = curr;
         if (type === "strength") {
-          const muscleGroups = otherMuscleGroups.concat(mainMuscleGroup).concat(detailedMuscleGroup ?? "unknown").filter(x => x.toLowerCase() !== "unknown");
-          const volumes = muscleGroups.reduce(
-            (acc2, curr2) => {
-              const volume = calculateStrengthVolume(curr as StrengthExercise & StrengthData);
-              const existingVolume = acc2[curr2] || 0;
-              return { ...acc2, [curr2]: existingVolume + volume };
+          const volume = calculateStrengthVolume(curr as StrengthExercise & StrengthData);
+
+          const muscleGroups = otherMuscleGroups
+            .concat(mainMuscleGroup)
+            .concat(detailedMuscleGroup ?? "unknown")
+            .filter(x => x.toLowerCase() !== "unknown");
+          
+          const volumes = muscleGroups.reduce((acc2, curr2) => {
+              const existingVolume = acc[curr2] ?? 0;
+              return { 
+                ...acc2, 
+                [curr2]: existingVolume + volume,
+                total: acc2.total + volume
+              };
             }, { total: 0 } as ExerciseSummary
           );
 
           return {
             ...acc,
             ...volumes,
-            total: acc.total + calculateStrengthVolume(curr),
+            total: acc.total + volumes.total,
           };
         }
         return { ...acc };
@@ -49,6 +57,7 @@ export function ActivityDetails({ form }: CreateWorkoutProps) {
     );
 
     const { total } = summaries;
+
     return Object.entries(summaries)
       .filter(([key]) => key !== "total")
       .map(([key, value]) => {

@@ -1,10 +1,11 @@
-import { useEditWorkout } from "api";
-import { HStack, Modal, VStack } from "native-base";
+import { useEditWorkout, useGetUser } from "api";
+import { HStack, Modal, TextArea, useTheme, VStack, Text } from "native-base";
 import React, { useState } from "react";
-import { useStore } from "store";
 import { StrengthData, StrengthExercise, Workout } from "types";
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Button } from "../../button/button";
 import { Input } from "../../input/input";
+import { ImagePicker } from "../../imagePicker/imagePicker";
 
 interface Props {
   activity: StrengthExercise & StrengthData;
@@ -14,21 +15,24 @@ interface Props {
 }
 
 export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
-  const { user } = useStore();
+  const { data: user } = useGetUser();
+  const theme = useTheme();
+
   const [sets, setSets] = useState(activity.sets);
   const [reps, setReps] = useState(activity.reps);
   const [weight, setWeight] = useState(activity.weight);
+  const [notes, setNotes] = useState(activity.notes);
+  const [image, setImage] = useState(activity.image);
 
   const { mutateAsync: editWorkout, isLoading } = useEditWorkout();
 
-  const handleChange =
-    (callback: (value: number) => void) => (value: string) => {
-      const parsedValue = parseInt(value, 10);
-      if (Number.isNaN(parsedValue)) {
-        return;
-      }
-      callback(parsedValue);
-    };
+  const handleChange = (callback: (value: number) => void) => (value: string) => {
+    const parsedValue = parseInt(value, 10);
+    if (Number.isNaN(parsedValue)) {
+      return;
+    }
+    callback(parsedValue);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -58,6 +62,23 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
               value={weight ?? undefined}
               onChangeText={handleChange(setWeight)}
             />
+            <TextArea
+              placeholder="Notes"
+              type="text"
+              value={notes ?? undefined}
+              autoCompleteType="off"
+              onChangeText={(value) => setNotes(value)}
+            />
+            <HStack>
+              <Text my="auto"> {image ? 'Image added' : 'No image added'} </Text>
+              <ImagePicker ml="auto" callbacks={[ setImage ]}>
+                <Icon
+                  name="camera"
+                  size={30}
+                  color={theme.colors.primary[500]}
+                />
+              </ImagePicker>
+            </HStack>
           </VStack>
         </Modal.Body>
         <Modal.Footer>
@@ -79,6 +100,8 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
                           sets,
                           reps,
                           weight,
+                          notes,
+                          image,
                         };
                       }
                       return a;

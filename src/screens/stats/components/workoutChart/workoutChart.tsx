@@ -19,20 +19,21 @@ import {
   Card,
 } from "native-base";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
-import { useGetWorkoutData } from "api";
-import { useStore } from "store";
+import { useGetUser, useGetWorkoutData } from "api";
 import { ExerciseType, GraphType, StrengthData, StrengthExercise } from "types";
+import { getPastWorkouts } from "utils";
 import { Dropdown } from "./workoutChart.styles";
 
 export function WorkoutChart() {
+  const { data: user } = useGetUser();
+  const theme = useTheme();
+
+  const pastWorkouts = getPastWorkouts(user);
+
   const [reps, setReps] = useState<number>(0);
   const [workoutType, setWorkoutType] = useState<ExerciseType | null>("strength");
   const [workoutGraphType, setWorkoutGraphType] = useState<GraphType>("Reps");
   const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
-
-  const { user, getPastWorkouts } = useStore();
-  const theme = useTheme();
-  const pastWorkouts = getPastWorkouts();
 
   const { data: workoutData, isLoading: workoutDataLoading } =
     useGetWorkoutData({

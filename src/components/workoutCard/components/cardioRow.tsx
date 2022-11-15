@@ -1,8 +1,9 @@
 import { HStack, useTheme, Text, View, ChevronRightIcon } from "native-base";
 import React, { useState } from "react";
-import { useStore } from "store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CardioData, CardioExercise, Workout } from "types";
+import { useGetUser } from "api";
+import { getDistanceFormatter } from "utils";
 import { CardioModal } from "./cardioModal";
 
 interface Props {
@@ -14,8 +15,8 @@ export function CardioRow({ activity, workout }: Props) {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { getDistanceFormatter } = useStore();
-  const distanceFormatter = getDistanceFormatter();
+  const { data: user } = useGetUser();
+  const distanceFormatter = getDistanceFormatter(user);
 
   return (
     <>

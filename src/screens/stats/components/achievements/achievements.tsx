@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Card, Box, Progress, useTheme, HStack, Spinner } from 'native-base';
-import { useStore } from 'store';
 import { Accordion, Button } from 'components';
 import { titleCase } from 'utils';
-import { useRecordAchievement, useUserAchievements } from 'api';
+import { useGetUser, useRecordAchievement, useUserAchievements } from 'api';
 import { Reward, User, UserAchievement } from 'types';
 import { RewardsModal } from './components/rewardsModal';
 
 export function Achievements() {
-  const { user } = useStore();
-  const theme = useTheme();
+  const { data: user } = useGetUser();
   const { data: achievements } = useUserAchievements({ userId: user?.id ?? 0 });
-  const { mutate: recordAchievement, data: recordResponse, isLoading: recordingAchievement } = useRecordAchievement();
+  const { data: recordResponse, mutate: recordAchievement, isLoading: recordingAchievement } = useRecordAchievement();
+  const theme = useTheme();
+
   const [rewards, setRewards] = useState<Reward[]>([]);
 
   useEffect(() => {

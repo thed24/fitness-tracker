@@ -16,7 +16,7 @@ type GetUserAchievements = {
 export function useUserAchievements({
   userId,
 }: GetUserAchievements): UseQueryResult<GetUserAchievementsResponse, unknown> {
-  return useQuery(["UserAchievements", userId], async () => {
+  return useQuery(["userAchievements", userId], async () => {
     try {
       return (await (await client.get(`Users/${userId}/Achievements`)).data) as RawGetUserAchievementsResponse;
     } catch (error) {

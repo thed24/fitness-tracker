@@ -8,17 +8,19 @@ import React, { useCallback } from 'react';
 import { useStore } from 'store';
 import { HStack, Text, useColorModeValue, useTheme, VStack } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useGetUser } from 'api';
 
 export function MainDrawer({
   state,
   navigation,
   descriptors,
 }: DrawerContentComponentProps) {
-  const { setUser, user } = useStore();
+  const { userId, setUserId } = useStore();
+  const { data: user } = useGetUser();
   const theme = useTheme();
   const bg = useColorModeValue(theme.colors.white, theme.colors.gray[700]);
 
-  const userName = user === null ? 'Guest' : `${user.username}`;
+  const userName = user === undefined ? 'Guest' : `${user.username}`;
   const title = user?.title?.name;
 
   const headerIcon = useCallback(() => {
@@ -54,7 +56,7 @@ export function MainDrawer({
         descriptors={descriptors}
       />
 
-      <DrawerItem label="Logout" onPress={() => setUser(null)} />
+      <DrawerItem label="Logout" onPress={() => setUserId(-1)} />
     </DrawerContentScrollView>
   );
 }

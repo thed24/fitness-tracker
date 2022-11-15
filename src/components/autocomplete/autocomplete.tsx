@@ -7,6 +7,7 @@ import {
   View,
 } from 'native-base';
 import React, { useMemo, useState } from 'react';
+import { Dimensions } from 'react-native';
 import { Input } from '../input/input';
 
 interface BaseProps<T> {
@@ -22,6 +23,8 @@ type Props<T> = BaseProps<T> &
 export function Autocomplete<T>(props: Props<T>) {
   const { data, value, onChange, keyExtractor } = props;
   const [showList, setShowList] = useState(false);
+
+  const { width } = Dimensions.get("screen");
 
   const theme = useTheme();
 
@@ -65,30 +68,32 @@ export function Autocomplete<T>(props: Props<T>) {
       </View>
 
       {showList && filteredData.length > 0 && (
-        <FlashList
-          keyExtractor={keyExtractor}
-          estimatedItemSize={60}
-          data={limitedData}
-          scrollEnabled={false}
-          renderItem={({ item }) => {
-            const key = keyExtractor(item);
-            return (
-              <Pressable
-                zIndex={1}
-                ml={2}
-                onTouchStart={() => onChange(key)}
-              >
-                <Text
-                  fontSize={14}
-                  fontWeight="bold"
-                  color={theme.colors.gray[400]}
+        <View w={width} minH={25}>
+          <FlashList
+            keyExtractor={keyExtractor}
+            estimatedItemSize={60}
+            data={limitedData}
+            scrollEnabled={false}
+            renderItem={({ item }) => {
+              const key = keyExtractor(item);
+              return (
+                <Pressable
+                  zIndex={1}
+                  ml={2}
+                  onTouchStart={() => onChange(key)}
                 >
-                  {key}
-                </Text>
-              </Pressable>
-            );
-          }}
-        />
+                  <Text
+                    fontSize={14}
+                    fontWeight="bold"
+                    color={theme.colors.gray[400]}
+                  >
+                    {key}
+                  </Text>
+                </Pressable>
+              );
+            }}
+          />
+        </View>
       )}
     </View>
   );

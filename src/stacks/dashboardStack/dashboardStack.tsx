@@ -2,7 +2,7 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Dimensions } from "react-native";
 import { useColorModeValue, useTheme } from "native-base";
-import { Profile } from "../../screens/profile/profile";
+import { Stats } from "../../screens/stats/stats";
 import { Schedule } from "../../screens/schedule/schedule";
 import { History } from "../../screens/history/history";
 
@@ -20,7 +20,7 @@ export function DashboardStack() {
     },
     {
       name: "Stats",
-      component: Profile,
+      component: Stats,
     },
     {
       name: "Schedule",

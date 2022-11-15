@@ -2,8 +2,7 @@ import { Autocomplete, FormLabel, Screen } from "components";
 
 import React, { useState } from "react";
 import { Activity, ExerciseType, ScheduledWorkout } from "types";
-import { useAddWorkout, useGetWorkoutNames } from "api";
-import { useStore } from "store";
+import { useAddWorkout, useGetUser, useGetWorkoutNames } from "api";
 import { Formik, FormikProps } from "formik";
 import { Box, ScrollView, Text, VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
@@ -26,15 +25,13 @@ export interface CreateWorkoutProps {
 }
 
 export function CreateWorkout() {
-  const { user } = useStore();
   const navigation = useNavigation();
-  const [index, setIndex] = useState(0);
-  const { data: workoutNames } = useGetWorkoutNames({
-    userId: user?.id ?? -1,
-    order: "Ascending",
-  });
+  const { data: user } = useGetUser();
+  const { data: workoutNames } = useGetWorkoutNames({ userId: user?.id ?? -1, order: "Ascending" });
 
   const { isLoading: addLoading, mutate: addWorkout } = useAddWorkout();
+
+  const [index, setIndex] = useState(0);
 
   const getStep = (props: CreateWorkoutProps) => {
     switch (index) {

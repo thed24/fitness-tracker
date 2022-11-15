@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, Card, Box, Progress, useTheme } from "native-base";
-import { useStore } from "store";
 import { Accordion } from "components";
 import { titleCase } from "utils";
+import { useGetUser } from "api";
 
 export function BuddyStats() {
-  const { user } = useStore();
+  const { data: user } = useGetUser();
   const theme = useTheme();
 
   if (!user) {

@@ -1,15 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useStore } from "store";
 import { Screen, Avatar, FormLabel, Button } from "components";
 import { Box, Select, useColorModeValue, useTheme, VStack } from "native-base";
-import { RawEditUserRequest, useEditUser } from "api";
+import { RawEditUserRequest, useEditUser, useGetUser } from "api";
 import { Badge, Image, Title } from "types";
 import { SettingSection, settingsSections } from "./settingsSections";
 import { UserSetting } from "./components/userSetting";
 import { UserField } from "./components/userField";
 
 function SettingsInternal() {
-  const { user } = useStore();
+  const { data: user } = useGetUser();
   const theme = useTheme();
   const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 

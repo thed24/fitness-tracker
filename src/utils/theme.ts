@@ -119,6 +119,17 @@ export const nativeTheme = extendTheme({
         },
       },
     },
+    TextArea: {
+      baseStyle: {
+        rounded: 10,
+        _dark: {
+          bg: 'gray.900',
+        },
+        _light: {
+          bg: 'white',
+        },
+      },
+    },
     Heading: {
       baseStyle: {
         _dark: {

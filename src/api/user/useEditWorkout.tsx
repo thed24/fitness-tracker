@@ -1,35 +1,31 @@
 import { useMutation } from "@tanstack/react-query";
 import { Workout } from "types";
-import { useStore } from "store";
 import { client } from "../client";
-import { handleError, updateUser } from "../utilities";
 import { WorkoutToApiWorkout } from "../types";
+import { queryClient } from "../apiProvider";
 
 type EditWorkoutRequest = {
   userId: number;
   workout: Workout;
 };
 
-export function useEditWorkout() {
-  const { user, setUser } = useStore();
+type EditWorkoutResponse = {
+  id: number;
+};
 
+export function useEditWorkout() {
   return useMutation(
     async (rawRequest: EditWorkoutRequest) => {
-      try {
-        const workout = WorkoutToApiWorkout(rawRequest.workout);
-
-        return (
-          await client.put(`/users/${rawRequest.userId}/workouts/${rawRequest.workout.id}`, {workout})
-        ).data;
-      } catch (error) {
-        handleError(error);
-      }
+      const workout = WorkoutToApiWorkout(rawRequest.workout);
+      const { data } = await client.put<EditWorkoutResponse>(`/users/${rawRequest.userId}/workouts/${rawRequest.workout.id}`, {workout});
+      return data;
     },
     {
       onSuccess() {
-        if (user) {
-          updateUser(user, setUser);
-        }
+        queryClient.invalidateQueries(["user"]);
+        queryClient.invalidateQueries(["workoutData"]);
+        queryClient.invalidateQueries(["workoutNames"]);
+        queryClient.invalidateQueries(["userAchievements"]);
       },
     }
   );

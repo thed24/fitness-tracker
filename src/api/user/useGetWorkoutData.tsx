@@ -24,7 +24,7 @@ export function useGetWorkoutData({
   reps,
 }: GetWorkoutData): UseQueryResult<GetWorkoutDataResponse, unknown> {
   return useQuery(
-    ["orders", exerciseName, userId, workoutGraphType, reps],
+    ["workoutData", exerciseName, userId, workoutGraphType, reps],
     async () => {
       try {
         if (!exerciseName) {

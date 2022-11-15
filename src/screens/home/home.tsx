@@ -1,19 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Text, Heading, Pressable, useTheme, Image } from "native-base";
-import { useStore } from "store";
 import { NavigationProps } from "types";
 import { Screen } from "components";
 import { Login } from "./components/login";
 
 export function HomeScreen({ navigation }: NavigationProps) {
-  const { user } = useStore();
   const theme = useTheme();
-
-  useEffect(() => {
-    if (user) {
-      navigation.reset({ index: 0, routes: [{ name: "Profile" }] });
-    }
-  }, [navigation, user]);
 
   return (
     <Screen>

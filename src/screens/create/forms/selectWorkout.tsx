@@ -1,5 +1,5 @@
 import { useExercises } from 'api';
-import { Text, Card, ScrollView, useTheme, Box, Skeleton, HStack, Image } from 'native-base';
+import { Text, Card, ScrollView, useTheme, Box, Skeleton, HStack, Image, View } from 'native-base';
 import { Accordion } from 'components';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Exercise, MuscleGroups } from 'types';
@@ -71,30 +71,32 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     };
 
     return (
-      <FlashList
-        data={muscleGroup.exercises}
-        estimatedFirstItemOffset={200}
-        renderItem={({ item: exercise }) => (
-          <HStack>
-            <Text
-              maxW="80%"
-              onPress={() => handleExerciseChange(exercise)}
-              color="black"
-              my="auto"
-            >
-              {exercise.name}
-            </Text>
-            <Image
-              w={50}
-              h={50}
-              ml="auto"
-              alt={exercise.name}
-              source={{
-                uri: `data:image/${exercise.muscleGroupImage.fileExtension};base64,${exercise.muscleGroupImage.bytes}`,
-              }} />
-          </HStack>
-        )}
-        estimatedItemSize={49} />
+      <View w={300} h={15000}>
+        <FlashList
+          data={muscleGroup.exercises}
+          estimatedFirstItemOffset={200}
+          renderItem={({ item: exercise }) => (
+            <HStack>
+              <Text
+                maxW="80%"
+                onPress={() => handleExerciseChange(exercise)}
+                color="black"
+                my="auto"
+              >
+                {exercise.name}
+              </Text>
+              <Image
+                w={50}
+                h={50}
+                ml="auto"
+                alt={exercise.name}
+                source={{
+                  uri: `data:image/${exercise.muscleGroupImage.fileExtension};base64,${exercise.muscleGroupImage.bytes}`,
+                }} />
+            </HStack>
+          )}
+          estimatedItemSize={49} />
+        </View>
     );
   }, [form, incrementIndex]);
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { Text, Heading } from "native-base";
-import { useStore } from "store";
 import { Screen } from "components";
+import { useGetUser } from "api";
 import { WorkoutChart } from "./components/workoutChart/workoutChart";
 import { BuddyStats } from "./components/buddyStats/buddyStats";
 import { Achievements } from "./components/achievements/achievements";
 
-export function Profile() {
-  const { user } = useStore();
+export function Stats() {
+  const { data: user } = useGetUser();
 
   const streakText = (user?.workoutBuddy?.data?.streak ?? 0) > 0
     ? `\nYou're on a roll, keep up the ${user?.workoutBuddy.data.streak} day streak!`

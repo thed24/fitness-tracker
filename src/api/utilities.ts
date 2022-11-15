@@ -17,13 +17,9 @@ export function handleError(err: unknown) {
     Toast.show({
       type: 'error',
       text1: 'An error has occured',
-      text2: errorMessage,
+      text2: 'whoops',
     });
-
-    throw new Error(errorMessage);
   }
-
-  throw err;
 }
 
 type RawGetUserResponse = {

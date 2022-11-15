@@ -1,10 +1,11 @@
-import { useEditWorkout } from "api";
-import { HStack, Modal, VStack } from "native-base";
-import React, { useState } from "react";
-import { useStore } from "store";
-import { CardioData, CardioExercise, Workout } from "types";
-import { Input } from "../../input/input";
-import { Button } from "../../button/button";
+import { useEditWorkout, useGetUser } from 'api';
+import { HStack, Modal, TextArea, VStack, Text, useTheme } from 'native-base';
+import React, { useState } from 'react';
+import { CardioData, CardioExercise, Workout } from 'types';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ImagePicker } from '../../imagePicker/imagePicker';
+import { Input } from '../../input/input';
+import { Button } from '../../button/button';
 
 interface Props {
   activity: CardioExercise & CardioData;
@@ -14,9 +15,13 @@ interface Props {
 }
 
 export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
-  const { user } = useStore();
+  const { data: user } = useGetUser();
+  const theme = useTheme();
+
   const [distance, setDistance] = useState(activity.distance);
   const [duration, setDuration] = useState(activity.duration);
+  const [notes, setNotes] = useState(activity.notes);
+  const [image, setImage] = useState(activity.image);
 
   const { mutate: editWorkout } = useEditWorkout();
 
@@ -38,18 +43,51 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
           <VStack space={2}>
             <Input
               placeholder="Distance"
-              rightElement={<Button variant="link" onPress={() => setDistance(activity.targetDistance)}>Fill</Button>}
+              rightElement={
+                <Button
+                  variant="link"
+                  onPress={() => setDistance(activity.targetDistance)}
+                >
+                  Fill
+                </Button>
+              }
               type="text"
               value={distance ?? undefined}
               onChangeText={handleChange(setDistance)}
             />
             <Input
               placeholder="Duration"
-              rightElement={<Button variant="link" onPress={() => setDuration(activity.targetDuration)}>Fill</Button>}
+              rightElement={
+                <Button
+                  variant="link"
+                  onPress={() => setDuration(activity.targetDuration)}
+                >
+                  Fill
+                </Button>
+              }
               type="text"
               value={duration ?? undefined}
               onChangeText={handleChange(setDuration)}
             />
+            <TextArea
+              placeholder="Notes"
+              type="text"
+              value={notes ?? undefined}
+              autoCompleteType="off"
+              onChangeText={(value) => setNotes(value)}
+            />
+            <HStack>
+              <Text my="auto">
+                {image ? 'Image added' : 'No image added'}
+              </Text>
+              <ImagePicker ml="auto" callbacks={[setImage]}>
+                <Icon
+                  name="camera"
+                  size={30}
+                  color={theme.colors.primary[500]}
+                />
+              </ImagePicker>
+            </HStack>
           </VStack>
         </Modal.Body>
         <Modal.Footer>
@@ -69,6 +107,8 @@ export function CardioModal({ workout, activity, onClose, isOpen }: Props) {
                           ...a,
                           distance,
                           duration,
+                          notes,
+                          image,
                         };
                       }
                       return a;

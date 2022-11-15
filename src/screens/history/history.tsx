@@ -1,13 +1,14 @@
 import { Text, View } from "native-base";
 import React from "react";
-import { useStore } from "store";
 import { Screen, WorkoutCard, Carousel } from "components";
 import { CompletedWorkout } from "types";
+import { getPastWorkouts } from "utils";
+import { useGetUser } from "api";
 
 export function History() {
-  const { getPastWorkouts } = useStore();
+  const { data: user } = useGetUser();
 
-  const pastWorkouts = getPastWorkouts();
+  const pastWorkouts = getPastWorkouts(user);
 
   const renderItem = (item: CompletedWorkout, index: number) => (
     <View margin="auto">

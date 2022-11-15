@@ -1,23 +1,24 @@
+import { useGetUser } from 'api';
 import { FormLabel } from 'components';
 import { Box, Text } from 'native-base';
 import React, { useMemo } from 'react';
-import { useStore } from 'store';
 import {
   CardioData,
   CardioExercise,
   StrengthData,
   StrengthExercise,
 } from 'types';
+import { getDistanceFormatter, getWeightFormatter } from 'utils';
 import { ActionButton } from '../components/actionButton';
 import { IncrementBar } from '../components/incrementBar';
 import { CreateWorkoutProps } from '../createWorkout';
 
 export function WorkoutDetails({ form }: CreateWorkoutProps) {
   const { activity } = form.values;
-  const { user, getDistanceFormatter, getWeightFormatter } = useStore();
+  const { data: user } = useGetUser();
 
-  const distanceFormatter = getDistanceFormatter();
-  const weightFormatter = getWeightFormatter();
+  const distanceFormatter = getDistanceFormatter(user);
+  const weightFormatter = getWeightFormatter(user);
 
   const activitySpecificFields = useMemo(() => {
     const handleActivityUpdate = (field: string) => (value: string) => {

@@ -11,3 +11,4 @@ export { Badge } from './badge/badge';
 export { Avatar } from './avatar/avatar';
 export { Tooltip } from './tooltip/tooltip';
 export { Button } from './button/button';
+export { ImagePicker } from './imagePicker/imagePicker';

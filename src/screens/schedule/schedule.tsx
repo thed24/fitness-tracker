@@ -1,16 +1,16 @@
 import { Text, View } from "native-base";
 import React from "react";
-import { useStore } from "store";
 import { Screen, Carousel } from "components";
 import { ScheduledWorkout } from "types";
-import { useEditWorkout } from "api";
+import { useEditWorkout, useGetUser } from "api";
+import { getScheduledWorkouts } from "utils";
 import { ScheduledWorkoutCard } from "./components/scheduledWorkoutCard";
 
 export function Schedule() {
   const { isLoading: editLoading, mutate: editWorkout } = useEditWorkout();
-  const { user, getScheduledWorkouts } = useStore();
+  const { data: user } = useGetUser();
   
-  const scheduledWorkouts = getScheduledWorkouts();
+  const scheduledWorkouts = getScheduledWorkouts(user);
 
   if (!user) {
     return <Text>An error has occured, please sign out and try again.</Text>;
