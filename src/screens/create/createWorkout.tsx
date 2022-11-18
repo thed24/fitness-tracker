@@ -67,25 +67,27 @@ export function CreateWorkout() {
     navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
   };
 
+  const initialValues = {
+    workout: {
+      id: 0,
+      name: "",
+      time: new Date().toString(),
+      past: false,
+      completed: false,
+      activities: [],
+    },
+    repeat: 1,
+    date: new Date(),
+    activity: null,
+    exerciseType: "strength",
+  } as CreateWorkoutValues;
+
   return (
     <Screen loading={addLoading}>
       <Formik
         validationSchema={CreateWorkoutSchema}
         validateOnMount
-        initialValues={{
-          workout: {
-            id: 0,
-            name: "",
-            time: new Date().toString(),
-            past: false,
-            completed: false,
-            activities: [],
-          },
-          repeat: 1,
-          date: new Date(),
-          activity: null,
-          exerciseType: "strength",
-        }}
+        initialValues={initialValues}
         onSubmit={handleSave}
       >
         {(form) => {
@@ -98,8 +100,7 @@ export function CreateWorkout() {
             setIndex(0);
           };
 
-          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""]
-                         .filter((e) => e !== "");
+          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""].filter((e) => e !== "");
 
           return (
             <ScrollView nestedScrollEnabled w="100%">
@@ -137,6 +138,7 @@ export function CreateWorkout() {
                     onAddActivity={handleAddActivity}
                     onSubmit={form.handleSubmit}
                   />
+
                   {errors.length > 0 && index === 0 && (
                     <FormLabel textAlign="center" variant="error">{errors.join("\n")}</FormLabel>
                   )}

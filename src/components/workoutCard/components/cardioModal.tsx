@@ -1,14 +1,14 @@
 import { useEditWorkout, useGetUser } from 'api';
 import { HStack, Modal, TextArea, VStack, Text, useTheme } from 'native-base';
 import React, { useState } from 'react';
-import { CardioData, CardioExercise, Workout } from 'types';
+import { CardioActivity, Workout } from 'types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ImagePicker } from '../../imagePicker/imagePicker';
 import { Input } from '../../input/input';
 import { Button } from '../../button/button';
 
 interface Props {
-  activity: CardioExercise & CardioData;
+  activity: CardioActivity;
   workout: Workout;
   onClose: () => void;
   isOpen: boolean;

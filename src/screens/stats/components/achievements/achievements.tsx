@@ -16,7 +16,7 @@ export function Achievements() {
 
   useEffect(() => {
     if (recordResponse) {
-      setRewards(recordResponse.rewards);
+      setRewards(recordResponse);
     }
   }, [recordResponse]);
 

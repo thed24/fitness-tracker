@@ -1,14 +1,14 @@
 import { useEditWorkout, useGetUser } from "api";
 import { HStack, Modal, TextArea, useTheme, VStack, Text } from "native-base";
 import React, { useState } from "react";
-import { StrengthData, StrengthExercise, Workout } from "types";
+import { StrengthActivity, Workout } from "types";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Button } from "../../button/button";
 import { Input } from "../../input/input";
 import { ImagePicker } from "../../imagePicker/imagePicker";
 
 interface Props {
-  activity: StrengthExercise & StrengthData;
+  activity: StrengthActivity;
   workout: Workout;
   onClose: () => void;
   isOpen: boolean;
@@ -24,7 +24,7 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
   const [notes, setNotes] = useState(activity.notes);
   const [image, setImage] = useState(activity.image);
 
-  const { mutateAsync: editWorkout, isLoading } = useEditWorkout();
+  const { mutate: editWorkout, isLoading } = useEditWorkout();
 
   const handleChange = (callback: (value: number) => void) => (value: string) => {
     const parsedValue = parseInt(value, 10);
@@ -88,8 +88,8 @@ export function StrengthModal({ workout, activity, onClose, isOpen }: Props) {
             </Button>
             <Button
               isLoading={isLoading}
-              onPress={async () => {
-                await editWorkout({
+              onPress={() => {
+                editWorkout({
                   userId: user!.id,
                   workout: {
                     ...workout,

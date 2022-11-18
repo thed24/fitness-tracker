@@ -1,7 +1,6 @@
 import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
-import { Pressable } from 'native-base';
+import { Pressable, Toast } from 'native-base';
 import React from 'react';
-import Toast from 'react-native-toast-message';
 import { Image } from 'types';
 
 interface BaseProps {
@@ -27,7 +26,6 @@ export function ImagePicker({ children, callbacks, disabled = false, ...props }:
         if (result && !result.canceled) {
           const asset = result.assets[0];
           const newImage = {
-            id: -1,
             bytes: asset.base64,
             name: 'avatar',
             fileExtension: asset.uri.split('.').pop(),
@@ -42,8 +40,8 @@ export function ImagePicker({ children, callbacks, disabled = false, ...props }:
       requestPermission().then((result) => {
         if (result.status !== 'granted') {
           Toast.show({
-            text1: 'Permission required',
-            text2: 'Permission to access camera roll is required',
+            title: 'Permission required',
+            description: 'Permission to access camera roll is required',
           });
         }
       });

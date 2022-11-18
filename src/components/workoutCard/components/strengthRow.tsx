@@ -1,13 +1,13 @@
 import { HStack, useTheme, Text, ChevronRightIcon, View } from "native-base";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { StrengthData, StrengthExercise, Workout } from "types";
+import { StrengthActivity, Workout } from "types";
 import { getWeightFormatter } from "utils";
 import { useGetUser } from "api";
 import { StrengthModal } from "./strengthModal";
 
 interface Props {
-  activity: StrengthExercise & StrengthData;
+  activity: StrengthActivity;
   workout: Workout;
 }
 

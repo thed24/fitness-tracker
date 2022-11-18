@@ -8,7 +8,7 @@ type GetUserRawResponse = {
   user: ApiUser;
 };
 
-type GetUserResponse = User;
+type GetUserResponse = User | undefined;
 
 export function useGetUser(): UseQueryResult<GetUserResponse, unknown> {
   const { userId, setUserId } = useStore();

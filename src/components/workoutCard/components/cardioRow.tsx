@@ -1,13 +1,13 @@
 import { HStack, useTheme, Text, View, ChevronRightIcon } from "native-base";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { CardioData, CardioExercise, Workout } from "types";
+import { CardioActivity, Workout } from "types";
 import { useGetUser } from "api";
 import { getDistanceFormatter } from "utils";
 import { CardioModal } from "./cardioModal";
 
 interface Props {
-  activity: CardioExercise & CardioData;
+  activity: CardioActivity;
   workout: Workout;
 }
 

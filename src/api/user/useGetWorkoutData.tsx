@@ -1,11 +1,10 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { client } from "../client";
-import { handleError } from "../utilities";
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { client } from '../client';
 
 type GetWorkoutData = {
   userId: number;
   exerciseName: string | null;
-  workoutGraphType: "Reps" | "Sets" | "Weight" | "Distance";
+  workoutGraphType: 'Reps' | 'Sets' | 'Weight' | 'Distance';
   reps: number;
 };
 
@@ -14,7 +13,7 @@ type GetWorkoutDataResponse = {
     xAxis: number;
     timeOfExercise: string;
     exerciseMetaData: number;
-  }[]
+  }[];
 };
 
 export function useGetWorkoutData({
@@ -24,25 +23,20 @@ export function useGetWorkoutData({
   reps,
 }: GetWorkoutData): UseQueryResult<GetWorkoutDataResponse, unknown> {
   return useQuery(
-    ["workoutData", exerciseName, userId, workoutGraphType, reps],
-    async () => {
-      try {
-        if (!exerciseName) {
-          return { data: {} };
-        }
-
-        return (
-          await client.get(`/users/${userId}/workoutGraphData`, {
-            params: {
-              ExerciseName: exerciseName,
-              WorkoutGraphType: workoutGraphType,
-              Reps: reps,
-            },
-          })
-        ).data;
-      } catch (error) {
-        handleError(error);
+    ['workoutData', exerciseName, userId, workoutGraphType, reps], async () => {
+      if (!exerciseName) {
+        return { data: {} };
       }
+
+      const { data } = await client.get(`/users/${userId}/workoutGraphData`, {
+        params: {
+          ExerciseName: exerciseName,
+          WorkoutGraphType: workoutGraphType,
+          Reps: reps,
+        },
+      });
+
+      return data;
     }
   );
 }

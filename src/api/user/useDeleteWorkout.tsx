@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../apiProvider";
 import { client } from "../client";
-import { handleError } from "../utilities";
 
 type DeleteWorkoutRequest = {
   userId: number;
@@ -11,13 +10,8 @@ type DeleteWorkoutRequest = {
 export function useDeleteWorkout() {
   return useMutation(
     async (rawRequest: DeleteWorkoutRequest) => {
-      try {
-        return (
-          await client.delete(`/users/${rawRequest.userId}/workouts/${rawRequest.workoutId}`)
-        ).data;
-      } catch (error) {
-        handleError(error);
-      }
+      const { data } = await client.delete(`/users/${rawRequest.userId}/workouts/${rawRequest.workoutId}`);
+      return data;
     },
     {
       onSuccess() {

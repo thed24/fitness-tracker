@@ -7,7 +7,7 @@ import {
   Equipment,
   Image,
 } from 'types';
-import { Badge, MuscleGroup, Reward, Title } from '../types/domain';
+import { Badge, Exercise, MuscleGroup, Reward, Title } from '../types/domain';
 
 export type ApiData = {
   id: number;
@@ -73,6 +73,13 @@ export interface ApiUser {
   badge: Badge | null;
 }
 
+export function ApiExerciseToExercise(exercise: ApiExercise): Exercise {
+  return {
+    ...exercise,
+    exerciseId: exercise.id,
+  };
+}
+
 export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
   const time = new Date();
   time.setHours(0, 0, 0, 0);
@@ -87,6 +94,8 @@ export function ApiWorkoutToWorkout(workout: ApiWorkout): Workout {
       ...activity.exercise,
       ...activity.data,
       id: activity.id,
+      exerciseId: activity.exercise.id,
+      dataId: activity.data.id,
     })),
   };
 }
@@ -121,7 +130,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
     name: workout.name,
     activities: workout.activities.map((activity) => {
       const exercise: ApiExercise = {
-        id: activity.id,
+        id: activity.exerciseId,
         name: activity.name,
         type: activity.type,
         muscleGroupImage: activity.muscleGroupImage,
@@ -136,7 +145,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
       const data: ApiData =
         activity.type === 'strength'
           ? {
-              id: 0,
+              id: activity.dataId,
               reps: activity.reps,
               sets: activity.sets,
               weight: activity.weight,
@@ -152,7 +161,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               type: activity.type,
             }
           : {
-              id: 0,
+              id: activity.dataId,
               distance: activity.distance,
               duration: activity.duration,
               targetDistance: activity.targetDistance,

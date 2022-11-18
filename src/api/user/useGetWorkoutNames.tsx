@@ -1,10 +1,9 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { client } from "../client";
-import { handleError } from "../utilities";
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { client } from '../client';
 
 type GetWorkoutData = {
   userId: number;
-  order: "Ascending" | "Descending";
+  order: 'Ascending' | 'Descending';
 };
 
 type GetWorkoutDataResponse = {
@@ -15,20 +14,13 @@ export function useGetWorkoutNames({
   userId,
   order,
 }: GetWorkoutData): UseQueryResult<GetWorkoutDataResponse, unknown> {
-  return useQuery(
-    ["workoutNames", userId, order],
-    async () => {
-      try {
-        return (
-          await client.get(`/users/${userId}/WorkoutNames`, {
-            params: {
-                order,
-            },
-          })
-        ).data;
-      } catch (error) {
-        handleError(error);
-      }
-    }
-  );
+  return useQuery(['workoutNames', userId, order], async () => {
+    const { data } = await client.get<GetWorkoutDataResponse>(`/users/${userId}/WorkoutNames`, {
+      params: {
+        order,
+      },
+    });
+
+    return data;
+  });
 }

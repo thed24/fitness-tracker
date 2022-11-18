@@ -1,4 +1,3 @@
-import { FlashList } from '@shopify/flash-list';
 import {
   Input as BaseInput,
   Pressable,
@@ -7,7 +6,7 @@ import {
   View,
 } from 'native-base';
 import React, { useMemo, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { Input } from '../input/input';
 
 interface BaseProps<T> {
@@ -68,12 +67,12 @@ export function Autocomplete<T>(props: Props<T>) {
       </View>
 
       {showList && filteredData.length > 0 && (
-        <View w={width} minH={25}>
-          <FlashList
+        <SafeAreaView>
+          <FlatList
             keyExtractor={keyExtractor}
-            estimatedItemSize={60}
             data={limitedData}
             scrollEnabled={false}
+            nestedScrollEnabled={false}
             renderItem={({ item }) => {
               const key = keyExtractor(item);
               return (
@@ -93,7 +92,7 @@ export function Autocomplete<T>(props: Props<T>) {
               );
             }}
           />
-        </View>
+        </SafeAreaView>
       )}
     </View>
   );

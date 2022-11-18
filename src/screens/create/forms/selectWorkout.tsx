@@ -1,10 +1,10 @@
 import { useExercises } from 'api';
-import { Text, Card, ScrollView, useTheme, Box, Skeleton, HStack, Image, View } from 'native-base';
+import { Text, Card, ScrollView, useTheme, Box, Skeleton, HStack, Image } from 'native-base';
 import { Accordion } from 'components';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Exercise, MuscleGroups } from 'types';
 import { titleCase } from 'utils';
-import { FlashList } from "@shopify/flash-list";
+import { FlatList, SafeAreaView } from 'react-native';
 import { ExerciseFilters, Filters } from '../components/exerciseFilters';
 import { CreateWorkoutProps } from '../createWorkout';
 
@@ -71,10 +71,10 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
     };
 
     return (
-      <View w={300} h={15000}>
-        <FlashList
+      <SafeAreaView>
+        <FlatList
+          nestedScrollEnabled
           data={muscleGroup.exercises}
-          estimatedFirstItemOffset={200}
           renderItem={({ item: exercise }) => (
             <HStack>
               <Text
@@ -94,9 +94,8 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
                   uri: `data:image/${exercise.muscleGroupImage.fileExtension};base64,${exercise.muscleGroupImage.bytes}`,
                 }} />
             </HStack>
-          )}
-          estimatedItemSize={49} />
-        </View>
+          )}/>
+        </SafeAreaView>
     );
   }, [form, incrementIndex]);
 
@@ -132,7 +131,6 @@ export function SelectWorkout({ form, incrementIndex }: Props) {
           title={titleCase(muscleGroup.name)}
           secondTitle={`${muscleGroup.exercises.length} exercises`}
           key={`${muscleGroup.name}-accordion`}
-          short
         >
           {createCardContent(muscleGroup)}
         </Accordion>
