@@ -20,6 +20,22 @@ export interface CreateWorkoutValues {
   exerciseType: ExerciseType;
 }
 
+const initialValues = {
+    workout: {
+      id: 0,
+      name: "",
+      time: new Date().toString(),
+      past: false,
+      completed: false,
+      activities: [],
+    },
+    repeat: 1,
+    date: new Date(),
+    activity: null,
+    exerciseType: "strength",
+} as CreateWorkoutValues;
+
+
 export interface CreateWorkoutProps {
   form: FormikProps<CreateWorkoutValues>;
 }
@@ -67,26 +83,10 @@ export function CreateWorkout() {
     navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
   };
 
-  const initialValues = {
-    workout: {
-      id: 0,
-      name: "",
-      time: new Date().toString(),
-      past: false,
-      completed: false,
-      activities: [],
-    },
-    repeat: 1,
-    date: new Date(),
-    activity: null,
-    exerciseType: "strength",
-  } as CreateWorkoutValues;
-
   return (
     <Screen loading={addLoading}>
       <Formik
         validationSchema={CreateWorkoutSchema}
-        validateOnMount
         initialValues={initialValues}
         onSubmit={handleSave}
       >
@@ -100,7 +100,10 @@ export function CreateWorkout() {
             setIndex(0);
           };
 
-          const errors = [form.errors.workout?.name ?? "", form.errors.workout?.activities ?? ""].filter((e) => e !== "");
+          const errors = [
+            (form.touched.workout?.name ? form.errors.workout?.name ?? "" : ""), 
+            form.values.workout.activities.length === 0 ? "You must add at least one activity" : "",
+          ].filter((e) => e !== "");
 
           return (
             <ScrollView nestedScrollEnabled w="100%">
@@ -132,7 +135,7 @@ export function CreateWorkout() {
                 <VStack>
                   <NavigationButtons
                     loading={addLoading}
-                    disabled={Object.keys(form.errors).length > 0}
+                    disabled={errors.length > 0}
                     currentIndex={index}
                     setIndex={setIndex}
                     onAddActivity={handleAddActivity}

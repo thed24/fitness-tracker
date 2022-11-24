@@ -9,7 +9,7 @@ import { nativeTheme, paperTheme } from './src/utils/theme';
 import { MainStack } from './src/stacks';
 
 LogBox.ignoreLogs(['Require cycle: node_modules/victory']);
-LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']);
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 export default function App() {
   useFonts({

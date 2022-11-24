@@ -28,19 +28,19 @@ export function StrengthRow({ activity, workout }: Props) {
       />
 
       <HStack>
-          <Text fontSize={16} fontWeight="bold"> Goal </Text>
-          <Text>
-            {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
-          </Text>
-          <View ml="auto" mt={2}>
-            <ChevronRightIcon />
-          </View>
+        <Text fontSize={16} fontWeight="bold"> Goal </Text>
+        <Text>
+          {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
+        </Text>
+        <View ml="auto" mt={2}>
+          <ChevronRightIcon />
+        </View>
       </HStack>
 
       <HStack>
       <Text fontSize={16} fontWeight="bold"> Result </Text>
         <Text>
-          {activity.sets || activity.reps || activity.weight
+          {activity.sets && activity.reps && activity.weight
             ? weightFormatter(`${activity.sets} x ${activity.reps} at ${activity.weight}`, false)
             : "Uncompleted"}
         </Text>

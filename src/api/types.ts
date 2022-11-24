@@ -121,16 +121,19 @@ export function ApiUserToUser(apiUser: ApiUser): User {
   };
 }
 
-export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
+export function WorkoutToApiWorkout(
+  workout: Workout,
+  maintainIds: boolean = false
+): ApiWorkout {
   return {
-    id: 0,
+    id: workout.id,
     time: workout.time,
     completed: workout.completed,
     past: workout.past,
     name: workout.name,
     activities: workout.activities.map((activity) => {
       const exercise: ApiExercise = {
-        id: activity.exerciseId,
+        id: maintainIds ? activity.exerciseId : 0,
         name: activity.name,
         type: activity.type,
         muscleGroupImage: activity.muscleGroupImage,
@@ -145,7 +148,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
       const data: ApiData =
         activity.type === 'strength'
           ? {
-              id: activity.dataId,
+              id: maintainIds ? activity.dataId : 0,
               reps: activity.reps,
               sets: activity.sets,
               weight: activity.weight,
@@ -161,7 +164,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
               type: activity.type,
             }
           : {
-              id: activity.dataId,
+              id: maintainIds ? activity.dataId : 0,
               distance: activity.distance,
               duration: activity.duration,
               targetDistance: activity.targetDistance,
@@ -178,7 +181,7 @@ export function WorkoutToApiWorkout(workout: Workout): ApiWorkout {
             };
 
       return {
-        id: 0,
+        id: maintainIds ? activity.id : 0,
         exercise,
         data,
       };
@@ -192,7 +195,7 @@ export function UserToApiUser(user: User): ApiUser {
     username: user.username,
     email: user.email,
     password: user.password,
-    workouts: user.workouts.map(WorkoutToApiWorkout),
+    workouts: user.workouts.map((workout) => WorkoutToApiWorkout(workout)),
     workoutBuddy: user.workoutBuddy,
     userSettings: user.userSettings,
     height: user.height,

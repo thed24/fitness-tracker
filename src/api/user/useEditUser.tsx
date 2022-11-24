@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useStore } from "store";
 import { Badge, Image, Title, User } from "types";
 import { queryClient } from "../apiProvider";
 import { client } from "../client";
@@ -36,6 +37,8 @@ type EditUserResponse = {
 }
 
 export function useEditUser() {
+  const { userId } = useStore();
+
   return useMutation(
     async (rawRequest: RawEditUserRequest) => {
       const boolFromStr = (str: string) => {
@@ -55,7 +58,7 @@ export function useEditUser() {
     },
     {
       onSuccess(response) {
-        queryClient.setQueryData(["user"], response);
+        queryClient.setQueryData(["user", userId], response);
       },
     }
   )

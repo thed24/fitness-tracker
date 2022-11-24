@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useStore } from "../../store/store";
 import { Reward } from "../../types/domain";
 import { client } from "../client";
 
@@ -15,6 +16,7 @@ type RecordAchievementResponse = Reward[];
 
 export function useRecordAchievement() {
   const queryClient = useQueryClient();
+  const { userId } = useStore();
 
   return useMutation(
     async (request: RecordAchievementRequest) => {
@@ -23,8 +25,10 @@ export function useRecordAchievement() {
     },
     {
       onSuccess() {
-        queryClient.invalidateQueries(["user"]);
-        queryClient.invalidateQueries(["userAchievements"]);
+        if (userId) {
+          queryClient.invalidateQueries(["user", userId]);
+          queryClient.invalidateQueries(["userAchievements", userId]);
+        }
       },
     }
   );

@@ -15,7 +15,7 @@ type RawLoginResponse = {
 };
 
 export function useLogin() {
-  const { setUserId } = useStore();
+  const { setUserId, userId } = useStore();
   const navigation = useNavigation();
 
   return useMutation(
@@ -27,7 +27,7 @@ export function useLogin() {
     {
       onSuccess(response) {
         if (response) {
-          queryClient.setQueryData(["user"], response);
+          queryClient.setQueryData(["user", userId], response);
           navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
         }
       },
