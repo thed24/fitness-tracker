@@ -1,9 +1,10 @@
-import { HStack, useTheme, Text, ChevronRightIcon, View } from "native-base";
+import { HStack, useTheme, Text, ChevronRightIcon, View, Pressable } from "native-base";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { StrengthActivity, Workout } from "types";
 import { getWeightFormatter } from "utils";
 import { useGetUser } from "api";
+import { useNavigation } from "@react-navigation/native";
 import { StrengthModal } from "./strengthModal";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 export function StrengthRow({ activity, workout }: Props) {
   const theme = useTheme();
+  const navigation = useNavigation();
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: user } = useGetUser();
@@ -27,15 +29,17 @@ export function StrengthRow({ activity, workout }: Props) {
         onClose={() => setIsOpen(false)}
       />
 
-      <HStack>
-        <Text fontSize={16} fontWeight="bold"> Goal </Text>
-        <Text>
-          {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
-        </Text>
-        <View ml="auto" mt={2}>
-          <ChevronRightIcon />
-        </View>
-      </HStack>
+      <Pressable onPress={() => navigation.navigate("Activity" as never, { mainActivityId: activity.id } as never)}>
+        <HStack>
+            <Text fontSize={16} fontWeight="bold"> Goal </Text>
+            <Text>
+              {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
+            </Text>
+            <View ml="auto" mt={2}>
+              <ChevronRightIcon />
+            </View>
+        </HStack>
+      </Pressable>
 
       <HStack>
       <Text fontSize={16} fontWeight="bold"> Result </Text>

@@ -5,6 +5,7 @@ import { useGetUser } from 'api';
 import { HomeScreen } from '../../screens/home/home';
 import { RegisterScreen } from '../../screens/register/register';
 import { MainDrawerStack } from '../mainDrawerStack/mainDrawerStack';
+import { ActivityDetailsScreen } from '../../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ export function MainStack() {
               headerShown: false,
             }}
           />
+        <Stack.Screen
+          name="Activity"
+          component={ActivityDetailsScreen}
+          initialParams={{ mainActivityId: 0 }}
+        />
         </Stack.Group>
       ) : (
         <Stack.Group>
