@@ -6,6 +6,7 @@ import {
   extendTheme,
   Select,
   View,
+  TextArea,
 } from 'native-base';
 import React from 'react';
 import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
@@ -122,13 +123,17 @@ export const nativeTheme = extendTheme({
     TextArea: {
       baseStyle: {
         rounded: 10,
+        _disabled: {
+          borderColor: 'gray.300',
+        },
+        borderColor: 'gray.300',
         _dark: {
           bg: 'gray.900',
         },
         _light: {
           bg: 'white',
         },
-      },
+      } as React.ComponentProps<typeof TextArea>,
     },
     Heading: {
       baseStyle: {

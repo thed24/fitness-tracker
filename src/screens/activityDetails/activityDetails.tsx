@@ -1,8 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import { useGetUser } from 'api';
-import { Card, FlatList, Image, useTheme, Text } from 'native-base';
+import dateFormat from 'dateformat';
+import { Card, FlatList, Image, useTheme, Text, Divider, TextArea } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import { Activity } from '../../types/domain';
+import { Screen } from '../../components/screen/screen';
+import { Activity, Workout } from '../../types/domain';
 
 interface Props {
   route: {
@@ -12,66 +15,107 @@ interface Props {
   };
 }
 
+type WorkoutAndActivity = { activity: Activity } & Omit<Workout, 'activities'>;
+
 export function ActivityDetailsScreen({ route }: Props) {
   const { data: user } = useGetUser();
   const theme = useTheme();
+  const navigation = useNavigation();
 
-  const activities = user?.workouts.flatMap((w) => w.activities) ?? [];
+  const activities = user?.workouts.map((workout) => workout.activities.map((activity) => ({ ...workout, activity }))).flat() ?? [];
   const mainActivity = activities.find(
-    (a) => a.id === route.params.mainActivityId
+    (a) => a.activity.id === route.params.mainActivityId
   );
 
   if (mainActivity === undefined) {
     return <Text>Activity not found</Text>;
   }
 
-  const filteredActivities = activities.filter(
-    (a) => a.exerciseId === mainActivity?.exerciseId && a.id !== mainActivity.id
-  );
+  navigation.setOptions({
+    title: mainActivity.activity.name,
+  });
 
-  const createActivityCard = (activity: Activity, isMain: boolean = false) => (
-    <>
-      <Card
-        key={activity.id}
-        my={4}
-        mx="auto"
-        w="90%"
-        borderWidth={1}
-        borderColor={
-          isMain ? theme.colors.primary[500] : theme.colors.gray[300]
-        }
-      >
-        <Text key={`${activity.id} Name`}>{activity.name}</Text>
-        <Text key={`${activity.id} Notes`}>Notes: {activity?.notes ?? 'None'}</Text>
-        {activity.type === 'strength' && (
-          <View key={`${activity.id} View`}>
-            <Text key={`${activity.id} Sets`}>
-              Target: {activity.targetSets} x {activity.targetReps} at{' '}
-              {activity.targetWeight}
-            </Text>
-            {activity.sets && activity.reps && activity.weight && (
-              <Text key={`${activity.id} Actual Sets`}>
-                Result: {activity.sets} x {activity.reps} at {activity.weight}
+  const filteredActivities = activities.filter(
+    (a) => a.activity.exerciseId === mainActivity?.activity.exerciseId && a.id !== mainActivity.id
+  ).sort((a, b) => b.time.localeCompare(a.time));
+
+  const createActivityCard = (workout: WorkoutAndActivity, isMain: boolean = false) => {
+    const { activity } = workout;
+
+    return (
+      <Screen>
+        <Card
+          key={activity.id}
+          my={4}
+          mx="auto"
+          w="90%"
+        >
+          <Text mx="auto" fontWeight="bold" key={`${activity.id} Time`}>{dateFormat(new Date(workout.time), 'dddd, mmmm dS')}</Text>
+          <Divider my={4} />
+
+          {activity.type === 'cardio' && (
+            <View key={`${activity.id} View`}>
+              <Text key={`${activity.id} Sets`}>
+                <Text fontWeight="bold"> Goal </Text>
+                {activity.targetDistance} in {activity.targetDuration}
               </Text>
-            )}
-          </View>
-        )}
-        {activity.image && (
-          <Image
-            key={`${activity.id} Image`}
-            alt={`${activity.name} image`}
-            mt={4}
-            width={200}
-            height={200}
-            source={{
-              uri: `data:image/${activity.image.fileExtension};base64,${activity.image.bytes}`,
-            }}
-          />
-        )}
-      </Card>
-      {isMain && <Text fontWeight="bold" mx="auto" key={`${activity.id} Other`}> Other {activity.name} Workouts </Text>}
-    </>
-  );
+              {activity.distance && activity.duration && (
+                <Text key={`${activity.id} Actual Sets`}>
+                  <Text fontWeight="bold"> Result </Text>
+                  {activity.distance} in {activity.duration}
+                </Text>
+              )}
+              {!activity.duration || !activity.distance && (
+                <Text key={`${activity.id} Actual Sets`}>
+                  <Text fontWeight="bold"> Result </Text>
+                  Not completed
+                </Text>
+              )}
+            </View>
+          )}
+
+          {activity.type === 'strength' && (
+            <View key={`${activity.id} View`}>
+              <Text key={`${activity.id} Sets`}>
+                <Text fontWeight="bold"> Goal </Text>
+                {activity.targetSets} x {activity.targetReps} at {activity.targetWeight}
+              </Text>
+              {activity.sets && activity.reps && activity.weight && (
+                <Text key={`${activity.id} Actual Sets`}>
+                  <Text fontWeight="bold"> Result </Text>
+                  {activity.sets} x {activity.reps} at {activity.weight}
+                </Text>
+              )}
+              {!activity.sets || !activity.reps || !activity.weight && (
+                <Text key={`${activity.id} Actual Sets`}>
+                  <Text fontWeight="bold"> Result </Text>
+                  Not completed
+                </Text>
+              )}
+            </View>
+          )}
+
+          <TextArea mx="auto" my={4} autoCompleteType="" key={`${activity.id} Notes`} value={activity.notes ?? 'None'} isDisabled />
+
+          {activity.image && (
+            <Image
+              key={`${activity.id} Image`}
+              alt={`${workout.name} image`}
+              mx="auto"
+              borderWidth={1}
+              rounded={10}
+              borderColor={theme.colors.gray[300]}
+              width={500}
+              height={200}
+              source={{
+                uri: `data:image/${activity.image.fileExtension};base64,${activity.image.bytes}`,
+              }} />
+          )}
+        </Card>
+        {isMain && <Text fontWeight="bold" mx="auto" key={`${activity.id} Other`}> Other {workout.activity.name} Workouts </Text>}
+      </Screen>
+    );
+  };
 
   return (
     <View>
