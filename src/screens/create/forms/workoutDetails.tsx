@@ -97,7 +97,7 @@ export function WorkoutDetails({ form }: CreateWorkoutProps) {
       }
     }
     return null;
-  }, [activity, form, user]);
+  }, [activity, distanceFormatter, form, user?.weight, weightFormatter]);
 
   if (!user || !activity) {
     return <Text>Loading...</Text>;

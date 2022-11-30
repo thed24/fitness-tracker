@@ -43,6 +43,7 @@ export function FormInput({
 
         <Input
           accessibilityLabel={`${name} input`}
+          mb={2}
           type={type}
           value={value}
           onBlur={onBlur}

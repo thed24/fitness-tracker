@@ -1,21 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, Image, useTheme } from 'native-base';
-import { Badge, Image as ImageType } from 'types';
-import { useGetUser } from 'api';
+import { Badge, Image as ImageType, User } from 'types';
 import { ImagePicker } from '../imagePicker/imagePicker';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   callback: (image: ImageType) => void;
+  user: User | null;
   badge?: Badge;
   editable?: boolean;
 }
 
-export function Avatar({ size, callback, badge, editable = false }: Props) {
+export function Avatar({ user, size, callback, badge, editable = false }: Props) {
   const [image, setImage] = useState<ImageType | undefined>(undefined);
   const theme = useTheme();
-
-  const { data: user } = useGetUser();
 
   const placeholderName = user?.username ?? 'User';
   const avatar = image ?? user?.avatar;

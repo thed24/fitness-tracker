@@ -3,31 +3,31 @@
 import { useColorModeValue, useTheme } from 'native-base';
 import React, { useState } from 'react';
 import { BottomNavigation, TouchableRipple } from 'react-native-paper';
-import { CreateWorkout } from '../../../screens/create/createWorkout';
 import { Settings } from '../../../screens/settings/settings';
+import { SocialScreen } from '../../../screens/social/social';
 import { DashboardStack } from '../../dashboardStack/dashboardStack';
 
 const DashboardRoute = () => <DashboardStack />;
-const CreateRoute = () => <CreateWorkout />;
+const SocialRoute = () => <SocialScreen />;
 const SettingsRoute = () => <Settings />;
 
 export function BottomTabBar() {
   const theme = useTheme();
   const bg = useColorModeValue(theme.colors.white, theme.colors.gray[900]);
 
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
   const [routes] = useState([
+    {
+      key: 'social',
+      title: 'Social',
+      focusedIcon: 'account-group',
+      unfocusedIcon: 'account-group-outline',
+    },
     {
       key: 'dashboard',
       title: 'Dashboard',
       focusedIcon: 'home',
       unfocusedIcon: 'home-outline',
-    },
-    {
-      key: 'create',
-      title: 'Create',
-      focusedIcon: 'plus-circle',
-      unfocusedIcon: 'plus-circle-outline',
     },
     {
       key: 'settings',
@@ -39,8 +39,8 @@ export function BottomTabBar() {
 
   const renderScene = BottomNavigation.SceneMap({
     dashboard: DashboardRoute,
-    create: CreateRoute,
     settings: SettingsRoute,
+    social: SocialRoute
   });
 
   return (

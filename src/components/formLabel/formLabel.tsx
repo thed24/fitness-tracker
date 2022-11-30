@@ -27,7 +27,7 @@ export function FormLabel({
           accessibilityLabel={`${children} label`}
           // color={color}
           textAlign={textAlign}
-          mb={2}
+          mb={1}
           fontSize={16}
           fontWeight="semibold"
           {...props}

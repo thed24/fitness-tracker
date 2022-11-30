@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorMode } from 'native-base';
 import { useGetUser } from 'api';
-import { HomeScreen } from '../../screens/home/home';
-import { RegisterScreen } from '../../screens/register/register';
+import { useStore } from 'store';
 import { MainDrawerStack } from '../mainDrawerStack/mainDrawerStack';
-import { ActivityDetailsScreen } from '../../screens';
+import { ActivityDetailsScreen, CreateWorkout, HomeScreen, RegisterScreen } from '../../screens';
 
 const Stack = createNativeStackNavigator();
 
 export function MainStack() {
-  const { data: user, isLoading: loadingUser } = useGetUser();
+  const { data: user, isLoading: userLoading } = useGetUser();
+  const { userId } = useStore();
   const { setColorMode } = useColorMode();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function MainStack() {
     setColorMode(darkMode ? 'dark' : 'light');
   }, [setColorMode, user?.userSettings?.darkMode]);
 
-  if (loadingUser) {
+  if (userId && userLoading) {
     return null;
   }
 
@@ -33,6 +33,10 @@ export function MainStack() {
               headerShown: false,
             }}
           />
+        <Stack.Screen
+          name="Create"
+          component={CreateWorkout}
+        />
         <Stack.Screen
           name="Activity"
           component={ActivityDetailsScreen}

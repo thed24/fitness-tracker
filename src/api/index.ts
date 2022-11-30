@@ -12,3 +12,4 @@ export * from './achievements/useAchievements';
 export * from './achievements/useUserAchievements';
 export * from './achievements/useRecordAchievement';
 export * from './user/useGetUser';
+export * from './social/useGetUsers';

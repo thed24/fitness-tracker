@@ -28,7 +28,7 @@ export function useLogin() {
       onSuccess(response) {
         if (response) {
           queryClient.setQueryData(["user", userId], response);
-          navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
+          navigation.reset({ index: 0, routes: [{ name: "Drawer" as never }] });
         }
       },
     }

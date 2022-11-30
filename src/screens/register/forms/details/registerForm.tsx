@@ -11,7 +11,7 @@ export function RegisterForm({ form }: RegisterProps) {
 
   return (
     <SC.Container>
-      <Avatar size="sm" callback={handleImageChange}/>
+      <Avatar user={null} size="sm" callback={handleImageChange}/>
 
       <FormInput
         required

@@ -12,7 +12,7 @@ function MainDrawerStackInternal() {
   const titleText = useColorModeValue(theme.colors.black, theme.colors.white);
 
   return (
-    <Drawer.Navigator drawerContent={MainDrawer} initialRouteName="Profile">
+    <Drawer.Navigator drawerContent={MainDrawer}>
       <Drawer.Screen
         options={{
           headerStyle: { backgroundColor: bg },

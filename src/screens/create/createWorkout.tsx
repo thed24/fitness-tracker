@@ -80,7 +80,7 @@ export function CreateWorkout() {
       });
     }
     setIndex(0);
-    navigation.reset({ index: 0, routes: [{ name: "Profile" as never }] });
+    navigation.reset({ index: 0, routes: [{ name: "Drawer" as never }] });
   };
 
   return (

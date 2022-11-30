@@ -48,15 +48,12 @@ export function useAddWorkout() {
     {
       onSuccess(response) {
         if (user && response) {
-          queryClient.setQueryData(["user", user.id], { 
+          const newData = { 
             ...user,
-            workouts: user.workouts.map((workout) => {
-              if (workout.id === response.id) {
-                return response;
-              }
-              return workout;
-            })
-          });
+            workouts: [...user.workouts, response],
+          };
+
+          queryClient.setQueryData(["user", user.id], newData);
           queryClient.invalidateQueries(["workoutData", user.id]);
           queryClient.invalidateQueries(["userAchievements"]);
         }

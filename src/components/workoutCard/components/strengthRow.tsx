@@ -32,7 +32,7 @@ export function StrengthRow({ activity, workout }: Props) {
       <Pressable onPress={() => navigation.navigate("Activity" as never, { mainActivityId: activity.id } as never)}>
         <HStack>
             <Text fontSize={16} fontWeight="bold"> Goal </Text>
-            <Text>
+            <Text my="auto">
               {weightFormatter(`${activity.targetSets} x ${activity.targetReps} at ${activity.targetWeight}`, false)}
             </Text>
             <View ml="auto" mt={2}>
@@ -43,7 +43,7 @@ export function StrengthRow({ activity, workout }: Props) {
 
       <HStack>
       <Text fontSize={16} fontWeight="bold"> Result </Text>
-        <Text>
+        <Text my="auto">
           {activity.sets && activity.reps && activity.weight
             ? weightFormatter(`${activity.sets} x ${activity.reps} at ${activity.weight}`, false)
             : "Uncompleted"}

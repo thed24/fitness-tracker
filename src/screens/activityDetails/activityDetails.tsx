@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { useGetUser } from 'api';
 import dateFormat from 'dateformat';
-import { Card, FlatList, Image, useTheme, Text, Divider, TextArea } from 'native-base';
+import { Card, FlatList, Image, useTheme, Text, Divider, TextArea, Heading, View } from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { Screen } from '../../components/screen/screen';
 import { Activity, Workout } from '../../types/domain';
 
@@ -21,6 +21,7 @@ export function ActivityDetailsScreen({ route }: Props) {
   const { data: user } = useGetUser();
   const theme = useTheme();
   const navigation = useNavigation();
+  const { width } = useWindowDimensions();
 
   const activities = user?.workouts.map((workout) => workout.activities.map((activity) => ({ ...workout, activity }))).flat() ?? [];
   const mainActivity = activities.find(
@@ -43,14 +44,15 @@ export function ActivityDetailsScreen({ route }: Props) {
     const { activity } = workout;
 
     return (
-      <Screen>
+      <View w={width} key={activity.id}>
         <Card
           key={activity.id}
           my={4}
           mx="auto"
           w="90%"
         >
-          <Text mx="auto" fontWeight="bold" key={`${activity.id} Time`}>{dateFormat(new Date(workout.time), 'dddd, mmmm dS')}</Text>
+          <Heading mx="auto" fontWeight="bold" key={`${activity.id} Title`}>{workout.name}</Heading>
+          <Text mx="auto" key={`${activity.id} Time`}>{dateFormat(new Date(workout.time), 'dddd, mmmm dS')}</Text>
           <Divider my={4} />
 
           {activity.type === 'cardio' && (
@@ -59,14 +61,16 @@ export function ActivityDetailsScreen({ route }: Props) {
                 <Text fontWeight="bold"> Goal </Text>
                 {activity.targetDistance} in {activity.targetDuration}
               </Text>
-              {activity.distance && activity.duration && (
+
+              {activity.duration !== null && activity.distance !== null && (
                 <Text key={`${activity.id} Actual Sets`}>
                   <Text fontWeight="bold"> Result </Text>
                   {activity.distance} in {activity.duration}
                 </Text>
               )}
+
               {!activity.duration || !activity.distance && (
-                <Text key={`${activity.id} Actual Sets`}>
+                <Text key={`${activity.id} Uncompleted`}>
                   <Text fontWeight="bold"> Result </Text>
                   Not completed
                 </Text>
@@ -80,14 +84,16 @@ export function ActivityDetailsScreen({ route }: Props) {
                 <Text fontWeight="bold"> Goal </Text>
                 {activity.targetSets} x {activity.targetReps} at {activity.targetWeight}
               </Text>
+
               {activity.sets && activity.reps && activity.weight && (
                 <Text key={`${activity.id} Actual Sets`}>
                   <Text fontWeight="bold"> Result </Text>
                   {activity.sets} x {activity.reps} at {activity.weight}
                 </Text>
               )}
+
               {!activity.sets || !activity.reps || !activity.weight && (
-                <Text key={`${activity.id} Actual Sets`}>
+                <Text key={`${activity.id} Uncompleted`}>
                   <Text fontWeight="bold"> Result </Text>
                   Not completed
                 </Text>
@@ -113,17 +119,17 @@ export function ActivityDetailsScreen({ route }: Props) {
           )}
         </Card>
         {isMain && <Text fontWeight="bold" mx="auto" key={`${activity.id} Other`}> Other {workout.activity.name} Workouts </Text>}
-      </Screen>
+      </View>
     );
   };
 
   return (
-    <View>
+    <Screen>
       <FlatList
         data={filteredActivities}
         ListHeaderComponent={createActivityCard(mainActivity, true)}
         renderItem={({ item }) => createActivityCard(item)}
       />
-    </View>
+    </Screen>
   );
 }
