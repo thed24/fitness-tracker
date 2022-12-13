@@ -28,17 +28,17 @@ export function NavigationButton({
   return (
     <>
       {currentIndex === 0 && (
-        <Button style={{ width: '70%' }} onPress={onClickNext}>
+        <Button style={{ width: '90%' }} onPress={onClickNext}>
           Next
         </Button>
       )}
 
       {currentIndex === 1 && (
         <HStack space={2}>
-          <Button style={{ width: '33%' }} onPress={onClickPrevious}>
+          <Button style={{ width: '45%' }} onPress={onClickPrevious}>
             Back
           </Button>
-          <Button style={{ width: '33%' }} onPress={onClickNext}>
+          <Button style={{ width: '45%' }} onPress={onClickNext}>
             Next
           </Button>
         </HStack>
@@ -46,11 +46,11 @@ export function NavigationButton({
 
       {currentIndex === 2 && (
         <HStack space={2}>
-          <Button style={{ width: '33%' }} onPress={onClickPrevious}>
+          <Button style={{ width: '45%' }} onPress={onClickPrevious}>
             Back
           </Button>
           <Button
-            style={{ width: '33%' }}
+            style={{ width: '45%' }}
             isDisabled={disabled}
             onPress={onSubmit}
             isLoading={loading}

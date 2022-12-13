@@ -1,18 +1,88 @@
-import { FormInput } from "components";
-import React from "react";
-import { createMeasurementFormatter, createWeightFormatter } from "utils";
-import { RegisterProps } from "../../register";
-import * as SC from "../../register.styles";
+import { Autocomplete, Button, FormInput, FormLabel } from 'components';
+import { HStack, View } from 'native-base';
+import React from 'react';
+import { createMeasurementFormatter, createWeightFormatter } from 'utils';
+import { Exercise } from '../../../../types/domain';
+import { RegisterProps } from '../../register';
+import * as SC from '../../register.styles';
 
-export function StatsForm({ form }: RegisterProps) {
+type Props = RegisterProps & {
+  exercises: Exercise[];
+}
+
+export function StatsForm({ form, exercises }: Props) {
   const weightFormatter = createWeightFormatter(form.values.weightUnit);
   const measurementFormatter = createMeasurementFormatter(form.values.measurementUnit);
+  const [selectedExercise, setSelectedExercise] = React.useState<Exercise | null>(null);
+  const [exerciseText, setExerciseText] = React.useState<string>('');
+
+  const filteredExercises = React.useMemo(() => {
+    const exercisesToRemove = Object.keys(form.values.maxes);
+    return exercises.filter((exercise) => !exercisesToRemove.includes(exercise.name));
+  }, [exercises, form.values.maxes]);
+
+  const createNewMax = (exercise: Exercise) => {
+    form.setFieldValue('maxes', {
+      ...form.values.maxes,
+      [exercise.name]: {
+        reps: 0,
+        weight: 0,
+      },
+    });
+  };
+
+  const maxes = Object.entries(form.values.maxes).map(([exerciseName, max]) => (
+    <View>
+      <FormLabel mt={4}>{exerciseName}</FormLabel>
+      <HStack space={5} w="30%" alignItems="center" key={exerciseName}>
+        <FormInput
+          key={`weight-${exerciseName}`}
+          onChangeText={form.handleChange(`maxes.${exerciseName}.weight`)}
+          onBlur={form.handleBlur(`maxes.${exerciseName}.weight`)}
+          value={max.weight.toString()}
+          required
+          error={
+            form.errors.maxes?.[exerciseName]?.weight &&
+            form.touched.maxes?.[exerciseName]?.weight
+              ? form.errors.maxes?.[exerciseName]?.weight
+              : undefined
+          }
+          name={weightFormatter('Weight')}
+        />
+        <FormInput
+          key={`reps-${exerciseName}`}
+          onChangeText={form.handleChange(`maxes.${exerciseName}.reps`)}
+          onBlur={form.handleBlur(`maxes.${exerciseName}.reps`)}
+          value={max.reps.toString()}
+          required
+          error={
+            form.errors.maxes?.[exerciseName]?.reps &&
+            form.touched.maxes?.[exerciseName]?.reps
+              ? form.errors.maxes?.[exerciseName]?.reps
+              : undefined
+          }
+          name="Reps"
+        />
+        <Button
+          key={`remove-${exerciseName}`}
+          style={{ marginTop: 20 }}
+          onPress={() => {
+            form.setFieldValue('maxes', Object.fromEntries(
+              Object.entries(form.values.maxes).filter(([name]) => name !== exerciseName),
+            ));
+          }}
+        >
+          Remove
+        </Button>
+      </HStack>
+    </View>
+  ));
 
   return (
     <SC.Container>
       <FormInput
-        onChangeText={form.handleChange("height")}
-        onBlur={form.handleBlur("height")}
+        onChangeText={form.handleChange('height')}
+        onBlur={form.handleBlur('height')}
         value={form.values.height.toString()}
         required
         error={
@@ -20,11 +90,11 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.height
             : undefined
         }
-        name={measurementFormatter("Height")}
+        name={measurementFormatter('Height')}
       />
       <FormInput
-        onChangeText={form.handleChange("weight")}
-        onBlur={form.handleBlur("weight")}
+        onChangeText={form.handleChange('weight')}
+        onBlur={form.handleBlur('weight')}
         value={form.values.weight.toString()}
         required
         error={
@@ -32,11 +102,11 @@ export function StatsForm({ form }: RegisterProps) {
             ? form.errors.weight
             : undefined
         }
-        name={weightFormatter("Weight")}
+        name={weightFormatter('Weight')}
       />
       <FormInput
-        onChangeText={form.handleChange("age")}
-        onBlur={form.handleBlur("age")}
+        onChangeText={form.handleChange('age')}
+        onBlur={form.handleBlur('age')}
         value={form.values.age.toString()}
         required
         error={
@@ -44,39 +114,30 @@ export function StatsForm({ form }: RegisterProps) {
         }
         name="Age"
       />
-      <FormInput
-        onChangeText={form.handleChange("benchPressMax")}
-        onBlur={form.handleBlur("benchPressMax")}
-        value={form.values.benchPressMax?.toString() ?? ""}
-        error={
-          form.errors.benchPressMax && form.touched.benchPressMax
-            ? form.errors.benchPressMax
-            : undefined
-        }
-        name={weightFormatter("Bench Press Max")}
+      <Autocomplete
+        w="100%"
+        mt={2}
+        placeholder="Select an exercise"
+        data={filteredExercises ?? []}
+        value={exerciseText}
+        keyExtractor={(item: Exercise) => item.name}
+        onChange={(value: string) => {
+          setSelectedExercise(filteredExercises?.find((e) => e.name === value) ?? null);
+          setExerciseText(value);
+        }}
       />
-      <FormInput
-        onChangeText={form.handleChange("squatMax")}
-        onBlur={form.handleBlur("squatMax")}
-        value={form.values.squatMax?.toString() ?? ""}
-        error={
-          form.errors.squatMax && form.touched.squatMax
-            ? form.errors.squatMax
-            : undefined
-        }
-        name={weightFormatter("Squat Max")}
-      />
-      <FormInput
-        onChangeText={form.handleChange("deadliftMax")}
-        onBlur={form.handleBlur("deadliftMax")}
-        value={form.values.deadliftMax?.toString() ?? ""}
-        error={
-          form.errors.deadliftMax && form.touched.deadliftMax
-            ? form.errors.deadliftMax
-            : undefined
-        }
-        name={weightFormatter("Deadlift Max")}
-      />
+      {maxes}
+      <Button
+        style={{ marginTop: 20, width: '100%' }}
+        isDisabled={selectedExercise === null}
+        onPress={() => {
+          createNewMax(selectedExercise ?? ({} as Exercise))
+          setSelectedExercise(null);
+          setExerciseText('');
+        }}
+      >
+        Add New Exercise Max
+      </Button>
     </SC.Container>
   );
 }

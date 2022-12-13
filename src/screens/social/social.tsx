@@ -10,11 +10,7 @@ export function SocialScreen() {
   const [searchedUser, setSearchedUser] = React.useState<User | null>(null);
   const [search, setSearch] = React.useState('');
 
-  if (!users) {
-    return null;
-  }
-
-  const searchableUsers = users.filter((item) => item.id !== user?.id);
+  const searchableUsers = (users ?? []).filter((item) => item.id !== user?.id);
   
   return (
     <Screen>
@@ -35,7 +31,10 @@ export function SocialScreen() {
 
       {searchedUser && (
         <Card w="90%" mt={4} alignItems="center">
-          <Heading size="md"> {searchedUser.username} </Heading>
+          <HStack alignItems="center">
+            <Heading size="md"> {searchedUser.username} </Heading>
+            <Text> Level {searchedUser.workoutBuddy.data.levelStats.overall} </Text>
+          </HStack>
           <Text> {searchedUser.title?.name ?? ''} </Text>
           <Avatar callback={() => null} user={searchedUser} size="sm" />
         </Card>

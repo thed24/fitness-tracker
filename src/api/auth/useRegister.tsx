@@ -16,9 +16,7 @@ type RegisterRequest = {
   weightUnit: "kilograms" | "pounds";
   measurementUnit: "metric" | "imperial";
   age: number;
-  benchPressMax: number | null;
-  squatMax: number | null;
-  deadliftMax: number | null;
+  maxes: Record<string, {reps: number, weight: number}>;
 };
 
 type RegisterRawResponse = {

@@ -46,10 +46,11 @@ export function WorkoutChart() {
   const exerciseNames = useMemo(
     () => pastWorkouts
         .flatMap((workout) => workout.activities)
+        .filter((activity) => activity.type === workoutType)
         .map((exercise) => exercise.name)
-        .filter((name, index, self) => self.indexOf(name) === index), [pastWorkouts]);
+        .filter((name, index, self) => self.indexOf(name) === index), [pastWorkouts, workoutType]);
 
-  const options = workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance"];
+  const options = workoutType === "strength" ? ["Reps", "Sets", "Weight"] : ["Distance", "Duration"];
   const repCounts = useMemo(
     () => [
       ...new Set(pastWorkouts

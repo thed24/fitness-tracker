@@ -2,7 +2,7 @@ import { Text } from "native-base";
 import React, { useState } from "react";
 import { Screen } from "components";
 import { Formik, FormikProps } from "formik";
-import { useRegister } from "api";
+import { useExercises, useRegister } from "api";
 import { Image } from "types";
 import { RegisterForm } from "./forms/details/registerForm";
 import { BuddyForm } from "./forms/buddy/buddyForm";
@@ -21,9 +21,7 @@ export interface RegisterValues {
   weightUnit: "kilograms" | "pounds";
   measurementUnit: "metric" | "imperial";
   age: number;
-  benchPressMax: number | null;
-  squatMax: number | null;
-  deadliftMax: number | null;
+  maxes: Record<string, {reps: number, weight: number}>;
   avatar: Image | null;
 }
 
@@ -32,11 +30,12 @@ export interface RegisterProps {
 }
 
 function RegisterScreen() {
-  const { isLoading, mutate } = useRegister();
+  const { data: exercises } = useExercises();
+  const { isLoading: registering, mutate: register } = useRegister();
   const [index, setIndex] = useState(0);
 
   const onSubmit = (registrationDetails: RegisterValues) => {
-    mutate({ ...registrationDetails });
+    register({ ...registrationDetails });
   };
 
   const getStep = (props: RegisterProps) => {
@@ -46,7 +45,7 @@ function RegisterScreen() {
       case 1:
         return <BuddyForm form={props.form} />;
       case 2:
-        return <StatsForm form={props.form} />;
+        return <StatsForm form={props.form} exercises={exercises ?? []} />;
       default:
         return <Text>Well, this is awkward</Text>;
     }
@@ -69,9 +68,7 @@ function RegisterScreen() {
           height: 0,
           weight: 0,
           age: 0,
-          benchPressMax: null,
-          squatMax: null,
-          deadliftMax: null,
+          maxes: {},
         } as RegisterValues}
         onSubmit={onSubmit}
       >
@@ -79,7 +76,7 @@ function RegisterScreen() {
           <>
             {getStep({ form })}
             <NavigationButton
-              loading={isLoading}
+              loading={registering}
               disabled={Object.keys(form.errors).length > 0}
               currentIndex={index}
               setIndex={setIndex}
