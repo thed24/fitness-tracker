@@ -1,5 +1,5 @@
 import { Button, FormLabel, Input } from 'components';
-import { HStack } from 'native-base';
+import { Box, HStack, Text, useTheme } from 'native-base';
 import React, { useCallback, useMemo } from 'react';
 
 interface Props {
@@ -17,21 +17,26 @@ function IncrementBarInternal({
   increments,
   titleAccessory,
 }: Props) {
+  const theme = useTheme();
+
   const createButton = useCallback((increment: number) => {
     const incrementHandler = () => onChange((value + increment).toString());
-    const text = increment > 0 ? `+${increment}` : `-${-increment}`;
 
     return (
       <Button
         key={increment}
+        style={{ 
+          width: "18%", 
+          borderRadius: 0, 
+          backgroundColor: increment > 0 ? theme.colors.primary[500] : theme.colors.red[500] }}
         variant="primary"
         onPress={incrementHandler}
       >
-        {text}
+        {Math.abs(increment)}
       </Button>
     );
   },
-    [onChange, value],
+    [onChange, theme.colors.primary, theme.colors.red, value],
   );
 
   const handleInputChange = (newValue: string) => {
@@ -46,25 +51,31 @@ function IncrementBarInternal({
   const negativeIncrements = useMemo(() => increments.filter((i) => i < 0).map(createButton), [createButton, increments]);
 
   return (
-    <>
-      <HStack justifyContent="space-between" mb={1}>
+    <Box w="100%">
+      <HStack>
         <FormLabel mt={1}>{name}</FormLabel>
-        {titleAccessory}
-      </HStack>
-      <HStack justifyContent="space-between" alignContent="center">
+        {titleAccessory && (
+          <Text fontSize="xs" ml="auto">
+            {titleAccessory}
+          </Text>
+        )}
+        </HStack>
+      <HStack alignContent="center">
         {positiveIncrements}
         <Input
           w={16}
-          textDecorationLine="underline"
+          rounded={0}
           value={value.toString()}
           onChangeText={handleInputChange}
           placeholder="0"
           type="text"
           textAlign="center"
+          h="99%"
+          borderColor={theme.colors.white}
         />
         {negativeIncrements}
       </HStack>
-    </>
+    </Box>
   );
 }
 

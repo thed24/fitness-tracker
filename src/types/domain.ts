@@ -296,6 +296,13 @@ export interface UserSettings {
   darkMode: boolean;
 }
 
+export interface Max {
+  estimatedOneRepMax: number;
+  exercise: string;
+  reps: number;
+  weight: number;
+}
+
 export interface User {
   id: number;
   username: string;
@@ -313,4 +320,5 @@ export interface User {
   claimedAchievements: number[];
   title: Title | null;
   badge: Badge | null;
+  maxes: Max[];
 }

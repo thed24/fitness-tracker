@@ -22,8 +22,8 @@ export function Stats() {
         {streakText}
       </Text>
 
-      <WorkoutChart />
       <BuddyStats />
+      <WorkoutChart />
       <Achievements />
     </Screen>
   );

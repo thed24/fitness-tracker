@@ -29,7 +29,15 @@ export function useRegister() {
 
   return useMutation(
     async (request: RegisterRequest) => {
-      const { data } = await client.post<RegisterRawResponse>("/users/register", request);
+      const updatedRequest = {
+        ...request,
+        maxes: Object.entries(request.maxes).map(([k,v]) => ({
+            exercise: k,
+            reps: v.reps,
+            weight: v.weight
+          }))
+      };
+      const { data } = await client.post<RegisterRawResponse>("/users/register", updatedRequest);
       setUserId(data.user.id);
       return ApiUserToUser(data.user);
     },

@@ -7,7 +7,14 @@ import {
   Equipment,
   Image,
 } from 'types';
-import { Badge, Exercise, MuscleGroup, Reward, Title } from '../types/domain';
+import {
+  Max,
+  Badge,
+  Exercise,
+  MuscleGroup,
+  Reward,
+  Title,
+} from '../types/domain';
 
 export type ApiData = {
   id: number;
@@ -71,6 +78,7 @@ export interface ApiUser {
   claimedAchievements: number[];
   title: Title | null;
   badge: Badge | null;
+  maxes: Max[];
 }
 
 export function ApiExerciseToExercise(exercise: ApiExercise): Exercise {
@@ -118,6 +126,7 @@ export function ApiUserToUser(apiUser: ApiUser): User {
     claimedAchievements: apiUser.claimedAchievements,
     title: apiUser.title,
     badge: apiUser.badge,
+    maxes: apiUser.maxes,
   };
 }
 
@@ -207,5 +216,6 @@ export function UserToApiUser(user: User): ApiUser {
     claimedAchievements: user.claimedAchievements,
     title: user.title,
     badge: user.badge,
+    maxes: user.maxes,
   };
 }

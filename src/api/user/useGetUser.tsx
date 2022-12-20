@@ -19,6 +19,7 @@ export function useGetUser(): UseQueryResult<GetUserResponse, unknown> {
       }
 
       const { data } = await client.get<GetUserRawResponse>(`/users/${userId}`);
+      console.log('data', data.user.maxes);
       setUserId(data.user.id);
       return ApiUserToUser(data.user);
     }
